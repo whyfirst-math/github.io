@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>0を含む4桁の整数｜樹形図でわかる場合の数</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#5d687c;--line:#dce3ee;--blue:#3157d5;--green:#1f8a70;--purple:#7554c9;--orange:#b86b00;--red:#c54141;--soft:#eef3ff;--soft2:#eaf8f4}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.75}header{background:linear-gradient(135deg,#243e91,#4d70df);color:#fff;padding:44px 20px 38px}.wrap,main,footer{max-width:980px;margin:auto}h1{font-size:clamp(29px,5vw,45px);line-height:1.2;margin:0 0 12px}header p{font-size:18px;margin:0;max-width:780px}main{padding:24px 18px 70px}section{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:25px;margin:20px 0;box-shadow:0 8px 24px rgba(28,42,82,.06)}h2{font-size:27px;line-height:1.35;margin:0 0 10px}h3{font-size:20px;margin-top:25px}.badge{display:inline-block;padding:4px 10px;border-radius:99px;background:var(--soft);color:var(--blue);font-weight:900;font-size:13px;margin-bottom:8px}.lead{font-size:18px}.goal,.key,.tip,.mistake{border-left:5px solid var(--blue);background:var(--soft);padding:14px 16px;border-radius:11px;margin:16px 0}.key{border-color:var(--green);background:var(--soft2)}.tip{border-color:var(--purple);background:#f4f0ff}.mistake{border-color:var(--orange);background:#fff7e8}.digits{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0}.digit{width:62px;height:68px;border:3px solid #8299dc;border-radius:14px;display:grid;place-items:center;background:#f2f5ff;color:#203e95;font-size:25px;font-weight:900}.digit.zero{border-color:#e39c62;background:#fff5ea;color:#9b4d10}.places{display:grid;grid-template-columns:repeat(4,minmax(60px,86px));gap:8px;justify-content:center;margin:18px 0}.place{height:72px;border:2px dashed #aab5c7;border-radius:12px;display:grid;place-items:center;background:#fafcff;color:var(--muted);font-weight:900}.place.focus{border:3px solid var(--purple);background:#f4f0ff;color:#593b9c}.place.last{border:3px solid var(--green);background:#effaf6;color:#176c58}.place small{display:block;font-size:11px}.arrow{text-align:center;font-size:25px;color:var(--muted);font-weight:900}.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin:15px 0}.step{border:1px solid var(--line);border-radius:14px;background:#fafcff;padding:14px;text-align:center}.step .num{font-size:25px;font-weight:900;color:var(--blue)}button{appearance:none;border:0;border-radius:11px;padding:10px 15px;margin:6px 6px 6px 0;background:var(--blue);color:#fff;font-size:15px;font-weight:900;cursor:pointer}.reveal{display:none}.reveal.show{display:block}.tree-card{border:1px solid var(--line);border-radius:17px;background:#fcfdff;padding:14px;margin:15px 0;overflow:hidden}.tree-scroll{overflow:auto;max-height:640px}.tree-svg{display:block;width:100%;min-width:790px;height:auto}.line{stroke:#aeb8c8;stroke-width:2;fill:none}.line.sample{stroke:var(--purple);stroke-width:4}.node{fill:#eef3ff;stroke:#8399dd;stroke-width:2}.node.zero-node{fill:#fff5ea;stroke:#d58a4d}.root{fill:#172033}.leaf{fill:#fff;stroke:#9eacc2;stroke-width:2}.txt{font:800 13px system-ui,-apple-system,"Yu Gothic",sans-serif;text-anchor:middle;dominant-baseline:middle;fill:#172033}.root-txt{fill:#fff;font-size:9px}.level{font:800 13px system-ui,-apple-system,"Yu Gothic",sans-serif;text-anchor:middle;fill:#5c667a}.count-box{fill:#f4f0ff;stroke:#9a81d5;stroke-width:2}.caption{font-size:14px;color:var(--muted);margin:8px 1px 0}.formula{border:1px solid var(--line);border-radius:13px;background:#f8fafc;padding:14px;text-align:center;font-size:clamp(20px,4vw,27px);font-weight:900;margin:13px 0}.formula .times{color:var(--purple)}.formula .plus{color:var(--orange)}.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.case{border:2px solid var(--line);border-radius:16px;padding:15px;background:#fff}.case.zero-case{border-color:#dc9a63;background:#fffaf4}.case.even-case{border-color:#6a9e8c;background:#f4fbf8}.case-title{font-size:18px;font-weight:900}.case-tree{min-width:620px}.verify{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:9px;margin:18px 0}.verify-box{border-radius:14px;padding:14px;text-align:center;font-weight:900}.verify-box.odd{background:#fff1f6;border:2px solid #dc7ea0}.verify-box.even{background:#edf9f4;border:2px solid #64a88f}.verify-box.all{background:#eef3ff;border:2px solid #718dde}.verify-sign{font-size:28px;font-weight:900;color:var(--muted)}.back{background:linear-gradient(135deg,#172033,#293752);color:#fff;border-radius:17px;padding:19px;margin-top:20px}.checklist{display:grid;gap:8px;margin-top:12px}.check{background:rgba(255,255,255,.09);border-radius:10px;padding:9px 11px}footer{padding:0 20px 42px;color:var(--muted);font-size:13px}@media(max-width:700px){section{padding:19px}.case-grid{grid-template-columns:1fr}.verify{grid-template-columns:1fr}.verify-sign{transform:rotate(90deg);text-align:center}.digit{width:54px;height:60px}.place{height:63px}.case-tree{min-width:580px}}@media print{button{display:none}.reveal{display:block!important}body{background:#fff}section{box-shadow:none;break-inside:avoid}.tree-scroll{max-height:none;overflow:visible}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>0を含む4桁の整数</h1><p>0は先頭に置けない。奇数・偶数は一の位で決まる。この2つを樹形図の枝にしよう。</p></div></header>
+<main>
+<section>
+  <span class="badge">MetaMoJi補助サイト</span>
+  <h2>まずは数字を変えた類題で考えよう</h2>
+  <p class="lead">5枚の数字カード 0・2・5・6・9 から異なる4枚を選び、1列に並べて4桁の整数を作ります。</p>
+  <div class="digits" aria-label="数字カード0、2、5、6、9"><div class="digit zero">0</div><div class="digit">2</div><div class="digit">5</div><div class="digit">6</div><div class="digit">9</div></div>
+  <div class="goal"><strong>条件が付く場所から先に埋める</strong><br>・4桁の整数 → 千の位に0を置かない。<br>・奇数・偶数 → 一の位から決める。<br>条件のある場所を先に決めると、数えてはいけない枝を最初から出さずに済みます。</div>
+</section>
+
+<section id="all">
+  <span class="badge">類題1</span>
+  <h2>4桁の整数は何個できる？</h2>
+  <h3>まずは千の位から埋めていこう</h3>
+  <p>4桁の整数の先頭は0にはできません。したがって、千の位には 2・5・6・9 のいずれかを置きます。</p>
+  <div class="places"><div class="place focus">千の位<br><small>0は不可</small></div><div class="place">百の位</div><div class="place">十の位</div><div class="place">一の位</div></div>
+  <button type="button" onclick="toggleBox('allTreeBox',this)">千の位の樹形図を見る</button>
+  <div id="allTreeBox" class="reveal"><div class="tree-card"><div class="tree-scroll"><svg id="allTree" class="tree-svg" viewBox="0 0 900 390" role="img" aria-label="千の位を2、5、6、9から選び、その各枝から残り3桁を並べる樹形図"></svg></div><p class="caption">千の位を決める枝は4本。その1本1本から、残った4枚のうち3枚を順に並べる24本の枝が出ます。</p></div></div>
+  <h3>千の位を2にした1本を拡大しよう</h3>
+  <p>残りは 0・5・6・9。そのうち3枚を百・十・一の位へ順に置きます。</p>
+  <button type="button" onclick="toggleBox('sampleAllBox',this)">残り3桁の樹形図を見る</button>
+  <div id="sampleAllBox" class="reveal"><div class="tree-card"><div class="tree-scroll"><div id="sampleAllTree"></div></div><p class="caption">4本→3本→2本なので、完成した枝は4×3×2＝24本です。</p></div></div>
+  <div class="formula">4 <span class="times">×</span> (4×3×2) ＝ 4×24 ＝ 96個</div>
+  <div class="mistake"><strong>よくあるミス：5×4×3×2 としない</strong><br>それでは0から始まる並びまで数えてしまいます。千の位は0以外の4通りです。</div>
+</section>
+
+<section id="odd">
+  <span class="badge">類題2</span>
+  <h2>4桁の奇数は何個できる？</h2>
+  <h3>奇数かどうかは、一の位で決まる</h3>
+  <p>使える奇数は5と9。そこで、まず一の位を5または9に固定し、次に千の位を決めます。</p>
+  <div class="places"><div class="place focus">千の位<br><small>0は不可</small></div><div class="place">百の位</div><div class="place">十の位</div><div class="place last">一の位<br><small>5 または 9</small></div></div>
+  <button type="button" onclick="toggleBox('oddTreeBox',this)">奇数の樹形図を見る</button>
+  <div id="oddTreeBox" class="reveal"><div class="tree-card"><div class="tree-scroll"><svg id="oddTree" class="tree-svg" viewBox="0 0 1040 1100" role="img" aria-label="一の位、千の位、百の位、十の位の順に決めて4桁の奇数を作る樹形図"></svg></div><p class="caption">一の位→千の位→百の位→十の位と、条件の強い場所から順に枝を出しています。枝先には完成した4桁の奇数を表示します。</p></div><div class="key"><strong>6本を省略せずに見る</strong><br>一の位と千の位を決めた各枝から、百の位が3本、その1本1本から十の位が2本。だから3×2＝6本です。</div></div>
+  <div class="formula">2 <span class="times">×</span> 3 <span class="times">×</span> (3×2) ＝ 36個</div>
+  <div class="mistake"><strong>よくあるミス：千の位を4通りにしない</strong><br>一の位に使った奇数はもう使えません。残り4枚のうち0も先頭には置けないので、千の位は3通りです。</div>
+</section>
+
+<section id="even">
+  <span class="badge">類題3</span>
+  <h2>4桁の偶数は何個できる？</h2>
+  <h3>一の位が0か、0以外かで枝を分けよう</h3>
+  <p>使える偶数は0・2・6です。ただし、一の位に0を使った場合だけ、千の位に置ける数字の数が変わります。</p>
+  <div class="places"><div class="place focus">千の位<br><small>0は不可</small></div><div class="place">百の位</div><div class="place">十の位</div><div class="place last">一の位<br><small>0・2・6</small></div></div>
+  <div class="case-grid">
+    <div class="case zero-case"><div class="case-title">場合A：一の位が0</div><p>0はすでに末尾で使用済み。千の位には残った4枚のどれでも置けます。</p><div class="formula">1×4×(3×2)＝24個</div></div>
+    <div class="case even-case"><div class="case-title">場合B：一の位が2または6</div><p>末尾が2なら6、末尾が6なら2も使えますが、0は千の位には置けません。</p><div class="formula">2×3×(3×2)＝36個</div></div>
+  </div>
+  <button type="button" onclick="toggleBox('evenTreeBox',this)">2つの場合の樹形図を見る</button>
+  <div id="evenTreeBox" class="reveal"><div class="case-grid"><div class="tree-card"><div class="case-title">場合A：末尾が0</div><div class="tree-scroll"><svg id="evenZeroTree" class="tree-svg case-tree" viewBox="0 0 1040 780" role="img" aria-label="一の位を0とし、千の位、百の位、十の位の順に決める樹形図"></svg></div></div><div class="tree-card"><div class="case-title">場合B：末尾が2または6</div><div class="tree-scroll"><svg id="evenNonzeroTree" class="tree-svg case-tree" viewBox="0 0 1040 1100" role="img" aria-label="一の位を2または6とし、千の位、百の位、十の位の順に決める樹形図"></svg></div></div></div><div class="key"><strong>百の位・十の位まで枝を追う</strong><br>どちらの場合も、千の位を決めた後は百の位が3本、その各枝から十の位が2本出ます。場合Aと場合Bは重ならないので、最後は24＋36と足します。</div></div>
+  <div class="formula">24 <span class="plus">＋</span> 36 ＝ 60個</div>
+  <div class="mistake"><strong>よくあるミス：3×3×3×2 と一度に数えない</strong><br>末尾が0のときは千の位が4通り、末尾が2・6のときは3通り。同じ枝数ではないので場合分けが必要です。</div>
+</section>
+
+<section>
+  <span class="badge">検算</span>
+  <h2>奇数と偶数を合わせると、全体に戻る</h2>
+  <div class="verify"><div class="verify-box odd">奇数<br><strong>36個</strong></div><div class="verify-sign">＋</div><div class="verify-box even">偶数<br><strong>60個</strong></div><div class="verify-sign">＝</div><div class="verify-box all">4桁の整数全部<br><strong>96個</strong></div></div>
+  <div class="key"><strong>検算できた</strong><br>整数は必ず奇数か偶数のどちらかです。36＋60＝96となり、最初に数えた全体と一致します。</div>
+  <h3>もう一つの求め方：全体から奇数を引く</h3>
+  <p>4桁の整数全体96個の中で、<strong>「奇数でないもの」はすべて偶数</strong>です。奇数と偶数は重ならず、2つを合わせると全体になります。</p>
+  <div class="tip"><strong>偶数は、奇数の補集合（余事象）</strong><br>偶数を複雑な場合分けで直接数える代わりに、全体から奇数を除いて求めることもできます。</div>
+  <div class="formula">全体 − 奇数 ＝ 偶数<br>96 − 36 ＝ 60個</div>
+  <div class="key"><strong>2通りの方法が同じ答えになった</strong><br>直接数える：24＋36＝60個<br>補集合で数える：96−36＝60個<br>場合分けが複雑なときは、「反対側を引けないか」と考えると簡単になることがあります。</div>
+</section>
+
+<section>
+  <span class="badge">本問へ転用</span>
+  <h2>MetaMoJiへ戻る前のチェック</h2>
+  <p>本問では使う数字がこの類題とは違います。次の順番を、本問の数字に置き換えて考えましょう。</p>
+  <div class="back"><strong>自分に問いかけよう</strong><div class="checklist"><div class="check">□ 4桁の整数の千の位に置けない数字は何？</div><div class="check">□ 奇数を作るとき、一の位に置ける数字は何個？</div><div class="check">□ 一の位を使った後、千の位に置ける0以外の数字は何個残る？</div><div class="check">□ 偶数では「末尾が0」と「末尾が0以外」を分けた？</div><div class="check">□ 偶数を「全体−奇数」という補集合でも求められない？</div><div class="check">□ 奇数の個数＋偶数の個数＝全体になった？</div></div></div>
+  <div class="key"><strong>判断の合言葉</strong><br>4桁 → 千の位の0を外す。<br>奇数・偶数 → 一の位から決める。<br>偶数で0を使える → 末尾0と末尾0以外に分ける。<br>反対側の方が数えやすい → 全体から引く（補集合・余事象）。</div>
+</section>
+</main>
+<footer>このページは、MetaMoJiの問題を自力で解くための類題解説です。類題で考え方をつかんだら、元のプリントへ戻りましょう。</footer>
+<script>
+const ns="http://www.w3.org/2000/svg";
+function S(name,attrs={},text=""){const e=document.createElementNS(ns,name);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);if(text)e.textContent=text;return e}
+function toggleBox(id,btn){const box=document.getElementById(id),open=box.classList.toggle("show");btn.textContent=open?"樹形図を閉じる":"樹形図を見る"}
+function root(svg,x,y){svg.append(S("circle",{cx:x,cy:y,r:18,class:"root"}),S("text",{x,y:y+1,class:"txt root-txt"},"START"))}
+function line(svg,x1,y1,x2,y2,sample=false){svg.append(S("line",{x1,y1,x2,y2,class:sample?"line sample":"line"}))}
+function circle(svg,x,y,label,zero=false){svg.append(S("circle",{cx:x,cy:y,r:17,class:zero?"node zero-node":"node"}),S("text",{x,y:y+1,class:"txt"},label))}
+function badge(svg,x,y,label){svg.append(S("rect",{x:x-70,y:y-17,width:140,height:34,rx:10,class:"count-box"}),S("text",{x,y:y+1,class:"txt"},label))}
+function renderAll(){const svg=document.getElementById("allTree"),ys=[75,155,235,315],digits=["2","5","6","9"],x0=60,x1=330,x2=735,ry=195;svg.append(S("text",{x:x0,y:25,class:"level"},"START"),S("text",{x:x1,y:25,class:"level"},"千の位"),S("text",{x:x2,y:25,class:"level"},"残り3桁"));root(svg,x0,ry);digits.forEach((d,i)=>{line(svg,x0+18,ry,x1-17,ys[i],i===0);circle(svg,x1,ys[i],d);line(svg,x1+17,ys[i],x2-70,ys[i],i===0);badge(svg,x2,ys[i],"各枝から24本")})}
+function perms(arr,r,p=[]){if(p.length===r)return[p];let out=[];arr.forEach(x=>{if(!p.includes(x))out.push(...perms(arr,r,[...p,x]))});return out}
+function renderPerm(holderId,items,r){const holder=document.getElementById(holderId),leaves=perms(items,r),row=29,top=50,h=top+leaves.length*row+25,w=900,xs=Array.from({length:r+1},(_,i)=>55+i*(760/r)),svg=S("svg",{class:"tree-svg",viewBox:`0 0 ${w} ${h}`,role:"img","aria-label":`${items.join("、")}から異なる${r}個を並べる樹形図`});xs.forEach((x,i)=>svg.append(S("text",{x,y:22,class:"level"},i===0?"START":i===r?`${i}個目→完成`:`${i}個目`)));const ly=new Map(leaves.map((p,i)=>[p.join(""),top+i*row]));const ys=prefix=>leaves.filter(p=>p.slice(0,prefix.length).join("")===prefix.join("")).map(p=>ly.get(p.join("")));const ny=prefix=>{const a=ys(prefix);return a.reduce((s,v)=>s+v,0)/a.length};const ry=ny([]);root(svg,xs[0],ry);for(let d=1;d<=r;d++){const seen=new Set();leaves.forEach(p=>{const pre=p.slice(0,d),id=pre.join("");if(seen.has(id))return;seen.add(id);const py=ny(pre.slice(0,-1)),y=ny(pre),last=d===r;line(svg,xs[d-1]+17,py,xs[d]-(last?35:17),y);if(last){svg.append(S("rect",{x:xs[d]-35,y:y-13,width:70,height:26,rx:8,class:"leaf"}),S("text",{x:xs[d],y:y+1,class:"txt"},id))}else circle(svg,xs[d],y,pre[pre.length-1],pre[pre.length-1]==="0")})}holder.append(svg)}
+function renderBoundary(svgId,lastGroups){
+  const all=["0","2","5","6","9"],svg=document.getElementById(svgId),paths=[];
+  lastGroups.forEach(g=>g.firsts.forEach(first=>{
+    const middle=all.filter(x=>x!==g.last&&x!==first);
+    middle.forEach(hundred=>middle.filter(x=>x!==hundred).forEach(ten=>paths.push([g.last,first,hundred,ten])));
+  }));
+  const row=27,top=52,height=top+paths.length*row+28,width=1040,xs=[55,245,455,665,885];
+  svg.setAttribute("viewBox",`0 0 ${width} ${height}`);
+  const heads=["START","一の位","千の位","百の位","十の位 → 完成"];
+  xs.forEach((x,i)=>svg.append(S("text",{x,y:23,class:"level"},heads[i])));
+  const leafY=new Map(paths.map((p,i)=>[p.join("|"),top+i*row]));
+  const descendantYs=prefix=>paths.filter(p=>p.slice(0,prefix.length).join("|")===prefix.join("|")).map(p=>leafY.get(p.join("|")));
+  const nodeY=prefix=>{const a=descendantYs(prefix);return a.reduce((s,v)=>s+v,0)/a.length};
+  const ry=nodeY([]);root(svg,xs[0],ry);
+  for(let d=1;d<=4;d++){
+    const seen=new Set();
+    paths.forEach(p=>{
+      const pre=p.slice(0,d),id=pre.join("|");if(seen.has(id))return;seen.add(id);
+      const py=nodeY(pre.slice(0,-1)),y=nodeY(pre),last=d===4,sample=p[0]===lastGroups[0].last&&p[1]===lastGroups[0].firsts[0]&&p[2]===all.filter(x=>x!==p[0]&&x!==p[1])[0];
+      line(svg,xs[d-1]+17,py,xs[d]-(last?39:17),y,sample);
+      if(last){
+        const number=`${p[1]}${p[2]}${p[3]}${p[0]}`;
+        svg.append(S("rect",{x:xs[d]-39,y:y-13,width:78,height:26,rx:8,class:"leaf"}),S("text",{x:xs[d],y:y+1,class:"txt"},number));
+      }else circle(svg,xs[d],y,pre[pre.length-1],pre[pre.length-1]==="0");
+    });
+  }
+}
+renderAll();renderPerm("sampleAllTree",["0","5","6","9"],3);renderBoundary("oddTree",[{last:"5",firsts:["2","6","9"]},{last:"9",firsts:["2","5","6"]}]);renderBoundary("evenZeroTree",[{last:"0",firsts:["2","5","6","9"]}]);renderBoundary("evenNonzeroTree",[{last:"2",firsts:["5","6","9"]},{last:"6",firsts:["2","5","9"]}]);
+</script>
+</body>
+</html>
