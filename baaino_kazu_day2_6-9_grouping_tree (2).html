@@ -1,0 +1,1736 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>超速。公式を覚えることより、どうしてが先。｜第2日 ⑥〜⑨</title>
+<style>
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --ink:#172033;
+  --muted:#5c667a;
+  --line:#dfe5ee;
+  --accent:#3157d5;
+  --accent2:#1f8a70;
+  --warn:#b86b00;
+  --good:#147a4b;
+  --bad:#b53838;
+  --soft:#eef3ff;
+  --soft2:#eaf8f4;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.75;
+}
+header{
+  background:linear-gradient(135deg,#2746a8,#436be0);
+  color:white;
+  padding:52px 20px 42px;
+}
+header .wrap, main, footer{max-width:980px;margin:auto}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.2;margin:0 0 12px}
+header p{font-size:18px;max-width:760px;margin:0;opacity:.95}
+.progress-wrap{
+  position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);
+}
+.progress-inner{max-width:980px;margin:auto;padding:10px 20px}
+.progress-label{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--muted)}
+.progress{height:8px;background:#e8ecf3;border-radius:99px;overflow:hidden;margin-top:7px}
+.progress > div{height:100%;width:0;background:var(--accent);transition:.3s}
+main{padding:26px 20px 70px}
+nav.toc{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;margin:18px 0 28px;
+}
+nav.toc a{
+  display:block;background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:12px 14px;text-decoration:none;color:var(--ink);font-weight:700;
+}
+section{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:26px;margin:22px 0;box-shadow:0 8px 24px rgba(25,40,80,.05)
+}
+h2{font-size:28px;margin:0 0 10px}
+h3{font-size:21px;margin-top:26px}
+.lead{font-size:18px}
+.badge{
+  display:inline-block;padding:4px 10px;border-radius:99px;background:var(--soft);
+  color:var(--accent);font-weight:800;font-size:13px;margin-bottom:8px
+}
+.goal,.teacher-tip,.key,.mistake{
+  border-left:5px solid var(--accent);background:var(--soft);padding:14px 16px;border-radius:10px;margin:16px 0
+}
+.key{border-color:var(--accent2);background:var(--soft2)}
+.mistake{border-color:var(--warn);background:#fff7e8}
+.teacher-tip{border-color:#7554c9;background:#f4f0ff}
+.question{
+  border:2px solid #d7def5;background:#fbfcff;border-radius:16px;padding:18px;margin:18px 0
+}
+.prompt{font-weight:800;font-size:18px}
+button{
+  appearance:none;border:0;border-radius:11px;padding:10px 15px;margin:6px 6px 6px 0;
+  font-size:15px;font-weight:800;cursor:pointer;background:var(--accent);color:#fff
+}
+button.secondary{background:#eef2f8;color:#26324a}
+button.choice{background:#f4f6fb;color:var(--ink);border:1px solid #ccd5e5}
+button.choice:hover{background:#eaf0ff}
+.feedback{margin-top:10px;font-weight:800;min-height:1.6em}
+.good{color:var(--good)} .bad{color:var(--bad)}
+.math{
+  background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  margin:12px 0;overflow-x:auto;text-align:center
+}
+.math-display{min-height:58px;display:flex;align-items:center;justify-content:center}
+math.mathml{
+  font-family:"STIX Two Math","Cambria Math","Times New Roman",serif;
+  font-size:1.18em;vertical-align:-0.12em;
+}
+.math-display math.mathml{font-size:1.38em;margin:auto}
+math.mathml mi{font-style:italic}
+.notation-card{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0
+}
+.notation-item{
+  border:1px solid var(--line);background:#fbfcff;border-radius:14px;padding:15px 16px
+}
+.notation-symbol{font-size:1.55em;font-weight:700;margin-bottom:5px}
+.formula-line{display:flex;align-items:center;justify-content:center;gap:.4em;flex-wrap:wrap}
+@media print{
+  .progress-wrap,nav.toc,button{display:none!important}
+  body{background:white}
+  section{box-shadow:none;break-inside:avoid}
+}
+.steps{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0
+}
+.step{
+  background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center
+}
+.big{font-size:28px;font-weight:900}
+.small{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+th,td{border:1px solid var(--line);padding:10px;text-align:left}
+th{background:#f3f6fb}
+.demo{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0
+}
+.person,.slot,.digit{
+  width:48px;height:48px;border-radius:12px;display:grid;place-items:center;
+  background:#eef3ff;border:2px solid #b9c7f4;font-weight:900
+}
+.arrow{font-size:24px;color:var(--muted)}
+.circle-wrap{display:grid;place-items:center;margin:18px 0}
+.circle{
+  position:relative;width:240px;height:240px;border-radius:50%;
+  border:5px solid #dde4ef;background:#fafcff
+}
+.seat{
+  position:absolute;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;
+  background:#fff;border:2px solid #9fb0d8;font-weight:900;transform:translate(-50%,-50%)
+}
+.seat.fixed{background:#fff0bf;border-color:#d69a00}
+.s1{left:50%;top:4%}.s2{left:94%;top:50%}.s3{left:50%;top:96%}.s4{left:6%;top:50%}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0;background:#fcfdff}
+summary{cursor:pointer;font-weight:800}
+.checkpoint{
+  border-top:1px dashed var(--line);padding-top:16px;margin-top:20px
+}
+input[type="number"]{
+  width:110px;padding:10px;border-radius:9px;border:1px solid #bcc7d8;font-size:16px
+}
+input[type="checkbox"]{transform:scale(1.2);margin-right:8px}
+.final-card{
+  background:#172033;color:#fff;border-radius:18px;padding:22px;margin-top:20px
+}
+.final-card table{color:#172033;background:white}
+footer{padding:26px 20px 50px;color:var(--muted);font-size:14px}
+@media (max-width:600px){
+  section{padding:19px;border-radius:16px}
+  h2{font-size:24px}
+  .circle{width:210px;height:210px}
+}
+.future-anchor{display:block;position:relative;top:-70px;visibility:hidden}
+
+/* 樹形図：左から右へ「選ぶ順」を追う */
+.tree-card{
+  border:1px solid var(--line);border-radius:18px;background:#fff;
+  padding:16px;margin:18px 0;overflow:hidden
+}
+.tree-scroll{overflow-x:auto;padding-bottom:4px}
+.tree-svg{display:block;width:100%;min-width:760px;height:auto}
+.tree-line{stroke:#aab6c9;stroke-width:2.2;fill:none}
+.tree-node{fill:#eef3ff;stroke:#8399dd;stroke-width:2}
+.tree-root{fill:#172033;stroke:#172033}
+.tree-text{font:800 15px system-ui,-apple-system,"Yu Gothic",sans-serif;text-anchor:middle;dominant-baseline:middle;fill:#172033}
+.tree-root + .tree-text{fill:white;font-size:10px}
+.tree-leaf{fill:#fff;stroke:#9eacc2;stroke-width:2}
+.tree-leaf-text{font:800 15px system-ui,-apple-system,"Yu Gothic",sans-serif;text-anchor:middle;dominant-baseline:middle;fill:#172033}
+.tree-level{font:800 14px system-ui,-apple-system,"Yu Gothic",sans-serif;text-anchor:middle;fill:#5c667a}
+.tree-caption{font-size:14px;color:var(--muted);margin:8px 2px 0}
+.tree-count{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:#f8fafc;border-radius:12px;padding:12px 14px;margin-top:12px
+}
+.tree-count strong{font-size:1.08em}
+
+/* 組合せ：順列の枝先を同じメンバーごとに色分け */
+.comb-tree-wrap .comb-leaf rect,.comb-tree-wrap .pair-legend rect{
+  fill:#fff;stroke:#aab6c9;stroke-width:2;transition:.3s
+}
+.comb-tree-wrap .comb-leaf text,.comb-tree-wrap .pair-legend text{
+  font:800 14px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  text-anchor:middle;dominant-baseline:middle;fill:#172033
+}
+.comb-tree-wrap .pair-legend,.comb-tree-wrap .group-label{opacity:0;transition:.3s}
+.comb-tree-wrap.grouped .pair-legend,.comb-tree-wrap.grouped .group-label{opacity:1}
+.comb-tree-wrap.grouped .pair-ab rect{fill:#e8f1ff;stroke:#5a84d6}
+.comb-tree-wrap.grouped .pair-ac rect{fill:#e7f8ef;stroke:#4d9b73}
+.comb-tree-wrap.grouped .pair-ad rect{fill:#fff3d8;stroke:#c79227}
+.comb-tree-wrap.grouped .pair-bc rect{fill:#f4eaff;stroke:#8b63bb}
+.comb-tree-wrap.grouped .pair-bd rect{fill:#ffe8ee;stroke:#c56a83}
+.comb-tree-wrap.grouped .pair-cd rect{fill:#e6f7f8;stroke:#4b98a1}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.toggle-row button.active{box-shadow:0 0 0 3px rgba(49,87,213,.18)}
+.comb-explain{
+  display:none;background:var(--soft2);border-left:5px solid var(--accent2);
+  border-radius:10px;padding:13px 15px;margin-top:12px
+}
+.comb-tree-wrap.grouped .comb-explain{display:block}
+
+/* 円順列：固定すると回転による「分身」が1つになる */
+.circle-lab{
+  border:1px solid var(--line);background:#fbfcff;border-radius:18px;
+  padding:18px;margin:18px 0
+}
+.circle-controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:4px 0 15px}
+.circle-stage{
+  display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));
+  gap:14px;align-items:center;transition:.35s
+}
+.mini-circle-card{
+  border:1px solid var(--line);border-radius:15px;background:white;
+  padding:10px;display:grid;place-items:center;transition:.35s
+}
+.mini-circle{
+  position:relative;width:150px;height:150px;border:4px solid #dce4ef;
+  border-radius:50%;background:#fafcff
+}
+.mini-seat{
+  position:absolute;width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;background:white;border:2px solid #96a9d3;
+  font-weight:900;font-size:13px;transform:translate(-50%,-50%)
+}
+.mini-seat.anchor{background:#fff0bf;border-color:#d69a00}
+.rotation-label{font-size:12px;color:var(--muted);margin-top:5px}
+.circle-stage.fixed-mode{grid-template-columns:minmax(220px,320px);justify-content:center}
+.circle-stage.fixed-mode .mini-circle-card:not(:first-child){display:none}
+.circle-stage.fixed-mode .mini-circle-card:first-child{
+  border:2px solid #d69a00;background:#fffdf5
+}
+.circle-message{
+  text-align:center;font-weight:800;margin-top:12px;
+  padding:10px 12px;border-radius:12px;background:#f3f6fb
+}
+.circle-stage.fixed-mode + .circle-message{background:#fff7db}
+@media(max-width:700px){
+  .circle-stage{grid-template-columns:repeat(2,minmax(150px,1fr))}
+}
+
+
+/* 重複順列の樹形図 */
+.repeat-leaf{
+  font:900 16px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#172033;text-anchor:middle
+}
+.repeat-emphasis{stroke:#d69a00;stroke-width:5;fill:none;stroke-linecap:round}
+.repeat-note{
+  font:700 14px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#7b5b09;text-anchor:middle
+}
+.repeat-note.strong{font-weight:900}
+.repeat-tree-card .tree-line{transition:.25s}
+
+/* 組合せ：5C3 / 5C2 を切り替える樹形図 */
+.comb-mode-row{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:4px 0 8px
+}
+.comb-mode-label{font-weight:800;color:var(--muted)}
+.comb-mode-row button math{font-size:1.08em}
+.comb-tree-viewport{
+  max-height:660px;overflow:auto;border:1px solid var(--line);
+  border-radius:14px;background:#fcfdff
+}
+.comb-tree-viewport .tree-svg{min-width:900px}
+.comb-dyn-line{
+  stroke:#b7c0ce;stroke-width:1.8;fill:none;
+  transition:stroke .25s,stroke-width .25s,opacity .25s
+}
+.comb-terminal-line{stroke-width:2.2;stroke-linecap:round}
+.comb-dyn-node{
+  fill:#eef3ff;stroke:#8ba0d6;stroke-width:1.8
+}
+.comb-dyn-text{
+  font:800 12px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#172033;text-anchor:middle;dominant-baseline:middle
+}
+.comb-leaf-label{
+  font:900 12px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#172033;dominant-baseline:middle;
+  transition:fill .25s,font-weight .25s
+}
+.comb-group-panel{
+  display:none;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+  gap:8px;margin-top:12px
+}
+.comb-tree-wrap.grouped .comb-group-panel{display:grid}
+.comb-group-box{
+  border:2px solid;border-radius:12px;padding:8px 10px;
+  font-size:12px;line-height:1.45
+}
+.comb-group-box strong{font-size:14px;display:block;margin-bottom:2px}
+.comb-explain{margin-top:12px}
+.comb-tree-wrap.grouped .comb-explain{display:block}
+.comb-tree-wrap:not(.grouped) .comb-explain{display:none}
+
+/* 4C3 = 4C1：選ぶ側と選ばない側を対応させるミニ樹形図 */
+.complement-tree-lab{
+  margin:14px 0 10px;padding:15px;border:1px solid #d9d1f1;
+  border-radius:15px;background:#fff
+}
+.mini-comb-trees{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch
+}
+.mini-comb-tree{
+  border:1px solid var(--line);border-radius:13px;background:#fbfcff;padding:10px
+}
+.mini-comb-tree h4{margin:0 0 5px;text-align:center;font-size:16px}
+.mini-comb-tree svg{display:block;width:100%;height:auto}
+.mini-tree-line{stroke:#aab6c9;stroke-width:2.4;fill:none}
+.mini-tree-root{fill:#172033}
+.mini-tree-leaf{fill:#eef3ff;stroke:#8399dd;stroke-width:2}
+.mini-tree-text{
+  font:800 14px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#172033;text-anchor:middle;dominant-baseline:middle
+}
+.mini-tree-root-text{fill:#fff;font-size:10px}
+.complement-pairs{
+  display:grid;grid-template-columns:repeat(2,minmax(190px,1fr));gap:7px;
+  margin-top:11px
+}
+.complement-pair{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:7px 9px;border-radius:10px;background:#f4f0ff;font-weight:800
+}
+.complement-pair .not-chosen{color:#7554c9}
+.return-tree-row{text-align:center;margin-top:12px}
+.tree-return-flash{animation:treeReturnFlash 1.5s ease-out}
+@keyframes treeReturnFlash{
+  0%,35%{box-shadow:0 0 0 5px rgba(117,84,201,.28)}
+  100%{box-shadow:0 0 0 0 rgba(117,84,201,0)}
+}
+@media(max-width:650px){
+  .mini-comb-trees,.complement-pairs{grid-template-columns:1fr}
+}
+
+
+/* ⑦ 組分け */
+.group-lab{
+  border:1px solid var(--line);border-radius:18px;background:#fbfcff;
+  padding:18px;margin:18px 0
+}
+.group-pair-stage{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:14px;
+  align-items:center;margin-top:10px
+}
+.assignment-card{
+  border:2px solid #cfd8e8;border-radius:16px;background:#fff;padding:16px;
+  transition:.3s
+}
+.group-title{font-weight:900;color:var(--accent);margin-bottom:7px}
+.group-title.second{margin-top:14px;color:var(--accent2)}
+.member-row{display:flex;gap:8px;flex-wrap:wrap}
+.member-row span{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:#eef3ff;border:2px solid #b9c7f4;font-weight:900
+}
+.swap-mark{font-size:32px;font-weight:900;color:var(--muted)}
+.group-pair-stage.unnamed .assignment-card{
+  border-color:#68a38d;background:#f2fbf7
+}
+.group-pair-stage.unnamed .group-title{color:#397962}
+.group-pair-stage.unnamed .group-title::first-letter{color:inherit}
+.group-identity-lab{
+  border:1px solid var(--line);border-radius:18px;background:#fbfcff;
+  padding:18px;margin:18px 0
+}
+.group-case-title{font-size:18px;font-weight:900;margin-bottom:8px}
+.same-size-partition,.different-size-partition{
+  display:grid;gap:12px;margin:12px 0
+}
+.same-size-partition{grid-template-columns:1fr auto 1fr;align-items:center}
+.different-size-partition{grid-template-columns:repeat(3,1fr)}
+.size-group-card{
+  border:2px solid #cfd8e8;border-radius:15px;background:#fff;padding:14px;
+  text-align:center
+}
+.size-group-card.same-size{border-color:#68a38d;background:#f2fbf7}
+.size-group-label{font-weight:900;color:#397962;margin-bottom:8px}
+.different-size-partition .size-group-card:nth-child(1){border-color:#5272c7;background:#eef3ff}
+.different-size-partition .size-group-card:nth-child(2){border-color:#3e9474;background:#edf9f3}
+.different-size-partition .size-group-card:nth-child(3){border-color:#bd8321;background:#fff6e3}
+.different-size-partition .size-group-label{color:var(--ink)}
+.member-chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.member-chips span{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  background:#fff;border:2px solid #b9c7f4;font-weight:900
+}
+.same-result-mark{text-align:center;font-weight:900;color:var(--accent2)}
+.identity-verdict{
+  border-left:5px solid var(--accent2);background:var(--soft2);
+  padding:11px 13px;border-radius:10px;margin-top:10px
+}
+.identity-arrow{text-align:center;font-size:24px;color:var(--muted);font-weight:900}
+@media(max-width:650px){
+  .same-size-partition,.different-size-partition{grid-template-columns:1fr}
+  .same-size-partition .identity-arrow{transform:rotate(90deg)}
+}
+
+/* ⑧ 組合せの応用 */
+.condition-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:10px;margin:18px 0
+}
+.condition-card{
+  border:1px solid var(--line);border-radius:15px;background:#fff;
+  padding:15px;text-align:center
+}
+.condition-word{
+  font-weight:900;background:#eef3ff;border-radius:10px;padding:8px
+}
+.condition-arrow{font-size:25px;color:var(--muted);line-height:1.3}
+.complement-lab{
+  border:1px solid var(--line);border-radius:18px;padding:18px;
+  background:#fbfcff;margin:18px 0
+}
+.universe-box{
+  border:3px solid #6c85cf;border-radius:16px;padding:18px;
+  background:#f5f8ff;position:relative;min-height:190px
+}
+.universe-title{font-weight:900;font-size:18px}
+.formula-big{font-size:1.3em;margin:10px 0}
+.bad-zone{
+  margin-left:auto;width:min(330px,90%);padding:14px;border-radius:14px;
+  background:#fff0ee;border:2px dashed #ce6c61
+}
+.complement-result{
+  text-align:center;font-size:22px;font-weight:900;margin-top:13px
+}
+
+/* ⑨ 同じものを含む順列 */
+.compare-box{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0
+}
+.compare-box>div{
+  border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff
+}
+.compare-box>div:first-child{border-top:5px solid #5272c7}
+.compare-box>div:last-child{border-top:5px solid #3e9474}
+.identical-lab{
+  border:1px solid var(--line);border-radius:18px;background:#fbfcff;
+  padding:18px;margin:18px 0
+}
+.identical-pairs{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px
+}
+.identical-pair{
+  border:2px solid #cbd5e5;border-radius:14px;padding:13px;
+  display:grid;gap:8px;text-align:center;background:white;transition:.3s
+}
+.identical-pair span{
+  border-radius:9px;padding:7px;background:#f4f6fa;font-weight:800;
+  transition:.3s
+}
+.merged-word{display:none;font-size:24px;padding:12px}
+.identical-pairs.merged .identical-pair span{display:none}
+.identical-pairs.merged .merged-word{display:block}
+.identical-pairs.merged .g1{border-color:#5b83d2;background:#eef4ff}
+.identical-pairs.merged .g2{border-color:#4d9a75;background:#edf9f3}
+.identical-pairs.merged .g3{border-color:#bd8321;background:#fff6e3}
+
+@media(max-width:700px){
+  .group-pair-stage{grid-template-columns:1fr}
+  .swap-mark{text-align:center;transform:rotate(90deg)}
+  .compare-box{grid-template-columns:1fr}
+  .identical-pairs{grid-template-columns:1fr}
+}
+
+
+/* ⑦ 組分け：9人を3人ずつに分ける圧縮樹形図 */
+.grouping-tree-card{background:#fcfdff}
+.grouping-tree-svg .fan line{
+  stroke:#bdc7d7;stroke-width:2;stroke-linecap:round
+}
+.grouping-tree-svg .fan .sample-path,
+.grouping-tree-svg .sample-path{
+  stroke:#3157d5;stroke-width:4;stroke-linecap:round
+}
+.grouping-tree-svg .tree-ellipsis{
+  font:800 13px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#687386;text-anchor:middle
+}
+.grouping-tree-svg .sample-node circle{
+  fill:#fff;stroke:#3157d5;stroke-width:3
+}
+.grouping-tree-svg .sample-node text{
+  font:900 13px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#172033;text-anchor:middle
+}
+.grouping-tree-svg .branch-badge rect{
+  fill:#f2f5fb;stroke:#cad4e4;stroke-width:1.5
+}
+.grouping-tree-svg .branch-badge text{
+  font:800 12px system-ui,-apple-system,"Yu Gothic",sans-serif;
+  fill:#5c667a;text-anchor:middle
+}
+.grouping-tree-svg .branch-badge .count{
+  font-size:15px;fill:#213c8e
+}
+.grouping-count{
+  display:grid;grid-template-columns:1fr;gap:6px
+}
+.grouping-count span{display:block}
+
+/* ⑦ 同じ組分けが3!回あることを見える化 */
+.partition-lab{
+  border:1px solid var(--line);border-radius:18px;background:#fbfcff;
+  padding:18px;margin:18px 0
+}
+.partition-rows{display:grid;gap:8px;margin-top:12px}
+.partition-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  transition:.35s
+}
+.partition-group{
+  min-height:58px;border:2px solid #cdd5e2;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:#fff;transition:.35s;padding:8px
+}
+.partition-group .role-tag{
+  display:inline-block;background:#eef2f8;color:#5c667a;
+  border-radius:999px;padding:3px 8px;font-size:12px;font-weight:900;
+  transition:.25s
+}
+.partition-group strong{font-size:16px}
+.partition-rows.unlabeled-mode .role-tag{
+  opacity:0;width:0;padding:0;margin:0;overflow:hidden
+}
+.partition-rows.unlabeled-mode .set-abc{
+  border-color:#5a84d6;background:#e8f1ff
+}
+.partition-rows.unlabeled-mode .set-def{
+  border-color:#4d9b73;background:#e7f8ef
+}
+.partition-rows.unlabeled-mode .set-ghi{
+  border-color:#c79227;background:#fff3d8
+}
+.partition-rows.unlabeled-mode .partition-row{
+  opacity:.76
+}
+.partition-merge-panel{
+  display:none;margin-top:16px;padding:15px;border-radius:14px;
+  background:#f3f8f6;border:2px solid #74a890;text-align:center
+}
+.partition-lab.unlabeled .partition-merge-panel{display:block}
+.merge-arrow{font-size:20px;font-weight:900;margin-bottom:10px}
+.merged-partition{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  max-width:620px;margin:0 auto 10px
+}
+.merged-partition .partition-group{min-height:52px}
+.partition-lab.unlabeled #partitionMessage{background:#edf8f3}
+@media(max-width:700px){
+  .partition-row,.merged-partition{grid-template-columns:1fr}
+}
+
+</style>
+
+<style>
+.split-nav{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;
+  margin:26px 0 6px
+}
+.split-nav a{
+  text-decoration:none;font-weight:900;border-radius:12px;padding:12px 16px;
+  border:1px solid var(--line);background:#fff;color:var(--ink)
+}
+.split-nav a.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pending{
+  border:2px dashed #cbd4e2;background:#fbfcfe;border-radius:18px;padding:24px;margin:22px 0
+}
+.pending h2{margin-bottom:6px}
+.pending p{color:var(--muted);margin-bottom:0}
+.part-pill{
+  display:inline-block;margin-top:10px;padding:5px 11px;border-radius:999px;
+  background:rgba(255,255,255,.17);font-size:13px;font-weight:900
+}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="badge" style="background:rgba(255,255,255,.16);color:white">高校数学I｜場合の数</div><div class="part-pill">第2日｜⑥〜⑨</div>
+    <h1>超速。公式を覚えることより、<br>どうしてが先。<br>「どう数えるか」を身につけよう</h1>
+    <p>⑥組合せから、⑦組分け・⑧組合せの応用・⑨同じものを含む順列へ発展します。</p>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-label"><span>学習の進み具合</span><span id="progressText">0%</span></div>
+    <div class="progress"><div id="progressBar"></div></div>
+  </div>
+</div>
+
+<main>
+
+  <section id="start">
+    <span class="badge">第2日｜⑥〜⑨</span>
+    <h2>今日は「選ぶ・まとめる」を攻略しよう</h2>
+    <p class="lead">今日は、順列で数えたものを<strong>同じものどうしでまとめる</strong>考え方から組合せへ進み、組分け・組合せの応用・同じものを含む順列へ広げます。</p>
+    <nav class="toc">
+      <a href="#comb">⑥ 組合せ</a>
+      <a href="#grouping">⑦ 組分け</a>
+      <a href="#comb-application">⑧ 組合せの応用</a>
+      <a href="#identical-permutation">⑨ 同じものを含む順列</a>
+    </nav>
+    <div class="key">
+      <strong>前編からのつながり</strong><br>
+      順列では「順番が違えば別」。組合せでは「同じメンバーなら同じ」。この違いを樹形図の色分けで見抜きます。
+    </div>
+    <div class="teacher-tip">
+      <strong>30秒だけ復習</strong><br>
+      前回の順列では、ABC と ACB は「別の並び」として数えました。今日は、これを<strong>同じ3人を選んだものとしてまとめたらどうなるか</strong>、というところから始めます。
+    </div>
+  </section>
+  <section id="comb">
+    <span class="badge">⑥</span>
+    <h2>組合せ：選ぶだけなら順番を区別しない</h2>
+    <p>ここが、順列との最大の違いです。</p>
+
+    <table>
+      <tr><th>問題</th><th>ABC と ACB</th><th>考え方</th></tr>
+      <tr><td>5人から3人を選んで1列に並べる</td><td>別の並び</td><td>順列</td></tr>
+      <tr><td>5人から3人の委員を選ぶ</td><td>同じ3人</td><td>組合せ</td></tr>
+    </table>
+
+    <h3>まずは <math class="mathml" aria-label="5 C 3"><mrow><mmultiscripts><mi>C</mi><mrow><mn>3</mn></mrow><none/><mprescripts/><mrow><mn>5</mn></mrow><none/></mmultiscripts></mrow></math> を、順列の樹形図から発見しよう</h3>
+    <p>A・B・C・D・E の5人から3人を選ぶ場合を考えます。いきなり組合せとして数えず、まず<strong>「3人を選んで順に並べる」順列</strong>として樹形図を作ります。</p>
+
+    <div id="combTreeWrap" class="tree-card comb-tree-wrap">
+      <div class="comb-mode-row">
+        <span class="comb-mode-label">考える問題：</span>
+        <button id="combR3Btn" type="button" class="active" onclick="setCombR(3)">
+          <math class="mathml" aria-label="5 C 3"><mrow><mmultiscripts><mi>C</mi><mrow><mn>3</mn></mrow><none/><mprescripts/><mrow><mn>5</mn></mrow><none/></mmultiscripts></mrow></math>
+        </button>
+        <button id="combR2Btn" type="button" class="secondary" onclick="setCombR(2)">
+          <math class="mathml" aria-label="5 C 2"><mrow><mmultiscripts><mi>C</mi><mrow><mn>2</mn></mrow><none/><mprescripts/><mrow><mn>5</mn></mrow><none/></mmultiscripts></mrow></math>
+          も見てみる
+        </button>
+      </div>
+
+      <div class="toggle-row">
+        <button id="combPermBtn" type="button" class="secondary active" onclick="setCombGrouping(false)">順列の樹形図として見る</button>
+        <button id="combGroupBtn" type="button" onclick="setCombGrouping(true)">同じ3人を色でまとめる</button>
+      </div>
+
+      <div class="comb-tree-viewport">
+        <div id="combTreeDynamic"></div>
+      </div>
+
+      <div id="combGroupPanel" class="comb-group-panel" aria-live="polite"></div>
+
+      <div id="combExplain" class="comb-explain">
+        <strong>見えた！</strong>
+        <span id="combExplainText"></span>
+      </div>
+      <p id="combTreeCaption" class="tree-caption"></p>
+    </div>
+
+    <div class="key">
+      <strong><span id="combDiscoveryTitle">5人から3人を選ぶとき</span></strong><br>
+      <span id="combDiscoveryText">順列では60本の完成した枝がありますが、同じ3人を選んだものが3!本ずつあります。だから 60 ÷ 3! = 10 通りです。</span>
+    </div>
+
+    <div class="question">
+      <div class="prompt">質問：「A,B,Cを選ぶ」という1組は、順列では何回ずつ数えられている？</div>
+      <button class="choice" onclick="choice(this,false,'fb-comb1')">3回</button>
+      <button class="choice" onclick="choice(this,true,'fb-comb1')"><math class="mathml" aria-label="3の階乗 イコール 6"><mrow><mrow><mn>3</mn><mo>!</mo></mrow><mo>=</mo><mn>6</mn></mrow></math>回</button>
+      <button class="choice" onclick="choice(this,false,'fb-comb1')">5回</button>
+      <div class="feedback" id="fb-comb1"></div>
+    </div>
+
+    <p>順列では、ABC, ACB, BAC, BCA, CAB, CBA を別々に数えています。しかし委員を選ぶだけなら全部同じ1組です。</p>
+    <div class="math math-display"><math class="mathml" display="block" aria-label="5 C 3 イコール 5 P 3 わる 3の階乗 イコール 10"><mrow><mmultiscripts><mi>C</mi><mrow><mn>3</mn></mrow><none/><mprescripts/><mrow><mn>5</mn></mrow><none/></mmultiscripts><mo>=</mo><mmultiscripts><mi>P</mi><mrow><mn>3</mn></mrow><none/><mprescripts/><mrow><mn>5</mn></mrow><none/></mmultiscripts><mo>÷</mo><mrow><mn>3</mn><mo>!</mo></mrow><mo>=</mo><mn>60</mn><mo>÷</mo><mn>6</mn><mo>=</mo><mn>10</mn></mrow></math></div>
+    <div class="teacher-tip">
+      <strong>もう一つの見方：まず4人で考えよう</strong><br>
+      A・B・C・D の4人から3人を選ぶとき、選び方を1つ決めると、<strong>選ばれない1人</strong>も1人に決まります。
+
+      <div class="complement-tree-lab">
+        <div class="mini-comb-trees">
+          <div class="mini-comb-tree">
+            <h4><math class="mathml" aria-label="4 C 3"><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>4</mn><none/></mmultiscripts></mrow></math>：選ぶ3人</h4>
+            <svg viewBox="0 0 330 185" role="img" aria-label="4人から3人を選ぶ4本の枝。ABC、ABD、ACD、BCD。">
+              <line class="mini-tree-line" x1="48" y1="92" x2="235" y2="28"></line><line class="mini-tree-line" x1="48" y1="92" x2="235" y2="71"></line><line class="mini-tree-line" x1="48" y1="92" x2="235" y2="114"></line><line class="mini-tree-line" x1="48" y1="92" x2="235" y2="157"></line>
+              <circle class="mini-tree-root" cx="48" cy="92" r="20"></circle><text class="mini-tree-text mini-tree-root-text" x="48" y="93">START</text>
+              <g><rect class="mini-tree-leaf" x="235" y="12" width="70" height="32" rx="10"></rect><text class="mini-tree-text" x="270" y="29">ABC</text></g><g><rect class="mini-tree-leaf" x="235" y="55" width="70" height="32" rx="10"></rect><text class="mini-tree-text" x="270" y="72">ABD</text></g><g><rect class="mini-tree-leaf" x="235" y="98" width="70" height="32" rx="10"></rect><text class="mini-tree-text" x="270" y="115">ACD</text></g><g><rect class="mini-tree-leaf" x="235" y="141" width="70" height="32" rx="10"></rect><text class="mini-tree-text" x="270" y="158">BCD</text></g>
+            </svg>
+          </div>
+          <div class="mini-comb-tree">
+            <h4><math class="mathml" aria-label="4 C 1"><mrow><mmultiscripts><mi>C</mi><mn>1</mn><none/><mprescripts/><mn>4</mn><none/></mmultiscripts></mrow></math>：選ばない1人</h4>
+            <svg viewBox="0 0 330 185" role="img" aria-label="4人から選ばない1人を決める4本の枝。D、C、B、A。">
+              <line class="mini-tree-line" x1="48" y1="92" x2="252" y2="28"></line><line class="mini-tree-line" x1="48" y1="92" x2="252" y2="71"></line><line class="mini-tree-line" x1="48" y1="92" x2="252" y2="114"></line><line class="mini-tree-line" x1="48" y1="92" x2="252" y2="157"></line>
+              <circle class="mini-tree-root" cx="48" cy="92" r="20"></circle><text class="mini-tree-text mini-tree-root-text" x="48" y="93">START</text>
+              <circle class="mini-tree-leaf" cx="270" cy="28" r="17"></circle><text class="mini-tree-text" x="270" y="29">D</text><circle class="mini-tree-leaf" cx="270" cy="71" r="17"></circle><text class="mini-tree-text" x="270" y="72">C</text><circle class="mini-tree-leaf" cx="270" cy="114" r="17"></circle><text class="mini-tree-text" x="270" y="115">B</text><circle class="mini-tree-leaf" cx="270" cy="157" r="17"></circle><text class="mini-tree-text" x="270" y="158">A</text>
+            </svg>
+          </div>
+        </div>
+        <div class="complement-pairs" aria-label="選ぶ3人と選ばない1人の対応">
+          <div class="complement-pair">ABC <span>↔</span> <span class="not-chosen">Dを選ばない</span></div><div class="complement-pair">ABD <span>↔</span> <span class="not-chosen">Cを選ばない</span></div><div class="complement-pair">ACD <span>↔</span> <span class="not-chosen">Bを選ばない</span></div><div class="complement-pair">BCD <span>↔</span> <span class="not-chosen">Aを選ばない</span></div>
+        </div>
+      </div>
+
+      左右の枝は1本ずつ対応するので、どちらも4通り。つまり
+      <math class="mathml" aria-label="4 C 3 イコール 4 C 1"><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>4</mn><none/></mmultiscripts><mo>=</mo><mmultiscripts><mi>C</mi><mn>1</mn><none/><mprescripts/><mn>4</mn><none/></mmultiscripts></mrow></math>
+      です。
+
+      <p><strong>では、5人から選ぶ場合はどうでしょう。</strong>「選ばれる3人」と「選ばれない2人」も、やはり1対1に対応します。上の大きな樹形図に戻り、
+        <math class="mathml" aria-label="5 C 3"><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>5</mn><none/></mmultiscripts></mrow></math>
+        と
+        <math class="mathml" aria-label="5 C 2"><mrow><mmultiscripts><mi>C</mi><mn>2</mn><none/><mprescripts/><mn>5</mn><none/></mmultiscripts></mrow></math>
+        がどちらも10通りになることを確認してみましょう。</p>
+      <div class="return-tree-row"><button type="button" onclick="returnToFiveTree()">上の大きな樹形図で確認する ↑</button></div>
+    </div>
+    <div class="notation-card">
+      <div class="notation-item">
+        <div class="notation-symbol"><math class="mathml" aria-label="5 C 3"><mrow><mmultiscripts><mi>C</mi><mrow><mn>3</mn></mrow><none/><mprescripts/><mrow><mn>5</mn></mrow><none/></mmultiscripts></mrow></math></div>
+        <strong>「5シー3」</strong><br>5個から3個を<strong>選ぶだけ</strong>の場合の数。並べる順番は区別しません。
+      </div>
+      <div class="notation-item">
+        <div class="notation-symbol"><math class="mathml" aria-label="n C r"><mrow><mmultiscripts><mi>C</mi><mrow><mi>r</mi></mrow><none/><mprescripts/><mrow><mi>n</mi></mrow><none/></mmultiscripts></mrow></math></div>
+        左下の <em>n</em> は「もとの個数」、右下の <em>r</em> は「選ぶ個数」。順列と同じ添字配置なので、意味もセットで確認しましょう。
+      </div>
+    </div>
+
+    <details>
+      <summary>一般の公式を確認する</summary>
+      <div class="math math-display"><math class="mathml" display="block" aria-label="n C r の公式"><mrow><mmultiscripts><mi>C</mi><mrow><mi>r</mi></mrow><none/><mprescripts/><mrow><mi>n</mi></mrow><none/></mmultiscripts><mo>=</mo><mfrac><mrow><mmultiscripts><mi>P</mi><mrow><mi>r</mi></mrow><none/><mprescripts/><mrow><mi>n</mi></mrow><none/></mmultiscripts></mrow><mrow><mrow><mi>r</mi><mo>!</mo></mrow></mrow></mfrac><mo>=</mo><mfrac><mrow><mrow><mi>n</mi><mo>!</mo></mrow></mrow><mrow><mrow><mi>r</mi><mo>!</mo></mrow><mrow><mo>(</mo><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow><mo>)</mo></mrow><mo>!</mo></mrow></mfrac></mrow></math></div>
+    </details>
+
+    <div class="question">
+      <div class="prompt">8人から3人の代表を選ぶ。何通り？</div>
+      <input id="qcomb" type="number" placeholder="答え">
+      <button onclick="numcheck('qcomb',56,'fb-comb','qcomb')">確認</button>
+      <div class="feedback" id="fb-comb"></div>
+    </div>
+    <label><input class="done" type="checkbox"> 順列と組合せを「順番を区別するか」で説明できる</label>
+  </section>
+
+
+
+  <section id="grouping">
+    <span class="badge">⑦</span>
+    <h2>組分け：組を入れ替えたとき、同じ結果になるか</h2>
+    <p class="lead">A・B・C・D・E・F・G・H・I の9人を、3人ずつ3組に分けます。ここではいきなり割り算をしません。まず、<strong>A組・B組・C組という名前がある</strong>ものとして、左から右へ樹形図をたどります。</p>
+
+    <div class="goal">
+      <strong>この章で一番大事なこと</strong><br>
+      ① まず、組を順に決めて普通に数える。<br>
+      ② 組どうしを入れ替えても同じ結果になるかを見る。<br>
+      ③ 同じ結果を何回ずつ数えていたかを<strong>目で確認してから</strong>割る。人数や役割が違って組を区別できるなら、割らない。
+    </div>
+
+    <h3>先に確認：「組を区別できる」とは？</h3>
+    <p>「組に名前がある・ない」だけで判断すると迷うことがあります。本当に見るべきなのは、<strong>2つの組を入れ替えたとき、別の結果になるか</strong>です。組名がなくても、人数や役割が違えば自然に区別できます。</p>
+
+    <div class="group-identity-lab">
+      <div class="group-case-title">同じ人数どうし：6人を3人の組と3人の組に分ける</div>
+      <p>どちらにも固有の名前は付けません。両方とも、ただの<strong>3人の組</strong>です。</p>
+      <div class="same-size-partition" aria-label="ABCとDEFという2つの3人の組。左右を入れ替えても同じ組分け。">
+        <div class="size-group-card same-size">
+          <div class="size-group-label">3人の組</div>
+          <div class="member-chips"><span>A</span><span>B</span><span>C</span></div>
+        </div>
+        <div class="identity-arrow">↔</div>
+        <div class="size-group-card same-size">
+          <div class="size-group-label">3人の組</div>
+          <div class="member-chips"><span>D</span><span>E</span><span>F</span></div>
+        </div>
+      </div>
+      <div class="same-result-mark">左右を入れ替えても「ABCとDEFの2組」のまま → 同じ結果</div>
+      <div class="identity-verdict">
+        <strong>3人の組と3人の組は区別できない。</strong><br>
+        先に3人を選ぶと、同じ組分けを左右の入れ替え2通りずつ数えるので、最後に2!で割ります。
+        <div class="math math-display"><math class="mathml" display="block" aria-label="6 C 3 かける 3 C 3 わる 2の階乗 イコール10"><mrow><mfrac><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>6</mn><none/></mmultiscripts><mo>×</mo><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>3</mn><none/></mmultiscripts></mrow><mrow><mn>2</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>10</mn></mrow></math></div>
+      </div>
+    </div>
+
+    <div class="group-identity-lab">
+      <div class="group-case-title">人数が違う：6人を3人の組・2人の組・1人の組に分ける</div>
+      <p>今度は組名を書かなくても、<strong>人数が組を見分ける目印</strong>になります。「3人の組」と「2人の組」を入れ替えることはできません。</p>
+      <div class="different-size-partition" aria-label="ABCの3人組、DEの2人組、Fの1人組。人数によって各組を区別できる。">
+        <div class="size-group-card"><div class="size-group-label">3人の組</div><div class="member-chips"><span>A</span><span>B</span><span>C</span></div></div>
+        <div class="size-group-card"><div class="size-group-label">2人の組</div><div class="member-chips"><span>D</span><span>E</span></div></div>
+        <div class="size-group-card"><div class="size-group-label">1人の組</div><div class="member-chips"><span>F</span></div></div>
+      </div>
+      <div class="identity-verdict">
+        <strong>3人の組・2人の組・1人の組は区別できる。</strong><br>
+        「3人用・2人用・1人用」という異なる場所へ分けるのと同じです。入れ替えて同じになる重複がないため、階乗では割りません。
+        <div class="math math-display"><math class="mathml" display="block" aria-label="6 C 3 かける 3 C 2 かける 1 C 1 イコール60"><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>6</mn><none/></mmultiscripts><mo>×</mo><mmultiscripts><mi>C</mi><mn>2</mn><none/><mprescripts/><mn>3</mn><none/></mmultiscripts><mo>×</mo><mmultiscripts><mi>C</mi><mn>1</mn><none/><mprescripts/><mn>1</mn><none/></mmultiscripts><mo>=</mo><mn>20</mn><mo>×</mo><mn>3</mn><mo>×</mo><mn>1</mn><mo>=</mo><mn>60</mn></mrow></math></div>
+      </div>
+      <div class="question">
+        <div class="prompt">確認：A〜Fの6人を、3人の組・2人の組・1人の組に分ける。何通り？</div>
+        <p class="small">「名前なし」という言葉ではなく、人数の違いで組を区別できるかを考えよう。</p>
+        <input id="qgroupsizes" type="number" placeholder="答え"><button onclick="numcheck('qgroupsizes',60,'fb-groupsizes','qgroupsizes')">確認</button>
+        <div class="feedback" id="fb-groupsizes"></div>
+      </div>
+    </div>
+
+    <div class="key">
+      <strong>判断の合言葉：「入れ替えても同じ？」</strong><br>
+      ・3人の組 ↔ 3人の組：入れ替えても同じ。組名のない同じ種類の組なので、重複分を割る。<br>
+      ・3人の組 ↔ 2人の組：入れ替えられない。人数が自然な組名の役割をするので、割らない。
+    </div>
+
+    <h3>9人 → 3人 → 3人 → 3人 と選んでいく</h3>
+    <p>A組の3人を選び、残った6人からB組の3人を選び、最後の3人がC組になります。</p>
+
+    <div class="tree-card grouping-tree-card">
+      <div class="tree-scroll">
+        <svg class="tree-svg grouping-tree-svg" viewBox="0 0 1040 470" role="img" aria-label="9人をA組、B組、C組の3人ずつに分ける圧縮樹形図。1段目84本、2段目は各枝から20本、3段目は各枝から1本。">
+          <text class="tree-level" x="55" y="28">START</text>
+          <text class="tree-level" x="290" y="28">A組の3人</text>
+          <text class="tree-level" x="615" y="28">B組の3人</text>
+          <text class="tree-level" x="900" y="28">C組の3人 → 完成</text>
+
+          <circle class="tree-root" cx="55" cy="225" r="20"></circle>
+
+          <!-- 1段目：84本を圧縮して表示 -->
+          <g class="fan fan-a">
+            <line x1="75" y1="225" x2="260" y2="72"></line>
+            <line x1="75" y1="225" x2="260" y2="118"></line>
+            <line x1="75" y1="225" x2="260" y2="164"></line>
+            <line class="sample-path" x1="75" y1="225" x2="260" y2="225"></line>
+            <line x1="75" y1="225" x2="260" y2="286"></line>
+            <line x1="75" y1="225" x2="260" y2="332"></line>
+            <line x1="75" y1="225" x2="260" y2="378"></line>
+          </g>
+          <text class="tree-ellipsis" x="198" y="405">… 全部で84本</text>
+
+          <g class="sample-node sample-a">
+            <circle cx="290" cy="225" r="30"></circle>
+            <text x="290" y="220">A組</text>
+            <text x="290" y="240">ABC</text>
+          </g>
+
+          <!-- 2段目：各枝から20本 -->
+          <g class="fan fan-b">
+            <line x1="320" y1="225" x2="585" y2="94"></line>
+            <line x1="320" y1="225" x2="585" y2="135"></line>
+            <line x1="320" y1="225" x2="585" y2="176"></line>
+            <line class="sample-path" x1="320" y1="225" x2="585" y2="225"></line>
+            <line x1="320" y1="225" x2="585" y2="274"></line>
+            <line x1="320" y1="225" x2="585" y2="315"></line>
+            <line x1="320" y1="225" x2="585" y2="356"></line>
+          </g>
+          <text class="tree-ellipsis" x="485" y="390">… この1本から20本</text>
+
+          <g class="sample-node sample-b">
+            <circle cx="615" cy="225" r="30"></circle>
+            <text x="615" y="220">B組</text>
+            <text x="615" y="240">DEF</text>
+          </g>
+
+          <!-- 3段目：残り3人なので1本 -->
+          <line class="sample-path last-path" x1="645" y1="225" x2="870" y2="225"></line>
+          <g class="sample-node sample-c">
+            <circle cx="900" cy="225" r="34"></circle>
+            <text x="900" y="219">C組</text>
+            <text x="900" y="241">GHI</text>
+          </g>
+
+          <!-- 枝数バッジ -->
+          <g class="branch-badge" transform="translate(125,65)">
+            <rect width="135" height="54" rx="14"></rect>
+            <text x="67.5" y="21">第1段</text>
+            <text class="count" x="67.5" y="43">₉C₃ = 84本</text>
+          </g>
+
+          <g class="branch-badge" transform="translate(390,65)">
+            <rect width="155" height="54" rx="14"></rect>
+            <text x="77.5" y="21">各枝から</text>
+            <text class="count" x="77.5" y="43">₆C₃ = 20本</text>
+          </g>
+
+          <g class="branch-badge" transform="translate(720,65)">
+            <rect width="135" height="54" rx="14"></rect>
+            <text x="67.5" y="21">各枝から</text>
+            <text class="count" x="67.5" y="43">₃C₃ = 1本</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="tree-count grouping-count">
+        <span>A組を選ぶ枝：<strong>
+          <math class="mathml" aria-label="9 C 3"><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>9</mn><none/></mmultiscripts></mrow></math>
+          = 84本</strong>
+        </span>
+        <span>→ その<strong>1本1本から</strong> B組：<strong>
+          <math class="mathml" aria-label="6 C 3"><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>6</mn><none/></mmultiscripts></mrow></math>
+          = 20本</strong>
+        </span>
+        <span>→ 最後：<strong>
+          <math class="mathml" aria-label="3 C 3"><mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>3</mn><none/></mmultiscripts></mrow></math>
+          = 1本</strong>
+        </span>
+      </div>
+      <p class="tree-caption">図では84本・20本を全部描くと読みにくくなるので、一部の枝だけを描いて圧縮しています。大切なのは、<strong>「その1本1本から次の枝が出る」</strong>という樹形図の意味です。</p>
+    </div>
+
+    <h3>だから、A組・B組・C組に名前があるなら</h3>
+    <div class="math math-display">
+      <math class="mathml" display="block" aria-label="9 C 3 かける 6 C 3 かける 3 C 3 イコール1680">
+        <mrow>
+          <mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>9</mn><none/></mmultiscripts>
+          <mo>×</mo>
+          <mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>6</mn><none/></mmultiscripts>
+          <mo>×</mo>
+          <mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>3</mn><none/></mmultiscripts>
+          <mo>=</mo><mn>84</mn><mo>×</mo><mn>20</mn><mo>×</mo><mn>1</mn>
+          <mo>=</mo><mn>1680</mn>
+        </mrow>
+      </math>
+    </div>
+    <div class="key">
+      <strong>1680は「完成した枝の本数」</strong><br>
+      第1段の84本の<strong>それぞれ</strong>から20本、その<strong>それぞれ</strong>から1本。だから 84 × 20 × 1 です。
+    </div>
+
+    <h3>でも「3組に分けるだけ」なら？</h3>
+    <p>ここからが組分けです。代表として、3つの組が <strong>ABC・DEF・GHI</strong> になった場合だけを取り出します。A組・B組・C組という<strong>組名の付け方</strong>を変えると、同じ3つの組が樹形図の中に6回現れます。</p>
+
+    <div class="partition-lab">
+      <div class="toggle-row">
+        <button id="partitionNamedBtn" class="active" type="button" onclick="setPartitionMode(true)">A組・B組・C組として見る</button>
+        <button id="partitionMergeBtn" class="secondary" type="button" onclick="setPartitionMode(false)">組名を外して「組分け」で見る</button>
+      </div>
+
+      <div id="partitionRows" class="partition-rows named-mode">
+        <div class="partition-row">
+          <div class="partition-group set-abc"><span class="role-tag">A組</span><strong>ABC</strong></div>
+          <div class="partition-group set-def"><span class="role-tag">B組</span><strong>DEF</strong></div>
+          <div class="partition-group set-ghi"><span class="role-tag">C組</span><strong>GHI</strong></div>
+        </div>
+        <div class="partition-row">
+          <div class="partition-group set-abc"><span class="role-tag">A組</span><strong>ABC</strong></div>
+          <div class="partition-group set-ghi"><span class="role-tag">B組</span><strong>GHI</strong></div>
+          <div class="partition-group set-def"><span class="role-tag">C組</span><strong>DEF</strong></div>
+        </div>
+        <div class="partition-row">
+          <div class="partition-group set-def"><span class="role-tag">A組</span><strong>DEF</strong></div>
+          <div class="partition-group set-abc"><span class="role-tag">B組</span><strong>ABC</strong></div>
+          <div class="partition-group set-ghi"><span class="role-tag">C組</span><strong>GHI</strong></div>
+        </div>
+        <div class="partition-row">
+          <div class="partition-group set-def"><span class="role-tag">A組</span><strong>DEF</strong></div>
+          <div class="partition-group set-ghi"><span class="role-tag">B組</span><strong>GHI</strong></div>
+          <div class="partition-group set-abc"><span class="role-tag">C組</span><strong>ABC</strong></div>
+        </div>
+        <div class="partition-row">
+          <div class="partition-group set-ghi"><span class="role-tag">A組</span><strong>GHI</strong></div>
+          <div class="partition-group set-abc"><span class="role-tag">B組</span><strong>ABC</strong></div>
+          <div class="partition-group set-def"><span class="role-tag">C組</span><strong>DEF</strong></div>
+        </div>
+        <div class="partition-row">
+          <div class="partition-group set-ghi"><span class="role-tag">A組</span><strong>GHI</strong></div>
+          <div class="partition-group set-def"><span class="role-tag">B組</span><strong>DEF</strong></div>
+          <div class="partition-group set-abc"><span class="role-tag">C組</span><strong>ABC</strong></div>
+        </div>
+      </div>
+
+      <div id="partitionMergePanel" class="partition-merge-panel">
+        <div class="merge-arrow">6通り → 1つ</div>
+        <div class="merged-partition">
+          <div class="partition-group set-abc"><strong>ABC</strong></div>
+          <div class="partition-group set-def"><strong>DEF</strong></div>
+          <div class="partition-group set-ghi"><strong>GHI</strong></div>
+        </div>
+        <p>組名を消すと、上の6行は全部<strong>「ABC・DEF・GHI の3組」</strong>という同じ組分けです。</p>
+      </div>
+
+      <div id="partitionMessage" class="circle-message">
+        今は組名あり。ABC・DEF・GHI の3組に、A組・B組・C組という名前を付ける方法が <strong>3! = 6通り</strong>あります。
+      </div>
+    </div>
+
+    <div class="key">
+      <strong>ここで初めて「3!で割る」が出てくる</strong><br>
+      樹形図の1680本には、同じ組分けが<strong>組名の付け替え6通りずつ</strong>入っています。だから、名前のない3組に分ける場合は6本を1本にまとめます。
+    </div>
+
+    <div class="math math-display">
+      <math class="mathml" display="block" aria-label="9 C 3 かける 6 C 3 かける 3 C 3 わる 3の階乗 イコール280">
+        <mrow>
+          <mfrac>
+            <mrow>
+              <mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>9</mn><none/></mmultiscripts>
+              <mo>×</mo>
+              <mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>6</mn><none/></mmultiscripts>
+              <mo>×</mo>
+              <mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>3</mn><none/></mmultiscripts>
+            </mrow>
+            <mrow><mn>3</mn><mo>!</mo></mrow>
+          </mfrac>
+          <mo>=</mo>
+          <mfrac><mn>1680</mn><mn>6</mn></mfrac>
+          <mo>=</mo><mn>280</mn>
+        </mrow>
+      </math>
+    </div>
+
+    <details>
+      <summary>数学が得意なら、ここは短くまとめてもOK</summary>
+      <p>「9人を3人ずつの名前のない3組に分ける」では、いったん3組にA組・B組・C組と名前を付けて1680通り。組名の付け替えが3!通りあるので、3!で割って280通りです。</p>
+    </details>
+
+    <div class="question">
+      <div class="prompt">確認：9人を3人ずつ、名前のない3組に分ける。何通り？</div>
+      <input id="qgroup" type="number" placeholder="答え">
+      <button onclick="numcheck('qgroup',280,'fb-group','qgroup')">確認</button>
+      <div class="feedback" id="fb-group"></div>
+    </div>
+
+    <div class="mistake">
+      <strong>よくあるミス</strong><br>
+      最初から「名前がないから3!で割る」と覚えると、理由が抜けやすくなります。まず<strong>名前ありの樹形図で1680本</strong>を作り、同じ組分けが6回ずつあることを確認してから割りましょう。
+    </div>
+    <label><input class="done" type="checkbox"> 3!で割る理由を「同じ完成形が6回あるから」と説明できる</label>
+  </section>
+
+
+  <section id="comb-application">
+    <span class="badge">⑧</span>
+    <h2>組合せの応用：条件を「数えやすい日本語」に翻訳する</h2>
+    <p class="lead">応用問題で大切なのは、公式を探すことではありません。条件を見て、<strong>「固定する」「残りを選ぶ」「反対側を数える」</strong>に翻訳します。</p>
+
+    <div class="condition-grid">
+      <div class="condition-card">
+        <div class="condition-word">Aを必ず選ぶ</div>
+        <div class="condition-arrow">↓</div>
+        <strong>Aを固定して、残りを選ぶ</strong>
+      </div>
+      <div class="condition-card">
+        <div class="condition-word">Aを選ばない</div>
+        <div class="condition-arrow">↓</div>
+        <strong>Aを除いた人から選ぶ</strong>
+      </div>
+      <div class="condition-card">
+        <div class="condition-word">ちょうど2人</div>
+        <div class="condition-arrow">↓</div>
+        <strong>条件ごとに選んで、かける</strong>
+      </div>
+      <div class="condition-card">
+        <div class="condition-word">少なくとも1人</div>
+        <div class="condition-arrow">↓</div>
+        <strong>全体 − 1人もいない</strong>
+      </div>
+    </div>
+
+    <h3>例1：「少なくとも1人」は反対側が簡単</h3>
+    <p>男子5人・女子4人の9人から3人を選ぶとき、<strong>少なくとも1人は女子</strong>である選び方を考えます。</p>
+
+    <div class="complement-lab">
+      <div class="universe-box">
+        <div class="universe-title">全部の選び方</div>
+        <div class="formula-big">
+          <math class="mathml" aria-label="9 C 3 イコール84">
+            <mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>9</mn><none/></mmultiscripts><mo>=</mo><mn>84</mn></mrow>
+          </math>
+        </div>
+        <div class="bad-zone">
+          <strong>条件に合わない部分</strong><br>
+          女子が0人 ＝ 男子だけ3人<br>
+          <math class="mathml" aria-label="5 C 3 イコール10">
+            <mrow><mmultiscripts><mi>C</mi><mn>3</mn><none/><mprescripts/><mn>5</mn><none/></mmultiscripts><mo>=</mo><mn>10</mn></mrow>
+          </math>
+        </div>
+      </div>
+      <div class="complement-result">84 − 10 = <strong>74通り</strong></div>
+    </div>
+
+    <div class="key">
+      <strong>「少なくとも」は、0を引けないか考える</strong><br>
+      「女子1人・2人・3人」と場合分けして足しても解けます。でも、<strong>全体 − 女子0人</strong>の方が短いなら、そちらを選ぶのが上手な数え方です。
+    </div>
+
+    <h3>例2：「ちょうど」は条件ごとに選んでかける</h3>
+    <p>同じ9人から3人を選び、<strong>女子がちょうど2人</strong>になる選び方は？</p>
+    <div class="math math-display">
+      <math class="mathml" display="block" aria-label="4 C 2 かける 5 C 1 イコール30">
+        <mrow>
+          <mmultiscripts><mi>C</mi><mn>2</mn><none/><mprescripts/><mn>4</mn><none/></mmultiscripts>
+          <mo>×</mo>
+          <mmultiscripts><mi>C</mi><mn>1</mn><none/><mprescripts/><mn>5</mn><none/></mmultiscripts>
+          <mo>=</mo><mn>30</mn>
+        </mrow>
+      </math>
+    </div>
+    <p>「女子2人を選び、<strong>そのそれぞれについて</strong>男子1人を選ぶ」ので、ここはかけ算です。</p>
+
+    <h3>例3：「Aを必ず含む」なら、Aはもう選ばなくてよい</h3>
+    <p>9人から3人を選ぶとき、Aを必ず含むなら、Aを固定したあと<strong>残り8人からあと2人</strong>を選びます。</p>
+    <div class="math math-display">
+      <math class="mathml" display="block" aria-label="8 C 2 イコール28">
+        <mrow><mmultiscripts><mi>C</mi><mn>2</mn><none/><mprescripts/><mn>8</mn><none/></mmultiscripts><mo>=</mo><mn>28</mn></mrow>
+      </math>
+    </div>
+
+    <div class="question">
+      <div class="prompt">確認：男子6人・女子4人から4人を選ぶ。少なくとも1人は女子である選び方は何通り？</div>
+      <p class="small">ヒント：「全部」から「女子0人」を引けないかな？</p>
+      <input id="qcombapp" type="number" placeholder="答え">
+      <button onclick="numcheck('qcombapp',195,'fb-combapp','qcombapp')">確認</button>
+      <div class="feedback" id="fb-combapp"></div>
+    </div>
+
+    <div class="teacher-tip">
+      <strong>応用問題でのチェック順</strong><br>
+      ① 誰かを固定できる？ → ② 除外できる？ → ③ 条件ごとに選んでかける？ → ④ 「全体−反対」の方が短い？<br>
+      いきなり式を書かず、この4つを頭の中で確認すると安定します。
+    </div>
+    <label><input class="done" type="checkbox"> 「少なくとも」「ちょうど」「必ず含む」を数え方へ翻訳できる</label>
+  </section>
+
+
+  <section id="identical-permutation">
+    <span class="badge">⑨</span>
+    <h2>同じものを含む順列：「区別して数えすぎた分」を割る</h2>
+    <p class="lead">名前がよく似ていますが、④重複順列とは別物です。ここでは、<strong>最初から同じものが何個か手元にあり、それらを全部並べる</strong>問題を考えます。</p>
+
+    <div class="compare-box">
+      <div>
+        <strong>④ 重複順列</strong>
+        <p>同じ種類を<strong>何度使ってもよい</strong>。<br>例：3種類から4文字コード。</p>
+      </div>
+      <div>
+        <strong>⑨ 同じものを含む順列</strong>
+        <p>同じものが<strong>最初から決まった個数ある</strong>。<br>例：A, A, B を全部並べる。</p>
+      </div>
+    </div>
+
+    <h3>A・A・B を並べる。「Aを区別する」と何が起こる？</h3>
+    <p>いったん2つのAに A₁、A₂ と名前を付けると、3つは全部別物なので 3! = 6通りです。</p>
+
+    <div class="identical-lab">
+      <div class="toggle-row">
+        <button id="distinguishBtn" class="active" type="button" onclick="setIdenticalMode(true)">A₁・A₂を区別する：6通り</button>
+        <button id="mergeIdenticalBtn" class="secondary" type="button" onclick="setIdenticalMode(false)">Aの区別を消す：3通り</button>
+      </div>
+
+      <div id="identicalPairs" class="identical-pairs">
+        <div class="identical-pair g1">
+          <span>A₁ A₂ B</span><span>A₂ A₁ B</span>
+          <strong class="merged-word">AAB</strong>
+        </div>
+        <div class="identical-pair g2">
+          <span>A₁ B A₂</span><span>A₂ B A₁</span>
+          <strong class="merged-word">ABA</strong>
+        </div>
+        <div class="identical-pair g3">
+          <span>B A₁ A₂</span><span>B A₂ A₁</span>
+          <strong class="merged-word">BAA</strong>
+        </div>
+      </div>
+      <div id="identicalMessage" class="circle-message">
+        A₁とA₂を区別すると6通り。でも実際にはAどうしを入れ替えても見た目は変わりません。
+      </div>
+    </div>
+
+    <div class="math math-display">
+      <math class="mathml" display="block" aria-label="3の階乗 わる 2の階乗 イコール3">
+        <mrow>
+          <mfrac><mrow><mn>3</mn><mo>!</mo></mrow><mrow><mn>2</mn><mo>!</mo></mrow></mfrac>
+          <mo>=</mo><mn>3</mn>
+        </mrow>
+      </math>
+    </div>
+
+    <div class="key">
+      <strong>2!で割る理由</strong><br>
+      A₁とA₂の入れ替え <strong>2!</strong> 通りは、Aの区別を消すと全部同じ並びになります。だから「区別して数えすぎた分」を割ります。
+    </div>
+
+    <h3>例：BANANA の6文字を全部並べる</h3>
+    <p>Bが1個、Aが3個、Nが2個です。全部をいったん区別すれば6!通りですが、Aの入れ替え3!通り、Nの入れ替え2!通りは見た目が変わりません。</p>
+    <div class="math math-display">
+      <math class="mathml" display="block" aria-label="6の階乗 わる 3の階乗かける2の階乗 イコール60">
+        <mrow>
+          <mfrac>
+            <mrow><mn>6</mn><mo>!</mo></mrow>
+            <mrow><mn>3</mn><mo>!</mo><mo>×</mo><mn>2</mn><mo>!</mo></mrow>
+          </mfrac>
+          <mo>=</mo><mn>60</mn>
+        </mrow>
+      </math>
+    </div>
+
+    <details>
+      <summary>一般の形を見る</summary>
+      <p>全部で n 個あり、そのうち同じものが p 個、q 個、… と含まれるとき、</p>
+      <div class="math math-display">
+        <math class="mathml" display="block" aria-label="nの階乗 わる pの階乗 qの階乗 てんてんてん">
+          <mfrac>
+            <mrow><mi>n</mi><mo>!</mo></mrow>
+            <mrow><mi>p</mi><mo>!</mo><mi>q</mi><mo>!</mo><mo>⋯</mo></mrow>
+          </mfrac>
+        </math>
+      </div>
+      <p>と考えます。分母は、<strong>入れ替えても同じに見えるものの並べ替え方</strong>です。</p>
+    </details>
+
+    <div class="question">
+      <div class="prompt">確認：LEVEL の5文字を全部並べると何通り？</div>
+      <p>Lが2個、Eが2個、Vが1個です。</p>
+      <input id="qidentical" type="number" placeholder="答え">
+      <button onclick="numcheck('qidentical',30,'fb-identical','qidentical')">確認</button>
+      <div class="feedback" id="fb-identical"></div>
+    </div>
+
+    <div class="mistake">
+      <strong>④重複順列との混同に注意</strong><br>
+      「同じ文字を何度使ってもよい暗証番号」なら重複順列。<br>
+      「Aが3個、Nが2個あるBANANAを全部並べる」なら同じものを含む順列です。
+    </div>
+    <label><input class="done" type="checkbox"> 重複順列と「同じものを含む順列」の違いを説明できる</label>
+  </section>
+  <section id="judge">
+    <span class="badge">まとめ</span>
+    <h2>迷ったら、この順で判断する</h2>
+    <div class="steps">
+      <div class="step"><div class="big">①</div><strong>順番を区別？</strong><br><span class="small">Yes → 順列系</span></div>
+      <div class="step"><div class="big">②</div><strong>再使用できる？</strong><br><span class="small">Yes → 重複順列</span></div>
+      <div class="step"><div class="big">③</div><strong>円形？条件付き？</strong><br><span class="small">固定・かたまり・余事象</span></div>
+      <div class="step"><div class="big">④</div><strong>選ぶだけ？</strong><br><span class="small">Yes → 組合せ</span></div>
+    </div>
+
+    <div class="question">
+      <div class="prompt">ミニ判定：次の問題はどのタイプ？</div>
+      <p><strong>「10人からキャプテンと副キャプテンを1人ずつ選ぶ」</strong></p>
+      <button class="choice" onclick="judge('perm','fb-j1')">順列</button>
+      <button class="choice" onclick="judge('comb','fb-j1')">組合せ</button>
+      <button class="choice" onclick="judge('repeat','fb-j1')">重複順列</button>
+      <div class="feedback" id="fb-j1"></div>
+    </div>
+
+    <div class="question">
+      <p><strong>「10人から文化祭係を2人選ぶ」</strong></p>
+      <button class="choice" onclick="judge2('perm','fb-j2')">順列</button>
+      <button class="choice" onclick="judge2('comb','fb-j2')">組合せ</button>
+      <button class="choice" onclick="judge2('repeat','fb-j2')">重複順列</button>
+      <div class="feedback" id="fb-j2"></div>
+    </div>
+
+    <div class="question">
+      <p><strong>「6種類の記号を使って4文字のパスコードを作る。同じ記号を何度使ってもよい」</strong></p>
+      <button class="choice" onclick="judge3('perm','fb-j3')">順列</button>
+      <button class="choice" onclick="judge3('comb','fb-j3')">組合せ</button>
+      <button class="choice" onclick="judge3('repeat','fb-j3')">重複順列</button>
+      <div class="feedback" id="fb-j3"></div>
+    </div>
+
+    <div class="teacher-tip">
+      <strong>学習のコツ</strong><br>
+      問題文の「選ぶ」「並べる」という単語だけで決めないこと。例えば「委員長と副委員長を選ぶ」は“選ぶ”と書いてあっても役割が違うので順列です。<strong>結果の違いを区別するか</strong>で判断しましょう。
+    </div>
+    <div class="key">
+      <strong>第2日の追加チェック</strong><br>
+      ・組分け → 組に名前がある？ 同人数の名前なし組を入れ替えて同じなら割る。<br>
+      ・組合せの応用 → 「必ず」「ちょうど」「少なくとも」を数え方へ翻訳する。<br>
+      ・同じものを含む順列 → いったん区別して数え、入れ替えても変わらない分を階乗で割る。
+    </div>
+    <label><input class="done" type="checkbox"> 問題文の単語ではなく「結果を区別するか」で判断できる</label>
+  </section>
+
+  <section id="final">
+    <span class="badge">確認</span>
+    <h2>第2日：6問チャレンジ</h2>
+    <p>式を立てる前に、「順番を区別する？」「組に名前がある？」「反対側を引く？」「同じものを区別して数えすぎていない？」を確認しましょう。</p>
+
+    <div class="question">
+      <div class="prompt">① 8人から3人の委員を選ぶ。</div>
+      <input id="d2f1" type="number"><button onclick="numcheck('d2f1',56,'d2ff1','d2f1')">確認</button>
+      <div class="feedback" id="d2ff1"></div>
+    </div>
+
+    <div class="question">
+      <div class="prompt">② 8人を4人ずつ、名前のない2組に分ける。</div>
+      <input id="d2f2" type="number"><button onclick="numcheck('d2f2',35,'d2ff2','d2f2')">確認</button>
+      <div class="feedback" id="d2ff2"></div>
+    </div>
+
+    <div class="question">
+      <div class="prompt">③ 6人を2人ずつ、名前のない3組に分ける。</div>
+      <input id="d2f3" type="number"><button onclick="numcheck('d2f3',15,'d2ff3','d2f3')">確認</button>
+      <div class="feedback" id="d2ff3"></div>
+    </div>
+
+    <div class="question">
+      <div class="prompt">④ 男子5人・女子4人から3人を選ぶ。少なくとも1人は女子。</div>
+      <input id="d2f4" type="number"><button onclick="numcheck('d2f4',74,'d2ff4','d2f4')">確認</button>
+      <div class="feedback" id="d2ff4"></div>
+    </div>
+
+    <div class="question">
+      <div class="prompt">⑤ LEVEL の5文字を全部並べる。</div>
+      <input id="d2f5" type="number"><button onclick="numcheck('d2f5',30,'d2ff5','d2f5')">確認</button>
+      <div class="feedback" id="d2ff5"></div>
+    </div>
+
+    <div class="question">
+      <div class="prompt">⑥ BANANA の6文字を全部並べる。</div>
+      <input id="d2f6" type="number"><button onclick="numcheck('d2f6',60,'d2ff6','d2f6')">確認</button>
+      <div class="feedback" id="d2ff6"></div>
+    </div>
+
+    <div class="final-card">
+      <h3 style="margin-top:0">第2日の地図</h3>
+      <table>
+        <tr><th>状況</th><th>考え方</th></tr>
+        <tr><td>選ぶだけ・順番を区別しない</td><td>組合せ</td></tr>
+        <tr><td>複数の組に分ける</td><td>順に組合せ。組名の入替が同じなら割る</td></tr>
+        <tr><td>必ず含む</td><td>先に固定して、残りを選ぶ</td></tr>
+        <tr><td>少なくとも1つ</td><td>全体 − 1つもない、を検討</td></tr>
+        <tr><td>同じものが決まった個数ある</td><td>全部を区別して並べ、同じものの階乗で割る</td></tr>
+      </table>
+    </div>
+    <div class="checkpoint">
+      <label><input class="done" type="checkbox"> 第2日の仕上げ問題まで取り組んだ</label>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  この教材は、公式を先に暗記するのではなく、「具体例 → 数え方 → 一般化 → 判断」の順で理解する構成になっています。
+</footer>
+
+<script>
+function reveal(id){
+  const el=document.getElementById(id);
+  el.hidden=!el.hidden;
+}
+function choice(btn, correct, fbId){
+  const fb=document.getElementById(fbId);
+  if(correct){
+    fb.textContent="正解！「そのそれぞれについて」と考えて、かけ算です。";
+    fb.className="feedback good";
+  }else{
+    fb.textContent="もう一度考えよう。1つ目を決めた後に、次の選択肢はいくつある？";
+    fb.className="feedback bad";
+  }
+}
+function pMath(n,r){
+  return `<math class="mathml" aria-label="${n} P ${r}"><mmultiscripts><mi>P</mi><mn>${r}</mn><none/><mprescripts/><mn>${n}</mn><none/></mmultiscripts></math>`;
+}
+function cMath(n,r){
+  return `<math class="mathml" aria-label="${n} C ${r}"><mmultiscripts><mi>C</mi><mn>${r}</mn><none/><mprescripts/><mn>${n}</mn><none/></mmultiscripts></math>`;
+}
+function factMath(n){
+  return `<math class="mathml" aria-label="${n}の階乗"><mrow><mn>${n}</mn><mo>!</mo></mrow></math>`;
+}
+const explanations={
+  qgroup:`A組・B組・C組と名前を付けると ${cMath(9,3)} × ${cMath(6,3)} × ${cMath(3,3)} = 1680 通り。同じ組分けを組名の付け替え 3! = 6 通りずつ数えているので、1680 ÷ 6 = 280 通りです。`,
+  qgroupsizes:`${cMath(6,3)} × ${cMath(3,2)} × ${cMath(1,1)} = 20 × 3 × 1 = 60 通り。3人組・2人組・1人組は人数で区別できるので、階乗では割りません。`,
+  qcombapp:`全部は ${cMath(10,4)} = 210 通り。女子0人は男子6人から4人なので ${cMath(6,4)} = 15 通り。したがって 210 − 15 = 195 通りです。`,
+  qidentical:`LEVEL は5文字中、Lが2個、Eが2個。<math class="mathml" aria-label="5の階乗 わる 2の階乗かける2の階乗 イコール30"><mrow><mfrac><mrow><mn>5</mn><mo>!</mo></mrow><mrow><mn>2</mn><mo>!</mo><mo>×</mo><mn>2</mn><mo>!</mo></mrow></mfrac><mo>=</mo><mn>30</mn></mrow></math> 通りです。`,
+
+  d2f1:`${cMath(8,3)} = 56 通り。順番を区別しないので組合せです。`,
+  d2f2:`${cMath(8,4)} ÷ 2! = 70 ÷ 2 = 35 通り。名前のない同人数の2組なので2!で割ります。`,
+  d2f3:`${cMath(6,2)} × ${cMath(4,2)} × ${cMath(2,2)} ÷ 3! = 15 通り。3組の入れ替え3!通りを割ります。`,
+  d2f4:`全部 ${cMath(9,3)} = 84 から、女子0人の ${cMath(5,3)} = 10 を引いて 74 通りです。`,
+  d2f5:`5! ÷ (2! × 2!) = 30 通りです。`,
+  d2f6:`6! ÷ (3! × 2!) = 60 通りです。`,
+  qperm:`${pMath(7,3)} = 7 × 6 × 5 = 210 通り。役職が違うので順列です。`,
+  qrepeat:`4 × 4 × 4 = <math class="mathml" aria-label="4の3乗"><msup><mn>4</mn><mn>3</mn></msup></math> = 64 通りです。`,
+  qapp:`[AB] を1つのかたまりにして ${factMath(5)}、中の順番が2通り。${factMath(5)} × 2 = 240 通りです。`,
+  qcomb:`${cMath(8,3)} = <math class="mathml" aria-label="8かける7かける6 分の 3かける2かける1"><mfrac><mrow><mn>8</mn><mo>×</mo><mn>7</mn><mo>×</mo><mn>6</mn></mrow><mrow><mn>3</mn><mo>×</mo><mn>2</mn><mo>×</mo><mn>1</mn></mrow></mfrac></math> = 56 通りです。`,
+  f1:`${pMath(6,4)} = 6 × 5 × 4 × 3 = 360`,
+  f2:`<math class="mathml" aria-label="7マイナス1の階乗 イコール 6の階乗 イコール720"><mrow><mo>(</mo><mn>7</mn><mo>−</mo><mn>1</mn><mo>)</mo><mo>!</mo><mo>=</mo><mn>6</mn><mo>!</mo><mo>=</mo><mn>720</mn></mrow></math>`,
+  f3:`<math class="mathml" aria-label="3の5乗 イコール243"><mrow><msup><mn>3</mn><mn>5</mn></msup><mo>=</mo><mn>243</mn></mrow></math>`,
+  f4:`${cMath(9,4)} = 126`,
+  f5:`全体 ${factMath(6)} − 隣り合う ${factMath(5)} × 2 = 720 − 240 = 480`
+};
+function numcheck(inputId, ans, fbId, explanationKey){
+  const val=Number(document.getElementById(inputId).value);
+  const fb=document.getElementById(fbId);
+  if(val===ans){
+    fb.innerHTML="正解！ " + explanations[explanationKey];
+    fb.className="feedback good";
+  }else{
+    fb.textContent="惜しい。答えそのものより、「各場所の選択肢は何通りか」「順番を区別するか」を確認してみよう。";
+    fb.className="feedback bad";
+  }
+}
+function judge(type, fbId){
+  const fb=document.getElementById(fbId);
+  if(type==="perm"){
+    fb.textContent="正解！キャプテンと副キャプテンは役割が違うので、同じ2人でも担当が入れ替われば別です。";
+    fb.className="feedback good";
+  }else{
+    fb.textContent="違います。「選ぶ」という言葉ではなく、役割の違いに注目。順番（担当）を区別します。";
+    fb.className="feedback bad";
+  }
+}
+function judge2(type, fbId){
+  const fb=document.getElementById(fbId);
+  if(type==="comb"){
+    fb.textContent="正解！2人の役割に区別がなく、選ばれた2人が同じなら同じ結果です。";
+    fb.className="feedback good";
+  }else{
+    fb.textContent="違います。係の2人に役割の差はありません。順番を区別しないので組合せです。";
+    fb.className="feedback bad";
+  }
+}
+function judge3(type, fbId){
+  const fb=document.getElementById(fbId);
+  if(type==="repeat"){
+    fb.textContent="正解！各桁で6種類を選べ、使っても次の選択肢が減らないので重複順列です。";
+    fb.className="feedback good";
+  }else{
+    fb.textContent="違います。「同じ記号を何度使ってもよい」が決め手です。";
+    fb.className="feedback bad";
+  }
+}
+
+function makeMiniCircle(rotation){
+  const labels=["A","B","C","D","E","F"];
+  const card=document.createElement("div");
+  card.className="mini-circle-card";
+  const circle=document.createElement("div");
+  circle.className="mini-circle";
+  for(let pos=0;pos<6;pos++){
+    const idx=(pos+rotation)%6;
+    const label=labels[idx];
+    const angle=(-90 + pos*60) * Math.PI/180;
+    const seat=document.createElement("div");
+    seat.className="mini-seat" + (label==="A" ? " anchor" : "");
+    seat.textContent=label;
+    seat.style.left=(50+43*Math.cos(angle))+"%";
+    seat.style.top=(50+43*Math.sin(angle))+"%";
+    circle.appendChild(seat);
+  }
+  const cap=document.createElement("div");
+  cap.className="rotation-label";
+  cap.textContent=rotation===0 ? "もとの配置" : `${rotation*60}° 回転`;
+  card.append(circle,cap);
+  return card;
+}
+function renderCircleStage(){
+  const stage=document.getElementById("circleStage");
+  if(!stage) return;
+  stage.innerHTML="";
+  for(let r=0;r<6;r++) stage.appendChild(makeMiniCircle(r));
+}
+function setCircleMode(fixed){
+  const stage=document.getElementById("circleStage");
+  const msg=document.getElementById("circleMessage");
+  const free=document.getElementById("circleFreeBtn");
+  const fix=document.getElementById("circleFixBtn");
+  if(!stage) return;
+  stage.classList.toggle("fixed-mode",fixed);
+  free.classList.toggle("active",!fixed);
+  fix.classList.toggle("active",fixed);
+  if(fixed){
+    msg.innerHTML="Aの席を固定すると、回転させた5つの「分身」は同じものとして消え、<strong>代表1つ</strong>だけ残ります。";
+  }else{
+    msg.innerHTML="同じ配置を60°ずつ回しただけなのに、<strong>6つの並び</strong>として現れています。";
+  }
+}
+
+const combLetters=["A","B","C","D","E"];
+let combR=3;
+let combGrouped=false;
+
+const combPalette=[
+  ["#4f75c9","#eaf0ff"],
+  ["#3f8d68","#e9f7ef"],
+  ["#b47b18","#fff4d9"],
+  ["#835ab3","#f4eaff"],
+  ["#b85f78","#ffeaf0"],
+  ["#398b94","#e6f7f8"],
+  ["#b0663e","#fff0e7"],
+  ["#647443","#f0f5e5"],
+  ["#6d6db3","#eeeeff"],
+  ["#a05b95","#f9eafa"]
+];
+
+function permutations(arr, r, prefix=[]){
+  if(prefix.length===r) return [prefix];
+  const out=[];
+  for(const x of arr){
+    if(prefix.includes(x)) continue;
+    out.push(...permutations(arr,r,[...prefix,x]));
+  }
+  return out;
+}
+function combinations(arr,r,start=0,prefix=[]){
+  if(prefix.length===r) return [prefix];
+  const out=[];
+  for(let i=start;i<=arr.length-(r-prefix.length);i++){
+    out.push(...combinations(arr,r,i+1,[...prefix,arr[i]]));
+  }
+  return out;
+}
+function combKey(path){ return [...path].sort().join(""); }
+
+function renderCombTree(){
+  const holder=document.getElementById("combTreeDynamic");
+  const groupPanel=document.getElementById("combGroupPanel");
+  if(!holder || !groupPanel) return;
+
+  const perms=permutations(combLetters,combR);
+  const groups=combinations(combLetters,combR).map(x=>x.join(""));
+  const groupIndex=Object.fromEntries(groups.map((g,i)=>[g,i]));
+
+  const row=combR===3 ? 20 : 30;
+  const top=52;
+  const height=Math.max(500, top+perms.length*row+35);
+  const xs=combR===3 ? [55,220,485,760] : [55,260,700];
+  const width=960;
+  const ns="http://www.w3.org/2000/svg";
+  const svg=document.createElementNS(ns,"svg");
+  svg.setAttribute("class","tree-svg");
+  svg.setAttribute("viewBox",`0 0 ${width} ${height}`);
+  svg.setAttribute("role","img");
+  svg.setAttribute("aria-label",`AからEの5人から${combR}人を順に選ぶ樹形図`);
+
+  const leafY=new Map();
+  perms.forEach((p,i)=>leafY.set(p.join(""),top+25+i*row));
+
+  function descendantYs(prefix){
+    const s=prefix.join("");
+    return perms.filter(p=>p.join("").startsWith(s)).map(p=>leafY.get(p.join("")));
+  }
+  function nodeY(prefix){
+    const ys=descendantYs(prefix);
+    return ys.reduce((a,b)=>a+b,0)/ys.length;
+  }
+  function line(x1,y1,x2,y2,terminal,key){
+    const el=document.createElementNS(ns,"line");
+    el.setAttribute("x1",x1); el.setAttribute("y1",y1);
+    el.setAttribute("x2",x2); el.setAttribute("y2",y2);
+    el.setAttribute("class","comb-dyn-line"+(terminal?" comb-terminal-line":""));
+    if(terminal && combGrouped){
+      const col=combPalette[groupIndex[key]][0];
+      el.style.stroke=col;
+      el.style.strokeWidth="4px";
+      el.style.opacity="1";
+    }
+    svg.appendChild(el);
+  }
+  function circle(x,y,label){
+    const c=document.createElementNS(ns,"circle");
+    c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r","16");
+    c.setAttribute("class","comb-dyn-node");svg.appendChild(c);
+    const t=document.createElementNS(ns,"text");
+    t.setAttribute("x",x);t.setAttribute("y",y+1);t.setAttribute("class","comb-dyn-text");
+    t.textContent=label;svg.appendChild(t);
+  }
+  function textLabel(x,y,label,key){
+    const t=document.createElementNS(ns,"text");
+    t.setAttribute("x",x);t.setAttribute("y",y);
+    t.setAttribute("class","comb-leaf-label");
+    if(combGrouped){
+      t.style.fill=combPalette[groupIndex[key]][0];
+      t.style.fontWeight="900";
+    }
+    t.textContent=label;svg.appendChild(t);
+  }
+
+  // 段見出し
+  const heads=combR===3 ? ["START","1人目","2人目","3人目 → 完成"] : ["START","1人目","2人目 → 完成"];
+  xs.forEach((x,i)=>{
+    const t=document.createElementNS(ns,"text");
+    t.setAttribute("x",x);t.setAttribute("y","24");t.setAttribute("class","tree-level");
+    t.textContent=heads[i];svg.appendChild(t);
+  });
+
+  const rootY=nodeY([]);
+  const root=document.createElementNS(ns,"circle");
+  root.setAttribute("cx",xs[0]);root.setAttribute("cy",rootY);root.setAttribute("r","18");
+  root.setAttribute("class","tree-root");svg.appendChild(root);
+
+  // prefixごとの枝とノード
+  for(let depth=1; depth<=combR; depth++){
+    const seen=new Set();
+    for(const p of perms){
+      const prefix=p.slice(0,depth);
+      const id=prefix.join("");
+      if(seen.has(id)) continue;
+      seen.add(id);
+
+      const parent=prefix.slice(0,-1);
+      const py=nodeY(parent);
+      const y=nodeY(prefix);
+      const terminal=depth===combR;
+      const key=terminal ? combKey(prefix) : "";
+      line(xs[depth-1]+(depth===1?18:16),py,xs[depth]-(terminal?20:16),y,terminal,key);
+
+      if(terminal){
+        textLabel(xs[depth],y+1,id,key);
+      }else{
+        circle(xs[depth],y,prefix[prefix.length-1]);
+      }
+    }
+  }
+  holder.innerHTML="";
+  holder.appendChild(svg);
+
+  // グループボックス
+  groupPanel.innerHTML="";
+  groups.forEach((g,i)=>{
+    const box=document.createElement("div");
+    box.className="comb-group-box";
+    box.style.borderColor=combPalette[i][0];
+    box.style.background=combPalette[i][1];
+    const members=perms.filter(p=>combKey(p)===g).map(p=>p.join(""));
+    box.innerHTML=`<strong>${g}</strong>${members.join(" ・ ")}`;
+    groupPanel.appendChild(box);
+  });
+
+  const total=perms.length;
+  const each=combR===3 ? 6 : 2;
+  const caption=document.getElementById("combTreeCaption");
+  const explain=document.getElementById("combExplainText");
+  const gbtn=document.getElementById("combGroupBtn");
+  const title=document.getElementById("combDiscoveryTitle");
+  const discovery=document.getElementById("combDiscoveryText");
+
+  gbtn.textContent=`同じ${combR}人を色でまとめる`;
+
+  if(combGrouped){
+    caption.innerHTML=`枝の<strong>最後の1本</strong>と完成した並びを、選ばれた${combR}人が同じものどうしで同色にしました。`;
+    explain.innerHTML=`${total}本の完成した枝が、1グループ${each}本ずつ、${groups.length}色にまとまりました。したがって ${total} ÷ ${each} = ${groups.length} 通りです。`;
+  }else{
+    caption.innerHTML=`今は順列として表示中。完成した枝は全部で<strong>${total}本</strong>あります。`;
+    explain.textContent="";
+  }
+  title.textContent=`5人から${combR}人を選ぶとき`;
+  discovery.innerHTML=combR===3
+    ? `順列では60本の完成した枝がありますが、同じ3人を選んだものが3!本ずつあります。だから 60 ÷ 3! = 10 通りです。`
+    : `順列では20本の完成した枝がありますが、同じ2人を選んだものが2!本ずつあります。だから 20 ÷ 2! = 10 通りです。`;
+}
+function setCombR(r){
+  combR=r;
+  combGrouped=false;
+  const r3=document.getElementById("combR3Btn");
+  const r2=document.getElementById("combR2Btn");
+  const pbtn=document.getElementById("combPermBtn");
+  const gbtn=document.getElementById("combGroupBtn");
+  if(!r3 || !r2 || !pbtn || !gbtn) return;
+  r3.classList.toggle("active",r===3);
+  r3.classList.toggle("secondary",r!==3);
+  r2.classList.toggle("active",r===2);
+  r2.classList.toggle("secondary",r!==2);
+  pbtn.classList.add("active");
+  gbtn.classList.remove("active");
+  document.getElementById("combTreeWrap").classList.remove("grouped");
+  renderCombTree();
+}
+function setCombGrouping(grouped){
+  combGrouped=grouped;
+  const wrap=document.getElementById("combTreeWrap");
+  const pbtn=document.getElementById("combPermBtn");
+  const gbtn=document.getElementById("combGroupBtn");
+  if(!wrap || !pbtn || !gbtn) return;
+  wrap.classList.toggle("grouped",grouped);
+  pbtn.classList.toggle("active",!grouped);
+  gbtn.classList.toggle("active",grouped);
+  renderCombTree();
+}
+function returnToFiveTree(){
+  setCombR(3);
+  setCombGrouping(true);
+  const wrap=document.getElementById("combTreeWrap");
+  if(!wrap) return;
+  wrap.classList.remove("tree-return-flash");
+  void wrap.offsetWidth;
+  wrap.classList.add("tree-return-flash");
+  wrap.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+renderCircleStage();
+setCircleMode(false);
+setCombR(3);
+
+
+function setPartitionMode(named){
+  const lab=document.querySelector(".partition-lab");
+  const rows=document.getElementById("partitionRows");
+  const msg=document.getElementById("partitionMessage");
+  const b1=document.getElementById("partitionNamedBtn");
+  const b2=document.getElementById("partitionMergeBtn");
+  if(!lab || !rows || !msg || !b1 || !b2) return;
+  lab.classList.toggle("unlabeled",!named);
+  rows.classList.toggle("unlabeled-mode",!named);
+  b1.classList.toggle("active",named);
+  b1.classList.toggle("secondary",!named);
+  b2.classList.toggle("active",!named);
+  b2.classList.toggle("secondary",named);
+  msg.innerHTML=named
+    ? "今は組名あり。ABC・DEF・GHI の3組に、A組・B組・C組という名前を付ける方法が <strong>3! = 6通り</strong>あります。"
+    : "組名を消して色で見ると、6行すべてが <strong>同じ3色・同じ3組</strong>。つまり同じ組分けを6回ずつ数えていました。";
+}
+function setGroupNames(named){ setPartitionMode(named); }
+function setIdenticalMode(distinguish){
+  const pairs=document.getElementById("identicalPairs");
+  const msg=document.getElementById("identicalMessage");
+  const b1=document.getElementById("distinguishBtn");
+  const b2=document.getElementById("mergeIdenticalBtn");
+  if(!pairs || !msg || !b1 || !b2) return;
+  pairs.classList.toggle("merged",!distinguish);
+  b1.classList.toggle("active",distinguish);
+  b1.classList.toggle("secondary",!distinguish);
+  b2.classList.toggle("active",!distinguish);
+  b2.classList.toggle("secondary",distinguish);
+  msg.innerHTML=distinguish
+    ? "A₁とA₂を区別すると6通り。でも実際にはAどうしを入れ替えても見た目は変わりません。"
+    : "区別を消すと、6通りは<strong>2個ずつ同じものに重なって3通り</strong>になります。だから 3! を 2! で割ります。";
+}
+setPartitionMode(true);
+setIdenticalMode(true);
+
+const checks=[...document.querySelectorAll('.done')];
+function updateProgress(){
+  const checked=checks.filter(c=>c.checked).length;
+  const pct=Math.round(checked/checks.length*100);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressText').textContent=pct+'%';
+  localStorage.setItem('counting-progress-part2', JSON.stringify(checks.map(c=>c.checked)));
+}
+checks.forEach(c=>c.addEventListener('change',updateProgress));
+try{
+  const saved=JSON.parse(localStorage.getItem('counting-progress-part2')||'[]');
+  checks.forEach((c,i)=>c.checked=!!saved[i]);
+}catch(e){}
+updateProgress();
+</script>
+</body>
+</html>
