@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>両端・ひとかたまり｜樹形図でわかる場合の数</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#5d687c;--line:#dce3ee;--blue:#3157d5;--green:#1f8a70;--purple:#7554c9;--orange:#b86b00;--soft:#eef3ff;--soft2:#eaf8f4;--flower:#e85586;--star:#3157d5}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.75}
+header{background:linear-gradient(135deg,#243e91,#4d70df);color:#fff;padding:44px 20px 38px}.wrap,main,footer{max-width:980px;margin:auto}h1{font-size:clamp(29px,5vw,45px);line-height:1.2;margin:0 0 12px}header p{font-size:18px;margin:0;max-width:780px}main{padding:24px 18px 70px}section{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:25px;margin:20px 0;box-shadow:0 8px 24px rgba(28,42,82,.06)}h2{font-size:27px;line-height:1.35;margin:0 0 10px}h3{font-size:20px;margin-top:25px}.badge{display:inline-block;padding:4px 10px;border-radius:99px;background:var(--soft);color:var(--blue);font-weight:900;font-size:13px;margin-bottom:8px}.lead{font-size:18px}.goal,.key,.tip,.mistake{border-left:5px solid var(--blue);background:var(--soft);padding:14px 16px;border-radius:11px;margin:16px 0}.key{border-color:var(--green);background:var(--soft2)}.tip{border-color:var(--purple);background:#f4f0ff}.mistake{border-color:var(--orange);background:#fff7e8}.cards{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;margin:18px 0}.card{width:58px;height:68px;border-radius:13px;display:grid;place-items:center;font-weight:900;font-size:21px;background:#fff;border:3px solid}.flower{border-color:#e889a9;background:#fff2f7;color:#a92f5a}.star{border-color:#7f9ce9;background:#eef3ff;color:#2349b7}.slots{display:grid;grid-template-columns:repeat(6,minmax(42px,65px));gap:7px;justify-content:center;margin:16px 0}.slot{height:58px;border:2px dashed #aeb9cb;border-radius:11px;display:grid;place-items:center;color:var(--muted);font-weight:800}.slot.end{border:3px solid #e889a9;background:#fff2f7;color:#a92f5a}.arrow{text-align:center;font-size:25px;color:var(--muted);font-weight:900}.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:15px 0}.step{border:1px solid var(--line);border-radius:14px;background:#fafcff;padding:14px;text-align:center}.step .num{font-size:26px;font-weight:900;color:var(--blue)}button{appearance:none;border:0;border-radius:11px;padding:10px 15px;margin:6px 6px 6px 0;background:var(--blue);color:#fff;font-size:15px;font-weight:900;cursor:pointer}button.secondary{background:#eef2f8;color:#26324a}.reveal{display:none}.reveal.show{display:block}.tree-card{border:1px solid var(--line);border-radius:17px;background:#fcfdff;padding:14px;margin:15px 0;overflow:hidden}.tree-scroll{overflow:auto;max-height:630px}.tree-svg{display:block;width:100%;min-width:800px;height:auto}.line{stroke:#aeb8c8;stroke-width:2;fill:none}.line.sample{stroke:var(--purple);stroke-width:4}.node{fill:#eef3ff;stroke:#8399dd;stroke-width:2}.root{fill:#172033}.leaf{fill:#fff;stroke:#9eacc2;stroke-width:2}.txt{font:800 13px system-ui,-apple-system,"Yu Gothic",sans-serif;text-anchor:middle;dominant-baseline:middle;fill:#172033}.root-txt{fill:#fff;font-size:9px}.level{font:800 13px system-ui,-apple-system,"Yu Gothic",sans-serif;text-anchor:middle;fill:#5c667a}.caption{font-size:14px;color:var(--muted);margin:8px 1px 0}.formula{border:1px solid var(--line);border-radius:13px;background:#f8fafc;padding:14px;text-align:center;font-size:clamp(20px,4vw,27px);font-weight:900;margin:13px 0}.formula .times{color:var(--purple)}.question{border:2px solid #d7def5;border-radius:16px;background:#fbfcff;padding:17px;margin:17px 0}.prompt{font-size:18px;font-weight:900}input[type=number]{width:120px;padding:10px;border:1px solid #b9c5d8;border-radius:9px;font-size:17px}.feedback{font-weight:900;min-height:1.8em;margin-top:9px}.good{color:#147a4b}.bad{color:#b53838}.block-stage{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:16px 0}.flower-block{display:flex;gap:6px;padding:9px;border:3px solid var(--flower);border-radius:15px;background:#fff2f7;position:relative}.flower-block::after{content:"花のかたまり";position:absolute;left:50%;top:100%;transform:translateX(-50%);white-space:nowrap;color:#a92f5a;font-size:12px;font-weight:900}.flower-block .card{width:45px;height:52px;font-size:17px}.outer-object{min-width:88px;height:68px;border-radius:14px;display:grid;place-items:center;border:3px solid;font-weight:900}.outer-object.block{border-color:var(--flower);background:#fff2f7;color:#a92f5a}.outer-object.other{border-color:#7f9ce9;background:#eef3ff;color:#2349b7}.two-trees{display:grid;grid-template-columns:1fr 1fr;gap:12px}.two-trees .tree-svg{min-width:700px}.tree-title{text-align:center;font-weight:900;margin-bottom:7px}.back{background:linear-gradient(135deg,#172033,#293752);color:#fff;border-radius:17px;padding:19px;margin-top:20px}.checklist{display:grid;gap:8px;margin-top:12px}.check{background:rgba(255,255,255,.09);border-radius:10px;padding:9px 11px}footer{padding:0 20px 42px;color:var(--muted);font-size:13px}@media(max-width:700px){section{padding:19px}.two-trees{grid-template-columns:1fr}.slots{gap:4px}.slot{height:50px}.card{width:51px;height:60px}.flower-block .card{width:39px}.two-trees .tree-svg{min-width:650px}}@media print{button{display:none}.reveal{display:block!important}body{background:#fff}section{box-shadow:none;break-inside:avoid}.tree-scroll{max-height:none;overflow:visible}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>両端・ひとかたまり</h1><p>公式を先に覚えず、樹形図の「1本の枝が何を決めたか」を追いかけよう。</p></div></header>
+<main>
+<section>
+  <span class="badge">MetaMoJi補助サイト</span>
+  <h2>まずは小さな類題で考え方をつかもう</h2>
+  <p class="lead">区別できる6枚のカードを1列に並べます。花カードは A・B・C・D の4枚、星カードは ★・☆ の2枚です。</p>
+  <div class="cards" aria-label="花カードA、B、C、Dと星カード、白星カード">
+    <div class="card flower">A</div><div class="card flower">B</div><div class="card flower">C</div><div class="card flower">D</div><div class="card star">★</div><div class="card star">☆</div>
+  </div>
+  <div class="goal"><strong>今日の2つの見方</strong><br>① 両端に条件がある → まず両端を決める。<br>② 同じ種類が続く → ひとかたまりにする。<br>どちらも、途中の選び方を樹形図で確かめます。</div>
+</section>
+
+<section id="ends">
+  <span class="badge">類題1</span>
+  <h2>両端が花カードになる並べ方</h2>
+  <h3>まずは、条件のある両端から埋めていこう</h3>
+  <p>6か所を一度に埋めようとすると、どこから考えればよいか迷います。今回は「両端が花」と決まっているので、<strong>左端、次に右端</strong>の順に埋めます。中央4か所は、両端が決まってから考えましょう。</p>
+  <div class="slots" aria-label="6つの並べる場所。両端が花カード">
+    <div class="slot end">花</div><div class="slot">中央</div><div class="slot">中央</div><div class="slot">中央</div><div class="slot">中央</div><div class="slot end">花</div>
+  </div>
+  <div class="tip"><strong>両端を先に埋めると、条件を外さずに数えられる。</strong><br>左端と右端は場所が違うので、A…B と B…A は別の並びです。この違いを、次の樹形図で1本ずつ確かめます。</div>
+
+  <button type="button" onclick="toggleBox('endsTreeBox',this)">両端の樹形図を見る</button>
+  <div id="endsTreeBox" class="reveal">
+    <div class="tree-card"><div class="tree-scroll"><svg id="endsTree" class="tree-svg" viewBox="0 0 900 520" role="img" aria-label="左端の花を4通り、右端の花を残り3通りから選ぶ樹形図"></svg></div><p class="caption">完成した枝は12本。枝先の AB は「左端A、右端B」という意味です。逆の BA も別にあります。</p></div>
+    <div class="key"><strong>両端だけで 4×3＝12本</strong><br>左端を決めた1本1本から、右端の枝が3本ずつ出ています。</div>
+  </div>
+
+  <h3>両端をA・Bと決めた1本だけを拡大しよう</h3>
+  <p>中央に残るのは C・D・★・☆ の4枚。この4枚を並べる枝は何本あるでしょう。</p>
+  <button type="button" class="secondary" onclick="toggleBox('middleTreeBox',this)">中央4枚の樹形図を見る</button>
+  <div id="middleTreeBox" class="reveal">
+    <div class="tree-card"><div class="tree-scroll"><div id="middleTree"></div></div><p class="caption">最初は4本、その1本1本から3本、さらに2本、最後は1本。完成した枝は4×3×2×1＝24本です。</p></div>
+  </div>
+
+  <div class="steps"><div class="step"><div class="num">12本</div>両端を決める枝</div><div class="step"><div class="num">24本</div>各枝から中央を並べる枝</div><div class="step"><div class="num">12×24</div>完成した並び</div></div>
+  <div class="formula">4×3 <span class="times">×</span> 4! ＝ 12×24 ＝ 288通り</div>
+  <div class="mistake"><strong>よくあるミス：4×4 としない</strong><br>左端に使った花カードは、右端ではもう使えません。だから右端は残り3枚です。</div>
+</section>
+
+<section id="block">
+  <span class="badge">類題2</span>
+  <h2>4枚の花カードが続いて並ぶ並べ方</h2>
+  <p>「4枚が続く」という条件を保ったまま1枚ずつ動かすのは大変です。そこで、花4枚を輪ゴムでまとめたように<strong>1つのかたまり</strong>として見ます。</p>
+  <div class="cards"><div class="card flower">A</div><div class="card flower">B</div><div class="card flower">C</div><div class="card flower">D</div><div class="card star">★</div><div class="card star">☆</div></div>
+  <div class="arrow">↓ 花4枚をまとめる</div>
+  <div class="block-stage"><div class="flower-block"><div class="card flower">A</div><div class="card flower">B</div><div class="card flower">C</div><div class="card flower">D</div></div><div class="outer-object other">★</div><div class="outer-object other">☆</div></div>
+  <p style="text-align:center;margin-top:30px"><strong>外から見ると「花のかたまり・★・☆」の3個</strong>です。</p>
+
+  <button type="button" onclick="toggleBox('blockTreesBox',this)">2つの樹形図を見る</button>
+  <div id="blockTreesBox" class="reveal">
+    <div class="two-trees">
+      <div class="tree-card"><div class="tree-title">外側：3個を並べる</div><div class="tree-scroll"><div id="outerTree"></div></div><p class="caption">花のかたまりを「花」と表示。完成した枝は3!＝6本です。</p></div>
+      <div class="tree-card"><div class="tree-title">内側：花4枚を並べる</div><div class="tree-scroll"><div id="innerTree"></div></div><p class="caption">かたまりの中でも A・B・C・D の順番を変えられます。完成した枝は4!＝24本です。</p></div>
+    </div>
+    <div class="key"><strong>外側の枝1本ごとに、内側の枝が24本</strong><br>「外6本」と「内24本」は足すのではなく、6×24と掛けます。</div>
+  </div>
+
+  <div class="formula">3! <span class="times">×</span> 4! ＝ 6×24 ＝ 144通り</div>
+  <div class="mistake"><strong>よくあるミス：外側だけで終わらない</strong><br>花4枚を1個にまとめても、A・B・C・Dの内部の順番は消えていません。必ず「かたまりの中」も数えます。</div>
+</section>
+
+<section>
+  <span class="badge">本問へ転用</span>
+  <h2>MetaMoJiへ戻る前のチェック</h2>
+  <p>本問では、カードの種類と枚数がこの類題とは違います。答えを写すのではなく、次の問いを本問の文字に置き換えてください。</p>
+  <div class="back"><strong>自分に問いかけよう</strong><div class="checklist"><div class="check">□ 両端の左側には何通り置ける？</div><div class="check">□ 左端を使った後、右端には何通り残る？</div><div class="check">□ 両端を決めた後、中央には何個残る？</div><div class="check">□ 続く文字を1個のかたまりにすると、外側は全部で何個になる？</div><div class="check">□ かたまりの中の並びを忘れていない？</div></div></div>
+  <div class="key"><strong>判断の合言葉</strong><br>両端に条件 → 条件のある場所を先に決める。<br>連続する条件 → ひとかたまりにして、外側と内側を別々に数える。</div>
+</section>
+</main>
+<footer>このページは、MetaMoJiの問題を自力で解くための類題解説です。類題で考え方をつかんだら、元のプリントへ戻りましょう。</footer>
+<script>
+const ns="http://www.w3.org/2000/svg";
+function svgEl(name,attrs={},text=""){const e=document.createElementNS(ns,name);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);if(text)e.textContent=text;return e}
+function toggleBox(id,btn){const box=document.getElementById(id);const open=box.classList.toggle("show");btn.textContent=open?"樹形図を閉じる":"樹形図を見る"}
+function renderEndsTree(){const svg=document.getElementById("endsTree"),flowers=["A","B","C","D"],x0=65,x1=330,x2=720,row=36,top=64;svg.append(svgEl("text",{x:x0,y:25,class:"level"},"START"),svgEl("text",{x:x1,y:25,class:"level"},"左端"),svgEl("text",{x:x2,y:25,class:"level"},"右端 → 両端完成"));const total=12,ys=Array.from({length:total},(_,i)=>top+i*row),rootY=(ys[0]+ys[11])/2;svg.append(svgEl("circle",{cx:x0,cy:rootY,r:19,class:"root"}),svgEl("text",{x:x0,y:rootY+1,class:"txt root-txt"},"START"));let idx=0;flowers.forEach((left,li)=>{const rights=flowers.filter(x=>x!==left),groupYs=ys.slice(idx,idx+3),y1=groupYs.reduce((a,b)=>a+b,0)/3;svg.append(svgEl("line",{x1:x0+19,y1:rootY,x2:x1-17,y2:y1,class:"line"}),svgEl("circle",{cx:x1,cy:y1,r:17,class:"node"}),svgEl("text",{x:x1,y:y1+1,class:"txt"},left));rights.forEach((right,ri)=>{const y=ys[idx++],sample=li===0&&ri===0;svg.append(svgEl("line",{x1:x1+17,y1:y1,x2:x2-38,y2:y,class:sample?"line sample":"line"}),svgEl("rect",{x:x2-38,y:y-15,width:76,height:30,rx:9,class:"leaf"}),svgEl("text",{x:x2,y:y+1,class:"txt"},left+right))})})}
+function perms(arr,p=[]){if(!arr.length)return[p];let out=[];arr.forEach((x,i)=>out.push(...perms([...arr.slice(0,i),...arr.slice(i+1)],[...p,x])));return out}
+function renderPermutationTree(holderId,items){const holder=document.getElementById(holderId),leaves=perms(items),row=items.length===4?27:43,top=52,height=Math.max(360,top+leaves.length*row+25),width=900,xs=Array.from({length:items.length+1},(_,i)=>55+i*(760/items.length)),svg=svgEl("svg",{class:"tree-svg",viewBox:`0 0 ${width} ${height}`,role:"img","aria-label":`${items.join("、")}を並べる樹形図`});xs.forEach((x,i)=>svg.append(svgEl("text",{x,y:23,class:"level"},i===0?"START":i===items.length?`${i}個目 → 完成`:`${i}個目`)));const leafY=new Map(leaves.map((p,i)=>[p.join("|"),top+i*row]));const descendantYs=prefix=>{const s=prefix.join("|");return leaves.filter(p=>p.slice(0,prefix.length).join("|")===s).map(p=>leafY.get(p.join("|")))};const nodeY=prefix=>{const a=descendantYs(prefix);return a.reduce((x,y)=>x+y,0)/a.length};const rootY=nodeY([]);svg.append(svgEl("circle",{cx:xs[0],cy:rootY,r:17,class:"root"}),svgEl("text",{x:xs[0],y:rootY+1,class:"txt root-txt"},"START"));for(let d=1;d<=items.length;d++){const seen=new Set();leaves.forEach(p=>{const prefix=p.slice(0,d),id=prefix.join("|");if(seen.has(id))return;seen.add(id);const parent=prefix.slice(0,-1),py=nodeY(parent),y=nodeY(prefix),last=d===items.length;svg.append(svgEl("line",{x1:xs[d-1]+17,y1:py,x2:xs[d]-(last?35:17),y2:y,class:"line"}));if(last){svg.append(svgEl("rect",{x:xs[d]-35,y:y-13,width:70,height:26,rx:8,class:"leaf"}),svgEl("text",{x:xs[d],y:y+1,class:"txt"},prefix.join("")))}else{svg.append(svgEl("circle",{cx:xs[d],cy:y,r:16,class:"node"}),svgEl("text",{x:xs[d],y:y+1,class:"txt"},prefix[prefix.length-1]))}})}holder.innerHTML="";holder.append(svg)}
+renderEndsTree();renderPermutationTree("middleTree",["C","D","★","☆"]);renderPermutationTree("outerTree",["花","★","☆"]);renderPermutationTree("innerTree",["A","B","C","D"]);
+</script>
+</body>
+</html>
