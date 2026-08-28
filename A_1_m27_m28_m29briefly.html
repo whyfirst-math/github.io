@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>組合せ｜簡素版</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#5d687c;--line:#dce4ef;--blue:#3157d5;--blue2:#2443a5;--green:#168065;--soft:#eef3ff;--softg:#eaf8f3;--yellow:#fff7df}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Yu Gothic",Meiryo,sans-serif;line-height:1.7}.wrap,main,footer{max-width:960px;margin:auto}
+header{color:#fff;background:linear-gradient(135deg,var(--blue2),#557be7);padding:45px 20px 38px}h1{font-size:clamp(31px,5vw,47px);line-height:1.2;margin:0 0 10px}header p{margin:0;max-width:760px;font-size:18px}
+.progress-wrap{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}.progress-inner{max-width:960px;margin:auto;padding:8px 20px}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.progress{height:7px;margin-top:5px;background:#e7edf6;border-radius:99px;overflow:hidden}#bar{height:100%;width:0;background:var(--blue)}
+main{padding:24px 20px 68px}nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:24px}nav a{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:800;text-decoration:none}
+section{min-width:0;margin:20px 0;padding:25px;border:1px solid var(--line);border-radius:19px;background:var(--card);box-shadow:0 7px 22px rgba(25,40,80,.05)}h2{font-size:27px;line-height:1.35;margin:0 0 10px}h3{font-size:19px;margin:20px 0 7px}p{margin:8px 0}.lead{font-size:18px}.badge{display:inline-block;margin-bottom:7px;padding:4px 10px;border-radius:99px;background:var(--soft);color:var(--blue);font-size:12px;font-weight:900}
+.compare,.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}.box,.problem{padding:14px;border:1px solid var(--line);border-radius:13px;background:#fbfcff}.box strong,.problem strong{display:block;color:var(--blue)}.key,.note{margin:14px 0;padding:14px 16px;border-radius:12px}.key{border-left:5px solid var(--green);background:var(--softg)}.note{border-left:5px solid #d89b12;background:var(--yellow)}
+.six{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.six span{padding:7px 10px;border:1px solid #aebee4;border-radius:9px;background:#f7f9ff;font-weight:900}
+button{border:0;border-radius:10px;padding:10px 13px;background:var(--blue);color:#fff;font-weight:900;cursor:pointer}button.secondary{background:#eaf0fa;color:var(--ink)}button.active{outline:4px solid rgba(49,87,213,.18)}.modes{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.tree-wrap{min-width:0;margin-top:12px}.tree-scroll{max-width:100%;max-height:620px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fcfdff}.tree{display:block;width:100%;min-width:760px;height:auto}.line{stroke:#acb7c8;stroke-width:1.8}.node{fill:#edf2ff;stroke:#8098dc;stroke-width:1.8}.root{fill:var(--ink)}.leaf{fill:#fff;stroke:#91a1b9;stroke-width:1.8}.text{font:900 12px system-ui;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}.roottext{font:900 10px system-ui;fill:#fff;text-anchor:middle;dominant-baseline:middle}.level{font:800 13px system-ui;fill:var(--muted);text-anchor:middle}
+.groups{display:none;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:7px;margin-top:10px}.groups.show{display:grid}.group{padding:8px 9px;border:2px solid;border-radius:10px;font-size:12px}.group strong{display:block;font-size:14px}
+.math{margin:13px 0;padding:13px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#f8fafc;text-align:center;white-space:nowrap;font-size:clamp(21px,4vw,29px);font-weight:900}.math small{display:block;white-space:normal;color:var(--muted);font-size:13px}.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:13px 0}.flow .box{text-align:center}.arrow{font-size:26px;font-weight:900;color:var(--green)}
+.problem .math{margin-bottom:0}.decision{display:inline-block;margin-bottom:6px;padding:3px 8px;border-radius:99px;background:var(--softg);color:var(--green);font-size:12px;font-weight:900}.mapping{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:12px 0}.pair{display:flex;justify-content:center;gap:7px;padding:8px;border:1px solid var(--line);border-radius:10px;background:#fbfcff;font-weight:900}.chosen{color:var(--blue)}.left{color:var(--green)}
+table{width:100%;border-collapse:collapse;margin:12px 0}th,td{padding:9px 10px;border:1px solid var(--line);text-align:left}th{background:#f1f5fb}.checks{display:grid;gap:8px;margin-top:13px}.check{display:flex;gap:9px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fbfcff}.check b{color:var(--green)}.final{margin-top:15px;padding:18px;border-radius:15px;background:var(--ink);color:#fff}.final .math{background:#fff;color:var(--ink)}footer{padding:20px 20px 45px;color:var(--muted);font-size:13px}
+@media(max-width:720px){section{padding:19px}.compare,.cards,.flow{grid-template-columns:1fr}.arrow{text-align:center;transform:rotate(90deg)}.mapping{grid-template-columns:1fr}h2{font-size:23px}}
+@media print{.progress-wrap,nav,.modes{display:none}body{background:#fff}section{box-shadow:none}.tree-scroll{max-height:none;overflow:visible}.tree{min-width:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>組合せ</h1><p>同じメンバーなら1組。樹形図の重複をまとめます。</p></div></header>
+<div class="progress-wrap"><div class="progress-inner"><div class="progress-label"><span>学習の進み具合</span><span id="pct">0%</span></div><div class="progress"><div id="bar"></div></div></div></div>
+<main>
+<nav><a href="#meaning">1　意味</a><a href="#formula">2　公式</a><a href="#practice">3　類題</a><a href="#complement">4　選ばない側</a><a href="#return">5　本問へ</a></nav>
+
+<section id="meaning"><span class="badge">STEP 1</span><h2>順番を区別しない</h2>
+<div class="compare"><div class="box"><strong>順列</strong>ABCとACBは別</div><div class="box"><strong>組合せ</strong>ABCとACBは同じ</div></div>
+<p class="lead">A〜Eから3人を選ぶ。まず順列の樹形図を辞書式に書きます。</p>
+<div class="modes"><button id="plain" class="active">60本を見る</button><button id="grouped" class="secondary">同じ3人をまとめる</button></div>
+<div class="tree-wrap"><div class="tree-scroll"><div id="tree"></div></div><div id="groups" class="groups"></div></div>
+<div id="treeMessage" class="key">5P3＝60本</div>
+<div class="six"><span>ABC</span><span>ACB</span><span>BAC</span><span>BCA</span><span>CAB</span><span>CBA</span></div>
+<div class="note">同じ3人が <strong>3!＝6本</strong>ずつある。</div>
+<div class="math">₅C₃＝60÷6＝10</div>
+</section>
+
+<section id="formula"><span class="badge">STEP 2</span><h2>r!で割る</h2>
+<div class="flow"><div class="box"><strong>順番つき</strong><div class="math">nPr</div></div><div class="arrow">÷r!</div><div class="box"><strong>順番なし</strong><div class="math">nCr</div></div></div>
+<div class="math">nCr＝nPr÷r!＝n!÷{r!(n−r)!}</div>
+<div class="key">r!＝同じr個を並べる順番の数。</div>
+</section>
+
+<section id="practice"><span class="badge">STEP 3</span><h2>類題で計算</h2>
+<div class="problem"><span class="decision">計算</span><strong>₆C₃</strong><div class="math">(6×5×4)÷(3×2×1)＝20</div></div>
+<div class="cards"><div class="problem"><span class="decision">順番なし</span><strong>7冊から2冊</strong><div class="math">₇C₂＝21</div></div><div class="problem"><span class="decision">順番なし</span><strong>6種類から3種類</strong><div class="math">₆C₃＝20</div></div></div>
+<div class="note">分子はr個だけ掛ける。先に約分してよい。</div>
+</section>
+
+<section id="complement"><span class="badge">STEP 4</span><h2>選ばない側を見る</h2>
+<p class="lead">4人から3人を選ぶと、残る1人も決まります。</p>
+<div class="mapping"><div class="pair"><span class="chosen">ABC</span>↔<span class="left">D</span></div><div class="pair"><span class="chosen">ABD</span>↔<span class="left">C</span></div><div class="pair"><span class="chosen">ACD</span>↔<span class="left">B</span></div><div class="pair"><span class="chosen">BCD</span>↔<span class="left">A</span></div></div>
+<div class="math">₄C₃＝₄C₁</div>
+<h3>5人でも同じ</h3><div id="fiveMap" class="mapping"></div><div class="math">₅C₃＝₅C₂＝10</div>
+<div class="key">nCr＝nC(n−r)</div>
+<div class="problem"><span class="decision">小さい側で計算</span><strong>₁₂C₁₀</strong><div class="math">₁₂C₁₀＝₁₂C₂＝66</div></div>
+</section>
+
+<section id="return"><span class="badge">STEP 5</span><h2>MetaMoJiへ戻ろう</h2>
+<div class="checks"><div class="check"><b>1</b>順番・役割を区別するか。</div><div class="check"><b>2</b>全体n、選ぶ数rは何か。</div><div class="check"><b>3</b>選ばない側の方が小さいか。</div></div>
+<div class="final"><strong>順番なしなら組合せ。</strong><div class="math">nCr＝nPr÷r!　／　nCr＝nC(n−r)</div></div>
+</section>
+</main><footer>組合せ｜樹形図で重複をまとめる簡素版</footer>
+
+<script>
+const L=["A","B","C","D","E"],palette=[["#4f75c9","#eaf0ff"],["#3f8d68","#e9f7ef"],["#b47b18","#fff4d9"],["#835ab3","#f4eaff"],["#b85f78","#ffeaf0"],["#398b94","#e6f7f8"],["#b0663e","#fff0e7"],["#647443","#f0f5e5"],["#6d6db3","#eeeeff"],["#a05b95","#f9eafa"]];
+function perms(a,r,p=[]){if(p.length===r)return[p];let o=[];a.forEach(x=>{if(!p.includes(x))o.push(...perms(a,r,[...p,x]))});return o}function comb(a,r,s=0,p=[]){if(p.length===r)return[p];let o=[];for(let i=s;i<=a.length-(r-p.length);i++)o.push(...comb(a,r,i+1,[...p,a[i]]));return o}function el(n,a={}){const x=document.createElementNS("http://www.w3.org/2000/svg",n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}
+const P=perms(L,3),C=comb(L,3).map(x=>x.join("")),index=Object.fromEntries(C.map((x,i)=>[x,i]));let isGrouped=false;
+function key(x){return[...x].sort().join("")}
+function render(){const h=document.getElementById("tree"),row=26,top=44,H=top+P.length*row+22,W=820,X=[54,220,470,730],s=el("svg",{class:"tree",viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"5人から3人を順に選ぶ60本の辞書式樹形図"}),Y=new Map(P.map((x,i)=>[x.join(""),top+i*row+14]));const ys=p=>{const k=p.join("");return P.filter(x=>x.join("").startsWith(k)).map(x=>Y.get(x.join("")))},ny=p=>{const a=ys(p);return a.reduce((x,y)=>x+y,0)/a.length};["START","1人目","2人目","3人目"].forEach((z,i)=>{const t=el("text",{x:X[i],y:20,class:"level"});t.textContent=z;s.appendChild(t)});s.appendChild(el("circle",{cx:X[0],cy:ny([]),r:18,class:"root"}));let rt=el("text",{x:X[0],y:ny([])+1,class:"roottext"});rt.textContent="START";s.appendChild(rt);
+for(let d=1;d<=3;d++){let seen=new Set;P.forEach((x,i)=>{const p=x.slice(0,d),id=p.join("");if(seen.has(id))return;seen.add(id);const end=d===3,k=end?key(id):"",color=end&&isGrouped?palette[index[k]][0]:"",y=ny(p),ln=el("line",{x1:X[d-1]+19,y1:ny(p.slice(0,-1)),x2:X[d]-(end?47:19),y2:y,class:"line"});if(color){ln.style.stroke=color;ln.style.strokeWidth="4"}s.appendChild(ln);if(end){const box=el("rect",{x:X[d]-46,y:y-13,width:92,height:26,rx:8,class:"leaf"});if(color){box.style.fill=palette[index[k]][1];box.style.stroke=color}s.appendChild(box);const t=el("text",{x:X[d],y:y+1,class:"text"});t.textContent=`${i+1} ${id}`;if(color)t.style.fill=color;s.appendChild(t)}else{s.appendChild(el("circle",{cx:X[d],cy:y,r:18,class:"node"}));const t=el("text",{x:X[d],y:y+1,class:"text"});t.textContent=id;s.appendChild(t)}})}h.innerHTML="";h.appendChild(s);
+document.getElementById("groups").classList.toggle("show",isGrouped);document.getElementById("treeMessage").innerHTML=isGrouped?"60本を6本ずつまとめる → <strong>10組</strong>":"₅P₃＝60本";}
+const gh=document.getElementById("groups");C.forEach((c,i)=>{const g=document.createElement("div");g.className="group";g.style.borderColor=palette[i][0];g.style.background=palette[i][1];g.innerHTML=`<strong>${c}</strong>${P.filter(x=>key(x.join(""))===c).map(x=>x.join("")).join("・")}`;gh.appendChild(g)});
+function mode(v){isGrouped=v;document.getElementById("plain").classList.toggle("active",!v);document.getElementById("plain").classList.toggle("secondary",v);document.getElementById("grouped").classList.toggle("active",v);document.getElementById("grouped").classList.toggle("secondary",!v);render()}document.getElementById("plain").onclick=()=>mode(false);document.getElementById("grouped").onclick=()=>mode(true);render();
+const fm=document.getElementById("fiveMap");comb(L,3).forEach(a=>{const left=L.filter(x=>!a.includes(x)).join(""),d=document.createElement("div");d.className="pair";d.innerHTML=`<span class="chosen">${a.join("")}</span>↔<span class="left">${left}</span>`;fm.appendChild(d)});
+function progress(){const d=document.documentElement,m=d.scrollHeight-d.clientHeight,p=m?Math.min(100,Math.round(d.scrollTop/m*100)):100;document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"%"}addEventListener("scroll",progress,{passive:true});addEventListener("resize",progress);progress();
+</script>
+</body></html>
