@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>多角形と組合せ｜辞書式の樹形図</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#5d687c;--line:#dce4ef;--blue:#3157d5;--blue2:#2443a5;--green:#168065;--pink:#b24b77;--soft:#eef3ff;--softg:#eaf8f3;--softp:#fff0f6;--yellow:#fff7df}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Yu Gothic",Meiryo,sans-serif;line-height:1.7}
+.wrap,main,footer{max-width:960px;margin:auto}header{color:#fff;background:linear-gradient(135deg,var(--blue2),#557be7);padding:45px 20px 38px}h1{font-size:clamp(30px,5vw,46px);line-height:1.2;margin:0 0 10px}header p{margin:0;max-width:760px;font-size:18px}
+.progress-wrap{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}.progress-inner{max-width:960px;margin:auto;padding:8px 20px}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.progress{height:7px;margin-top:5px;background:#e7edf6;border-radius:99px;overflow:hidden}#bar{height:100%;width:0;background:var(--blue)}
+main{padding:24px 20px 68px}nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:24px}nav a{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:800;text-decoration:none}
+section{min-width:0;margin:20px 0;padding:25px;border:1px solid var(--line);border-radius:19px;background:var(--card);box-shadow:0 7px 22px rgba(25,40,80,.05)}h2{font-size:27px;line-height:1.35;margin:0 0 10px}h3{font-size:19px;margin:20px 0 7px}p{margin:8px 0}.lead{font-size:18px}.badge{display:inline-block;margin-bottom:7px;padding:4px 10px;border-radius:99px;background:var(--soft);color:var(--blue);font-size:12px;font-weight:900}
+.problem,.rule,.key,.note{margin:15px 0;padding:15px 17px;border-radius:13px}.problem{border:2px solid #d4def7;background:#fbfcff}.rule{border-left:5px solid var(--blue);background:var(--soft)}.key{border-left:5px solid var(--green);background:var(--softg)}.note{border-left:5px solid #d89b12;background:var(--yellow)}
+.qgrid,.pattern{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}.q,.pattern div{padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}.q strong,.pattern strong{display:block;color:var(--blue)}.rule ol{margin:6px 0 0;padding-left:1.4em}.rule li{margin:3px 0}
+.learning{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.3fr);gap:15px;align-items:start;margin:15px 0}.card{min-width:0;padding:15px;border:1px solid var(--line);border-radius:15px;background:#fff}.card h3{margin:0 0 7px}.polygon{max-width:330px;margin:auto}.polygon svg{display:block;width:100%;height:auto}
+.edge{stroke:#b7c2d3;stroke-width:5;stroke-linecap:round}.segment{stroke:#7890b6;stroke-width:3;opacity:.45;stroke-linecap:round}.segment.side{stroke:var(--green);stroke-width:6;opacity:1}.segment.diagonal{stroke:var(--pink);stroke-width:5;opacity:1}.segment.focus{stroke:var(--blue);stroke-width:8;opacity:1}.tri{fill:rgba(49,87,213,.18);stroke:var(--blue);stroke-width:6;stroke-linejoin:round}.vertex{fill:#fff;stroke:var(--blue2);stroke-width:4}.vertex.on{fill:#f4c84d}.vtext{font:900 18px system-ui;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}
+.choices,.order{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.choices button,.order span{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border:1px solid #aebee4;border-radius:9px;background:#f7f9ff;color:var(--ink);font-weight:900}.choices button{cursor:pointer}.choices button.active{background:var(--blue);color:#fff}.no{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px}.choices button.active .no{background:#fff;color:var(--blue)}
+details{margin-top:9px}summary{cursor:pointer;color:var(--blue);font-weight:900}.tree-scroll{max-width:100%;overflow-x:auto;margin-top:9px;border:1px solid var(--line);border-radius:12px;background:#fcfdff}.tree{display:block;width:100%;min-width:700px;height:auto}.tline{stroke:#aeb9ca;stroke-width:2.2}.tline.side{stroke:var(--green);stroke-width:4}.tline.diagonal{stroke:var(--pink);stroke-width:4}.tnode{fill:#edf2ff;stroke:#8098dc;stroke-width:2}.troot{fill:var(--ink)}.tleaf{fill:#fff;stroke:#91a1b9;stroke-width:2}.tleaf.side{fill:var(--softg);stroke:var(--green)}.tleaf.diagonal{fill:var(--softp);stroke:var(--pink)}.ttext{font:900 14px system-ui;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}.troottext{font:900 10px system-ui;fill:#fff;text-anchor:middle;dominant-baseline:middle}.tlevel{font:800 13px system-ui;fill:var(--muted);text-anchor:middle}
+.pattern{grid-template-columns:repeat(4,minmax(0,1fr))}.pattern div{text-align:center}.pattern strong{font-size:17px}.math{margin:13px 0;padding:13px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#f8fafc;text-align:center;white-space:nowrap;font-size:clamp(21px,4vw,29px);font-weight:900}.math small{display:block;white-space:normal;color:var(--muted);font-size:13px}
+.modes{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}.modes button{border:0;border-radius:10px;padding:9px 12px;background:var(--blue);color:#fff;font-weight:900;cursor:pointer}.modes .green{background:var(--green)}.modes .pink{background:var(--pink)}.modes button.active{outline:4px solid rgba(49,87,213,.18)}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;font-weight:800}.legend i{display:inline-block;width:27px;height:5px;margin-right:6px;border-radius:99px;background:var(--green);vertical-align:middle}.legend i.pink{background:var(--pink)}
+table{width:100%;border-collapse:collapse;margin:12px 0}th,td{padding:9px 10px;border:1px solid var(--line);text-align:left}th{background:#f1f5fb}td:last-child{font-weight:900;white-space:nowrap}.checks{display:grid;gap:8px;margin-top:13px}.check{display:flex;gap:9px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fbfcff}.check b{color:var(--green)}.final{margin-top:15px;padding:18px;border-radius:15px;background:var(--ink);color:#fff}.final .math{background:#fff;color:var(--ink)}footer{padding:20px 20px 45px;color:var(--muted);font-size:13px}
+@media(max-width:720px){section{padding:19px}.qgrid,.learning{grid-template-columns:1fr}.pattern{grid-template-columns:repeat(2,minmax(0,1fr))}h2{font-size:23px}}
+@media print{.progress-wrap,nav,.choices,.modes{display:none}body{background:#fff}section{box-shadow:none}.tree{min-width:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>頂点を選ぶと、図形が見える</h1><p>辞書式の樹形図で、もれなく・重複なく・順序よく数えます。</p></div></header>
+<div class="progress-wrap"><div class="progress-inner"><div class="progress-label"><span>学習の進み具合</span><span id="pct">0%</span></div><div class="progress"><div id="bar"></div></div></div></div>
+<main>
+<nav><a href="#start">1　数え方</a><a href="#triangles">2　三角形</a><a href="#segments">3　線分</a><a href="#diagonals">4　対角線</a><a href="#return">5　本問へ</a></nav>
+
+<section id="start"><span class="badge">STEP 1</span><h2>正五角形の類題</h2>
+<div class="problem"><strong>正五角形PQRSTについて求めよう。</strong><div class="qgrid"><div class="q"><strong>(1) 三角形</strong>3頂点を結ぶ</div><div class="q"><strong>(2) 線分</strong>2頂点を結ぶ</div><div class="q"><strong>(3) 対角線</strong>辺ではない線分</div></div></div>
+<div class="rule"><strong>樹形図の規則</strong><ol><li>P・Q・R・S・Tの順に見る。</li><li>後ろの文字だけへ進む。</li><li>枝を上から順に読む。</li></ol></div>
+<div class="key"><strong>目的：</strong>規則性を見つけ、もれと重複を防ぐ。</div>
+</section>
+
+<section id="triangles"><span class="badge">STEP 2</span><h2>三角形＝3頂点を選ぶ</h2>
+<p class="lead">PQRとRQPは同じ三角形。樹形図にはPQRだけを書きます。</p>
+<div class="learning"><div class="card"><h3>図で確認</h3><div id="triPoly" class="polygon"></div><div id="triChoices" class="choices"></div></div><div class="card"><h3>辞書式の樹形図</h3><details><summary>樹形図を開く</summary><div class="tree-scroll"><div id="triTree"></div></div></details></div></div>
+<div class="order"><span><b class="no">1</b>PQR</span><span><b class="no">2</b>PQS</span><span><b class="no">3</b>PQT</span><span><b class="no">4</b>PRS</span><span><b class="no">5</b>PRT</span><span><b class="no">6</b>PST</span><span><b class="no">7</b>QRS</span><span><b class="no">8</b>QRT</span><span><b class="no">9</b>QST</span><span><b class="no">10</b>RST</span></div>
+<div class="pattern"><div><strong>Pから6本</strong></div><div><strong>Qから3本</strong></div><div><strong>Rから1本</strong></div><div><strong>計10本</strong></div></div>
+<div class="math">₅C₃＝10</div>
+</section>
+
+<section id="segments"><span class="badge">STEP 3</span><h2>線分＝2頂点を選ぶ</h2>
+<p class="lead">PQとQPは同じ線分。Pからは後ろのQ・R・S・Tへ進みます。</p>
+<div class="learning"><div class="card"><h3>図で確認</h3><div id="pairPoly" class="polygon"></div><div id="pairChoices" class="choices"></div></div><div class="card"><h3>辞書式の樹形図</h3><details><summary>樹形図を開く</summary><div class="tree-scroll"><div id="pairTree"></div></div></details></div></div>
+<div class="order"><span><b class="no">1</b>PQ</span><span><b class="no">2</b>PR</span><span><b class="no">3</b>PS</span><span><b class="no">4</b>PT</span><span><b class="no">5</b>QR</span><span><b class="no">6</b>QS</span><span><b class="no">7</b>QT</span><span><b class="no">8</b>RS</span><span><b class="no">9</b>RT</span><span><b class="no">10</b>ST</span></div>
+<div class="pattern"><div><strong>Pから4本</strong></div><div><strong>Qから3本</strong></div><div><strong>Rから2本</strong></div><div><strong>Sから1本</strong></div></div>
+<div class="key">4、3、2、1と規則的に減る。</div><div class="math">₅C₂＝4＋3＋2＋1＝10<small>辺も対角線も含む</small></div>
+</section>
+
+<section id="diagonals"><span class="badge">STEP 4</span><h2>対角線＝全線分−辺</h2>
+<p class="lead">辞書式の10本を、辺と対角線に分けます。</p>
+<div class="learning"><div class="card"><h3>色分け</h3><div class="modes"><button id="all" class="active">全部</button><button id="sides" class="green">辺</button><button id="diags" class="pink">対角線</button></div><div id="classPoly" class="polygon"></div><div class="legend"><span><i></i>辺</span><span><i class="pink"></i>対角線</span></div></div><div class="card"><h3>同じ順序で分類</h3><div class="tree-scroll"><div id="classTree"></div></div></div></div>
+<div class="math">対角線＝₅C₂−5＝5</div><div class="key">n角形なら、対角線は <strong>nC₂−n</strong> 本。</div>
+</section>
+
+<section id="return"><span class="badge">STEP 5</span><h2>MetaMoJiへ戻ろう</h2>
+<table><thead><tr><th>数えるもの</th><th>式</th></tr></thead><tbody><tr><td>三角形</td><td>nC₃</td></tr><tr><td>全線分</td><td>nC₂</td></tr><tr><td>対角線</td><td>nC₂−n</td></tr></tbody></table>
+<div class="checks"><div class="check"><b>1</b>頂点を辞書式に並べる。</div><div class="check"><b>2</b>後ろの文字だけへ進む。</div><div class="check"><b>3</b>枝の減り方を見る。</div></div>
+<div class="final"><strong>本問では頂点数をnに入れる。</strong><div class="math">三角形：nC₃　線分：nC₂　対角線：nC₂−n</div></div>
+</section>
+</main><footer>多角形と組合せ｜辞書式の樹形図</footer>
+
+<script>
+const V=["P","Q","R","S","T"],P={P:[180,32],Q:[312,128],R:[262,285],S:[98,285],T:[48,128]};
+function comb(a,r,s=0,p=[]){if(p.length===r)return[p];let o=[];for(let i=s;i<=a.length-(r-p.length);i++)o.push(...comb(a,r,i+1,[...p,a[i]]));return o}
+const T=comb(V,3).map(x=>x.join("")),Q=comb(V,2).map(x=>x.join(""));
+function side(q){const a=V.indexOf(q[0]),b=V.indexOf(q[1]),d=Math.abs(a-b);return d===1||d===4}
+function el(n,a={}){const x=document.createElementNS("http://www.w3.org/2000/svg",n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}
+function polygon(id,{tri=null,pair=null,mode="outline"}={}){const h=document.getElementById(id);h.innerHTML="";const s=el("svg",{viewBox:"0 0 360 320",role:"img","aria-label":"正五角形PQRST"});
+Q.filter(side).forEach(q=>{const[a,b]=q;s.appendChild(el("line",{x1:P[a][0],y1:P[a][1],x2:P[b][0],y2:P[b][1],class:"edge"}))});
+if(mode!=="outline")Q.forEach(q=>{const sd=side(q);if(mode==="sides"&&!sd||mode==="diags"&&sd)return;const[a,b]=q;s.appendChild(el("line",{x1:P[a][0],y1:P[a][1],x2:P[b][0],y2:P[b][1],class:`segment ${sd?"side":"diagonal"}`}))});
+if(tri)s.appendChild(el("polygon",{points:tri.split("").map(v=>P[v].join(",")).join(" "),class:"tri"}));if(pair){const[a,b]=pair;s.appendChild(el("line",{x1:P[a][0],y1:P[a][1],x2:P[b][0],y2:P[b][1],class:"segment focus"}))}
+V.forEach(v=>{const on=tri?.includes(v)||pair?.includes(v);s.appendChild(el("circle",{cx:P[v][0],cy:P[v][1],r:19,class:`vertex${on?" on":""}`}));const t=el("text",{x:P[v][0],y:P[v][1]+1,class:"vtext"});t.textContent=v;s.appendChild(t)});h.appendChild(s)}
+function buttons(id,list,draw){const h=document.getElementById(id);list.forEach((x,i)=>{const b=document.createElement("button");b.type="button";b.innerHTML=`<b class="no">${i+1}</b>${x}`;b.onclick=()=>{h.querySelectorAll("button").forEach(y=>y.classList.remove("active"));b.classList.add("active");draw(x)};h.appendChild(b)});h.firstChild.classList.add("active");draw(list[0])}
+function tree(id,r,classified=false){const h=document.getElementById(id),L=comb(V,r),row=41,top=46,H=top+L.length*row+24,W=800,X=r===3?[55,235,475,710]:[55,315,680],s=el("svg",{class:"tree",viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":`${r}頂点を選ぶ辞書式の樹形図`}),Y=new Map(L.map((x,i)=>[x.join(""),top+i*row+18])),N=new Map(L.map((x,i)=>[x.join(""),i+1]));
+const ys=p=>{const k=p.join("");return L.filter(x=>x.join("").startsWith(k)).map(x=>Y.get(x.join("")))},ny=p=>{const a=ys(p);return a.reduce((x,y)=>x+y,0)/a.length};
+(r===3?["START","1文字目","2文字目","3文字目"]:["START","1文字目","2文字目"]).forEach((z,i)=>{const t=el("text",{x:X[i],y:22,class:"tlevel"});t.textContent=z;s.appendChild(t)});s.appendChild(el("circle",{cx:X[0],cy:ny([]),r:19,class:"troot"}));let rt=el("text",{x:X[0],y:ny([])+1,class:"troottext"});rt.textContent="START";s.appendChild(rt);
+for(let d=1;d<=r;d++){let seen=new Set;L.forEach(x=>{const p=x.slice(0,d),k=p.join("");if(seen.has(k))return;seen.add(k);const end=d===r,cl=classified&&end?(side(k)?"side":"diagonal"):"",y=ny(p);s.appendChild(el("line",{x1:X[d-1]+21,y1:ny(p.slice(0,-1)),x2:X[d]-(end?49:21),y2:y,class:`tline ${cl}`}));if(end){s.appendChild(el("rect",{x:X[d]-48,y:y-16,width:96,height:32,rx:9,class:`tleaf ${cl}`}));const t=el("text",{x:X[d],y:y+1,class:"ttext"});t.textContent=`${N.get(k)} ${k}`;s.appendChild(t)}else{s.appendChild(el("circle",{cx:X[d],cy:y,r:21,class:"tnode"}));const t=el("text",{x:X[d],y:y+1,class:"ttext"});t.textContent=k;s.appendChild(t)}})}h.appendChild(s)}
+buttons("triChoices",T,x=>polygon("triPoly",{tri:x}));buttons("pairChoices",Q,x=>polygon("pairPoly",{pair:x}));tree("triTree",3);tree("pairTree",2);tree("classTree",2,true);
+function mode(m){polygon("classPoly",{mode:m});[["all","all"],["sides","sides"],["diags","diags"]].forEach(([id,v])=>document.getElementById(id).classList.toggle("active",m===v))}document.getElementById("all").onclick=()=>mode("all");document.getElementById("sides").onclick=()=>mode("sides");document.getElementById("diags").onclick=()=>mode("diags");mode("all");
+function progress(){const d=document.documentElement,m=d.scrollHeight-d.clientHeight,p=m?Math.min(100,Math.round(d.scrollTop/m*100)):100;document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"%"}addEventListener("scroll",progress,{passive:true});addEventListener("resize",progress);progress();
+</script>
+</body></html>
