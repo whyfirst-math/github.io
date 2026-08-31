@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>同じものを含む順列と最短経路</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#5d687c;--line:#dce4ef;--blue:#3157d5;--blue2:#2443a5;--green:#168065;--orange:#b87318;--soft:#eef3ff;--softg:#eaf8f3;--yellow:#fff7df}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Yu Gothic",Meiryo,sans-serif;line-height:1.7}.wrap,main,footer{max-width:960px;margin:auto}
+header{color:#fff;background:linear-gradient(135deg,var(--blue2),#557be7);padding:45px 20px 38px}h1{font-size:clamp(29px,5vw,45px);line-height:1.2;margin:0 0 10px}header p{margin:0;max-width:780px;font-size:18px}
+.progress-wrap{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}.progress-inner{max-width:960px;margin:auto;padding:8px 20px}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.progress{height:7px;margin-top:5px;background:#e7edf6;border-radius:99px;overflow:hidden}#bar{height:100%;width:0;background:var(--blue)}
+main{padding:24px 20px 68px}nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:24px}nav a{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:800;text-decoration:none}
+section{min-width:0;margin:20px 0;padding:25px;border:1px solid var(--line);border-radius:19px;background:var(--card);box-shadow:0 7px 22px rgba(25,40,80,.05)}h2{font-size:27px;line-height:1.35;margin:0 0 10px}h3{font-size:19px;margin:20px 0 7px}p{margin:8px 0}.lead{font-size:18px}.badge{display:inline-block;margin-bottom:7px;padding:4px 10px;border-radius:99px;background:var(--soft);color:var(--blue);font-size:12px;font-weight:900}
+.problem,.key,.note{margin:14px 0;padding:14px 16px;border-radius:12px}.problem{border:2px solid #d4def7;background:#fbfcff}.key{border-left:5px solid var(--green);background:var(--softg)}.note{border-left:5px solid #d89b12;background:var(--yellow)}.letters{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.letter{display:inline-grid;place-items:center;width:43px;height:43px;border:2px solid #8ea3df;border-radius:11px;background:#eef3ff;font-size:19px;font-weight:900}.letter.o{border-color:#69ad96;background:var(--softg)}.letter.r{border-color:#d29b53;background:#fff5e6}
+.two,.three{display:grid;gap:10px;margin:13px 0}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.card{min-width:0;padding:14px;border:1px solid var(--line);border-radius:13px;background:#fbfcff}.card strong{display:block;color:var(--blue)}.math{margin:12px 0;padding:13px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#f8fafc;text-align:center;white-space:nowrap;font-size:clamp(20px,4vw,28px);font-weight:900}.math small{display:block;white-space:normal;color:var(--muted);font-size:13px}
+details{margin-top:9px}summary{cursor:pointer;color:var(--blue);font-weight:900}.tree-scroll{max-width:100%;max-height:620px;overflow:auto;margin-top:9px;border:1px solid var(--line);border-radius:12px;background:#fcfdff}.tree{display:block;width:100%;min-width:980px;height:auto}.line{stroke:#acb7c8;stroke-width:1.8}.node{fill:#edf2ff;stroke:#8098dc;stroke-width:1.8}.root{fill:var(--ink)}.leaf{fill:#fff;stroke:#91a1b9;stroke-width:1.8}.text{font:900 11px system-ui;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}.roottext{font:900 9px system-ui;fill:#fff;text-anchor:middle;dominant-baseline:middle}.level{font:800 12px system-ui;fill:var(--muted);text-anchor:middle}
+.route-layout{display:grid;grid-template-columns:minmax(250px,.8fr) minmax(0,1.2fr);gap:14px;align-items:start;margin:14px 0}.grid-card{padding:14px;border:1px solid var(--line);border-radius:13px;background:#fff}.grid{max-width:340px;margin:auto}.grid svg{display:block;width:100%;height:auto}.gridline{stroke:#b8c3d3;stroke-width:3}.route{fill:none;stroke:var(--blue);stroke-width:8;stroke-linecap:round;stroke-linejoin:round}.route.via{stroke:var(--green)}.point{fill:#fff;stroke:var(--blue2);stroke-width:4}.point.c{fill:#f4c84d}.pointtext{font:900 17px system-ui;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}.route-buttons{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.route-buttons button{border:2px solid #8ea3df;border-radius:8px;padding:5px 7px;background:#eef3ff;color:var(--ink);font-weight:900;cursor:pointer}.route-buttons button.via{border-color:#69ad96;background:var(--softg)}.route-buttons button.active{background:var(--blue);color:#fff}.route-buttons button.via.active{background:var(--green)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;font-weight:800}.legend i{display:inline-block;width:28px;height:5px;margin-right:6px;border-radius:99px;background:var(--blue);vertical-align:middle}.legend i.green{background:var(--green)}
+table{width:100%;border-collapse:collapse;margin:12px 0}th,td{padding:9px 10px;border:1px solid var(--line);text-align:left}th{background:#f1f5fb}td:last-child{font-weight:900}.checks{display:grid;gap:8px;margin-top:13px}.check{display:flex;gap:9px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fbfcff}.check b{color:var(--green)}.final{margin-top:15px;padding:18px;border-radius:15px;background:var(--ink);color:#fff}.final .math{background:#fff;color:var(--ink)}footer{padding:20px 20px 45px;color:var(--muted);font-size:13px}
+@media(max-width:720px){section{padding:19px}.two,.three,.route-layout{grid-template-columns:1fr}h2{font-size:23px}}
+@media print{.progress-wrap,nav,.route-buttons{display:none}body{background:#fff}section{box-shadow:none}.tree-scroll{max-height:none;overflow:visible}.tree{min-width:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>同じものを含む順列と最短経路</h1><p>組合せCと、階乗で割る方法を並べて考えます。</p></div></header>
+<div class="progress-wrap"><div class="progress-inner"><div class="progress-label"><span>学習の進み具合</span><span id="pct">0%</span></div><div class="progress"><div id="bar"></div></div></div></div>
+<main>
+<nav><a href="#word">1　文字列</a><a href="#route">2　最短経路</a><a href="#via">3　途中を通る</a><a href="#avoid">4　通らない</a><a href="#return">5　本問へ</a></nav>
+
+<section id="word"><span class="badge">STEP 1</span><h2>類題：KOKORO</h2>
+<div class="letters"><span class="letter">K</span><span class="letter o">O</span><span class="letter">K</span><span class="letter o">O</span><span class="letter r">R</span><span class="letter o">O</span></div>
+<p class="lead">Oが3個、Kが2個、Rが1個です。</p>
+<div class="two"><div class="card"><strong>組合せC</strong><div class="math">₆C₃×₃C₂＝60<small>Oの場所→Kの場所</small></div></div><div class="card"><strong>階乗で割る</strong><div class="math">6!÷(3!×2!)＝60<small>O同士・K同士の入れ替えを除く</small></div></div></div>
+<details><summary>全60本の辞書式樹形図</summary><div class="tree-scroll"><div id="wordTree"></div></div></details>
+<div class="key">同じ文字の個数の階乗で割る。</div>
+</section>
+
+<section id="route"><span class="badge">STEP 2</span><h2>道順も文字列</h2>
+<p class="lead">類題：PからQへ、右3回・上3回。Rは右1・上2の地点です。</p>
+<div class="route-layout"><div class="grid-card"><div id="grid" class="grid"></div><div class="legend"><span><i class="green"></i>Rを通る</span><span><i></i>Rを通らない</span></div></div><div class="card"><strong>経路を選んで確認</strong><div id="routeButtons" class="route-buttons"></div><details open><summary>全20本の辞書式樹形図</summary><div class="tree-scroll"><div id="routeTree"></div></div></details></div></div>
+<div class="two"><div class="card"><strong>組合せC</strong><div class="math">₆C₃＝20<small>6か所から「上」3か所を選ぶ</small></div></div><div class="card"><strong>階乗で割る</strong><div class="math">6!÷(3!×3!)＝20<small>右3回・上3回</small></div></div></div>
+</section>
+
+<section id="via"><span class="badge">STEP 3</span><h2>Rを通る</h2>
+<div class="two"><div class="card"><strong>P→R</strong><div class="math">₃C₁＝3!÷(1!×2!)＝3</div></div><div class="card"><strong>R→Q</strong><div class="math">₃C₁＝3!÷(2!×1!)＝3</div></div></div>
+<div class="math">P→R × R→Q ＝ 3×3＝9</div>
+<div class="key">途中を通る → 前半と後半を掛ける。</div>
+</section>
+
+<section id="avoid"><span class="badge">STEP 4</span><h2>Rを通らない</h2>
+<div class="math">全体 − Rを通る<small>20−9＝11</small></div>
+<div class="key">通らない → 全体から「通る」を引く。</div>
+</section>
+
+<section id="return"><span class="badge">STEP 5</span><h2>MetaMoJiへ戻ろう</h2>
+<table><thead><tr><th>本問</th><th>組合せC</th><th>階乗で割る</th></tr></thead><tbody><tr><td>BANANA</td><td>₆C₃×₃C₂</td><td>6!÷(3!×2!)</td></tr><tr><td>地点C→B</td><td>₄C₂</td><td>4!÷(2!×2!)</td></tr><tr><td>A→地点C→B</td><td>₃C₁×₄C₂</td><td>{3!÷(2!×1!)}×{4!÷(2!×2!)}</td></tr><tr><td>A→Bで地点Cを通らない</td><td>₇C₃−(地点Cを通る)</td><td>7!÷(4!×3!)−(地点Cを通る)</td></tr></tbody></table>
+<div class="checks"><div class="check"><b>1</b>同じ文字・同じ向きの回数を数える。</div><div class="check"><b>2</b>途中を通るなら掛ける。</div><div class="check"><b>3</b>通らないなら全体から引く。</div></div>
+<div class="final"><strong>地点Cと、組合せ記号のCを区別しよう。</strong><div class="math">nCr＝n!÷{r!(n−r)!}</div></div>
+</section>
+</main><footer>同じものを含む順列と最短経路｜簡潔版</footer>
+
+<script>
+function el(n,a={}){const x=document.createElementNS("http://www.w3.org/2000/svg",n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}
+function multisetWords(counts,order,p="",out=[]){const left=Object.values(counts).reduce((a,b)=>a+b,0);if(!left){out.push(p);return out}order.forEach(ch=>{if(counts[ch]>0){counts[ch]--;multisetWords(counts,order,p+ch,out);counts[ch]++}});return out}
+const words=multisetWords({K:2,O:3,R:1},["K","O","R"]),routes=multisetWords({R:3,U:3},["R","U"]);
+function passesR(route){let x=0,y=0;if(x===1&&y===2)return true;for(const s of route){if(s==="R")x++;else y++;if(x===1&&y===2)return true}return false}
+function prefixTree(id,list,{route=false}={}){const h=document.getElementById(id),depth=list[0].length,row=route?34:25,top=42,H=top+list.length*row+24,W=1120,X=Array.from({length:depth+1},(_,i)=>50+i*(1020/depth)),s=el("svg",{class:"tree",viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":`${list.length}本の辞書式樹形図`}),Y=new Map(list.map((x,i)=>[x,top+i*row+14])),N=new Map(list.map((x,i)=>[x,i+1]));const ys=p=>list.filter(x=>x.startsWith(p)).map(x=>Y.get(x)),ny=p=>{const a=ys(p);return a.reduce((x,y)=>x+y,0)/a.length};["START",...Array.from({length:depth},(_,i)=>`${i+1}文字目`)].forEach((z,i)=>{const t=el("text",{x:X[i],y:19,class:"level"});t.textContent=z;s.appendChild(t)});s.appendChild(el("circle",{cx:X[0],cy:ny(""),r:18,class:"root"}));let rt=el("text",{x:X[0],y:ny("")+1,class:"roottext"});rt.textContent="START";s.appendChild(rt);
+for(let d=1;d<=depth;d++){let seen=new Set;list.forEach(word=>{const p=word.slice(0,d);if(seen.has(p))return;seen.add(p);const parent=p.slice(0,-1),end=d===depth,y=ny(p),via=end&&route&&passesR(word),color=end&&route?(via?"#168065":"#3157d5"):"",ln=el("line",{x1:X[d-1]+22,y1:ny(parent),x2:X[d]-(end?54:37),y2:y,class:"line"});if(color){ln.style.stroke=color;ln.style.strokeWidth="4"}s.appendChild(ln);if(end){const box=el("rect",{x:X[d]-53,y:y-12,width:106,height:24,rx:7,class:"leaf"});if(color){box.style.stroke=color;box.style.fill=via?"#eaf8f3":"#eef3ff"}s.appendChild(box);let t=el("text",{x:X[d],y:y+1,class:"text"});t.textContent=`${N.get(word)} ${route?word.replaceAll("R","→").replaceAll("U","↑"):word}`;if(color)t.style.fill=color;s.appendChild(t)}else{const w=Math.max(54,p.length*13+18);s.appendChild(el("rect",{x:X[d]-w/2,y:y-12,width:w,height:24,rx:8,class:"node"}));let t=el("text",{x:X[d],y:y+1,class:"text"});t.textContent=route?p.replaceAll("R","→").replaceAll("U","↑"):p;s.appendChild(t)}})}h.innerHTML="";h.appendChild(s)}
+prefixTree("wordTree",words);prefixTree("routeTree",routes,{route:true});
+function drawGrid(route){const h=document.getElementById("grid"),s=el("svg",{viewBox:"0 0 290 290",role:"img","aria-label":"横3マス縦3マスの格子。左下P、右上Q、右1上2にR。"}),m=40,z=70;for(let i=0;i<=3;i++){s.appendChild(el("line",{x1:m,y1:m+i*z,x2:m+3*z,y2:m+i*z,class:"gridline"}));s.appendChild(el("line",{x1:m+i*z,y1:m,x2:m+i*z,y2:m+3*z,class:"gridline"}))}let x=0,y=0,pts=[[m,m+3*z]];for(const st of route){if(st==="R")x++;else y++;pts.push([m+x*z,m+(3-y)*z])}s.appendChild(el("polyline",{points:pts.map(p=>p.join(",")).join(" "),class:`route${passesR(route)?" via":""}`}));[["P",0,0,false],["Q",3,3,false],["R",1,2,true]].forEach(([n,a,b,c])=>{const px=m+a*z,py=m+(3-b)*z;s.appendChild(el("circle",{cx:px,cy:py,r:17,class:`point${c?" c":""}`}));let t=el("text",{x:px,y:py+1,class:"pointtext"});t.textContent=n;s.appendChild(t)});h.innerHTML="";h.appendChild(s)}
+const bh=document.getElementById("routeButtons");routes.forEach((r,i)=>{const b=document.createElement("button");b.type="button";b.className=passesR(r)?"via":"";b.textContent=`${i+1} ${r.replaceAll("R","→").replaceAll("U","↑")}`;b.onclick=()=>{bh.querySelectorAll("button").forEach(x=>x.classList.remove("active"));b.classList.add("active");drawGrid(r)};bh.appendChild(b)});bh.firstChild.classList.add("active");drawGrid(routes[0]);
+function progress(){const d=document.documentElement,m=d.scrollHeight-d.clientHeight,p=m?Math.min(100,Math.round(d.scrollTop/m*100)):100;document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"%"}addEventListener("scroll",progress,{passive:true});addEventListener("resize",progress);progress();
+</script>
+</body></html>
