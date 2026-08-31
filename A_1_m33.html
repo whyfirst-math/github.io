@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>組分け｜名前のある組・ない組</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#5d687c;--line:#dce4ef;--blue:#3157d5;--blue2:#2443a5;--green:#168065;--soft:#eef3ff;--softg:#eaf8f3;--yellow:#fff7df}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Yu Gothic",Meiryo,sans-serif;line-height:1.7}.wrap,main,footer{max-width:960px;margin:auto}
+header{color:#fff;background:linear-gradient(135deg,var(--blue2),#557be7);padding:45px 20px 38px}h1{font-size:clamp(30px,5vw,46px);line-height:1.2;margin:0 0 10px}header p{margin:0;max-width:780px;font-size:18px}
+.progress-wrap{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}.progress-inner{max-width:960px;margin:auto;padding:8px 20px}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}.progress{height:7px;margin-top:5px;background:#e7edf6;border-radius:99px;overflow:hidden}#bar{height:100%;width:0;background:var(--blue)}
+main{padding:24px 20px 68px}nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:24px}nav a{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:800;text-decoration:none}
+section{min-width:0;margin:20px 0;padding:25px;border:1px solid var(--line);border-radius:19px;background:var(--card);box-shadow:0 7px 22px rgba(25,40,80,.05)}h2{font-size:27px;line-height:1.35;margin:0 0 10px}h3{font-size:19px;margin:20px 0 7px}p{margin:8px 0}.lead{font-size:18px}.badge{display:inline-block;margin-bottom:7px;padding:4px 10px;border-radius:99px;background:var(--soft);color:var(--blue);font-size:12px;font-weight:900}
+.problem,.key,.note{margin:14px 0;padding:14px 16px;border-radius:12px}.problem{border:2px solid #d4def7;background:#fbfcff}.key{border-left:5px solid var(--green);background:var(--softg)}.note{border-left:5px solid #d89b12;background:var(--yellow)}.qgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:11px}.q{padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}.q strong{display:block;color:var(--blue)}
+.people{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.person{display:inline-grid;place-items:center;min-width:40px;height:40px;border:2px solid #8ea3df;border-radius:11px;background:#eef3ff;font-weight:900}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:13px 0}.card{min-width:0;padding:14px;border:1px solid var(--line);border-radius:13px;background:#fbfcff}.card strong{display:block;color:var(--blue)}
+.modes{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.modes button{border:0;border-radius:10px;padding:9px 12px;background:var(--blue);color:#fff;font-weight:900;cursor:pointer}.modes button.secondary{background:#eaf0fa;color:var(--ink)}.modes button.active{outline:4px solid rgba(49,87,213,.18)}
+details{margin-top:9px}summary{cursor:pointer;color:var(--blue);font-weight:900}.tree-scroll{max-width:100%;max-height:650px;overflow:auto;margin-top:9px;border:1px solid var(--line);border-radius:12px;background:#fcfdff}.tree{display:block;width:100%;min-width:750px;height:auto}.line{stroke:#acb7c8;stroke-width:2}.node{fill:#edf2ff;stroke:#8098dc;stroke-width:2}.root{fill:var(--ink)}.leaf{fill:#fff;stroke:#91a1b9;stroke-width:2}.text{font:900 12px system-ui;fill:var(--ink);text-anchor:middle;dominant-baseline:middle}.roottext{font:900 10px system-ui;fill:#fff;text-anchor:middle;dominant-baseline:middle}.level{font:800 13px system-ui;fill:var(--muted);text-anchor:middle}
+.example{display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;margin:12px 0}.group{padding:8px 11px;border:2px solid #8ea3df;border-radius:10px;background:#eef3ff;font-weight:900}.swap{font-size:23px;color:var(--green);font-weight:900}.math{margin:12px 0;padding:13px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#f8fafc;text-align:center;white-space:nowrap;font-size:clamp(21px,4vw,29px);font-weight:900}.math small{display:block;white-space:normal;color:var(--muted);font-size:13px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}.step{padding:11px;border:1px solid var(--line);border-radius:11px;background:#fbfcff;text-align:center}.step strong{display:block;color:var(--blue)}
+table{width:100%;border-collapse:collapse;margin:12px 0}th,td{padding:9px 10px;border:1px solid var(--line);text-align:left}th{background:#f1f5fb}td:last-child{font-weight:900;white-space:nowrap}.checks{display:grid;gap:8px;margin-top:13px}.check{display:flex;gap:9px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fbfcff}.check b{color:var(--green)}.final{margin-top:15px;padding:18px;border-radius:15px;background:var(--ink);color:#fff}.final .math{background:#fff;color:var(--ink)}footer{padding:20px 20px 45px;color:var(--muted);font-size:13px}
+@media(max-width:720px){section{padding:19px}.qgrid,.compare,.steps{grid-template-columns:1fr}h2{font-size:23px}}
+@media print{.progress-wrap,nav,.modes{display:none}body{background:#fff}section{box-shadow:none}.tree-scroll{max-height:none;overflow:visible}.tree{min-width:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>組分け</h1><p>組の名前と、入れ替えて同じかを確認します。</p></div></header>
+<div class="progress-wrap"><div class="progress-inner"><div class="progress-label"><span>学習の進み具合</span><span id="pct">0%</span></div><div class="progress"><div id="bar"></div></div></div></div>
+<main>
+<nav><a href="#start">1　類題</a><a href="#named">2　名前あり</a><a href="#unnamed">3　名前なし</a><a href="#sizes">4　人数が違う</a><a href="#return">5　本問へ</a></nav>
+
+<section id="start"><span class="badge">STEP 1</span><h2>3種類の組分け</h2>
+<div class="problem"><strong>類題</strong><div class="qgrid"><div class="q"><strong>(1)</strong>6人を赤・青・緑へ2人ずつ</div><div class="q"><strong>(2)</strong>6人を名前のない2人組3つへ</div><div class="q"><strong>(3)</strong>5人を2人・2人・1人へ</div></div></div>
+<div class="people"><span class="person">p</span><span class="person">q</span><span class="person">r</span><span class="person">s</span><span class="person">t</span><span class="person">u</span></div>
+<div class="key">辞書式：p・q・r・s・t・uの順に選ぶ。</div>
+</section>
+
+<section id="named"><span class="badge">STEP 2</span><h2>組に名前がある</h2>
+<div class="steps"><div class="step"><strong>赤組</strong>6人から2人</div><div class="step"><strong>青組</strong>残り4人から2人</div><div class="step"><strong>緑組</strong>残り2人</div></div>
+<div class="math">₆C₂×₄C₂×₂C₂＝90</div>
+<details><summary>全90本の樹形図を見る</summary><div class="tree-scroll"><div id="namedTree"></div></div></details>
+<div class="key">赤・青・緑は別の組。割らない。</div>
+</section>
+
+<section id="unnamed"><span class="badge">STEP 3</span><h2>組に名前がない</h2>
+<p class="lead">組を入れ替えても、同じ分け方です。</p>
+<div class="example"><span class="group">pq</span><span class="group">rs</span><span class="group">tu</span><span class="swap">＝</span><span class="group">rs</span><span class="group">tu</span><span class="group">pq</span></div>
+<div class="modes"><button id="plain6" class="active">名前あり90本</button><button id="group6" class="secondary">同じ分け方を色分け</button></div>
+<div class="tree-scroll"><div id="unnamedTree"></div></div>
+<div id="message6" class="note">今は名前ありの90本。</div>
+<div class="math">90÷3!＝15<small>3組の入れ替えを除く</small></div>
+</section>
+
+<section id="sizes"><span class="badge">STEP 4</span><h2>2人・2人・1人</h2>
+<p class="lead">1人組は人数で区別できます。2人組だけを入れ替えます。</p>
+<div class="steps"><div class="step"><strong>1人組</strong>5人から1人</div><div class="step"><strong>2人組①</strong>残り4人から2人</div><div class="step"><strong>2人組②</strong>残り2人</div></div>
+<div class="modes"><button id="plain5" class="active">全30本</button><button id="group5" class="secondary">同じ分け方を色分け</button></div>
+<div class="tree-scroll"><div id="sizeTree"></div></div>
+<div id="message5" class="note">今は2人組①・②を区別した30本。</div>
+<div class="math">₅C₁×₄C₂×₂C₂÷2!＝15</div>
+<div class="key">同じ人数の2組だけが入れ替わる。</div>
+</section>
+
+<section id="return"><span class="badge">STEP 5</span><h2>MetaMoJiへ戻ろう</h2>
+<table><thead><tr><th>本問の条件</th><th>判断</th></tr></thead><tbody><tr><td>A・B・C・Dの4組</td><td>名前あり → 割らない</td></tr><tr><td>名前のない2人組4つ</td><td>4!で割る</td></tr><tr><td>3人・3人・2人</td><td>同じ3人組の2!で割る</td></tr></tbody></table>
+<div class="checks"><div class="check"><b>1</b>まず順に組を作る。</div><div class="check"><b>2</b>組を入れ替えて同じか。</div><div class="check"><b>3</b>同じ組の個数だけ階乗で割る。</div></div>
+<div class="final"><strong>名前ではなく「入れ替えて同じか」。</strong><div class="math">同じ組がk個 → k!で割る</div></div>
+</section>
+</main><footer>組分け｜名前のある組・ない組</footer>
+
+<script>
+const six=["p","q","r","s","t","u"],five=["p","q","r","s","t"];
+function comb(a,k,s=0,p=[]){if(p.length===k)return[p];let o=[];for(let i=s;i<=a.length-(k-p.length);i++)o.push(...comb(a,k,i+1,[...p,a[i]]));return o}function el(n,a={}){const x=document.createElementNS("http://www.w3.org/2000/svg",n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));return x}function hue(i,n){return`hsl(${Math.round(i*330/n)} 58% 43%)`}function pale(i,n){return`hsl(${Math.round(i*330/n)} 75% 94%)`}
+function namedData(){let out=[];comb(six,2).forEach(a=>{const r1=six.filter(x=>!a.includes(x));comb(r1,2).forEach(b=>{const c=r1.filter(x=>!b.includes(x));out.push([a.join(""),b.join(""),c.join("")])})});return out}
+function key6(row){return[...row].sort().join("|")}const D6=namedData(),K6=[...new Set(D6.map(key6))],I6=Object.fromEntries(K6.map((x,i)=>[x,i]));
+function drawSix(id,grouped){const h=document.getElementById(id),row=27,top=43,H=top+D6.length*row+24,W=840,X=[55,325,735],s=el("svg",{class:"tree",viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"6人を名前のある3組に分ける全90本の辞書式樹形図"}),Y=D6.map((_,i)=>top+i*row+14),first=[...new Set(D6.map(x=>x[0]))];["START","赤組","青組｜緑組"].forEach((z,i)=>{const t=el("text",{x:X[i],y:20,class:"level"});t.textContent=z;s.appendChild(t)});const root=Y.reduce((a,b)=>a+b,0)/Y.length;s.appendChild(el("circle",{cx:X[0],cy:root,r:18,class:"root"}));let rt=el("text",{x:X[0],y:root+1,class:"roottext"});rt.textContent="START";s.appendChild(rt);first.forEach(a=>{const ids=D6.map((x,i)=>x[0]===a?i:-1).filter(i=>i>=0),mid=ids.map(i=>Y[i]).reduce((x,y)=>x+y,0)/ids.length;s.appendChild(el("line",{x1:X[0]+18,y1:root,x2:X[1]-20,y2:mid,class:"line"}));s.appendChild(el("circle",{cx:X[1],cy:mid,r:20,class:"node"}));let mt=el("text",{x:X[1],y:mid+1,class:"text"});mt.textContent=a;s.appendChild(mt);ids.forEach(i=>{const d=D6[i],k=key6(d),g=I6[k],y=Y[i],ln=el("line",{x1:X[1]+20,y1:mid,x2:X[2]-65,y2:y,class:"line"});if(grouped){ln.style.stroke=hue(g,K6.length);ln.style.strokeWidth="4"}s.appendChild(ln);const box=el("rect",{x:X[2]-64,y:y-12,width:128,height:24,rx:7,class:"leaf"});if(grouped){box.style.stroke=hue(g,K6.length);box.style.fill=pale(g,K6.length)}s.appendChild(box);let t=el("text",{x:X[2],y:y+1,class:"text"});t.textContent=`${i+1} ${d.join("｜")}`;if(grouped)t.style.fill=hue(g,K6.length);s.appendChild(t)})});h.innerHTML="";h.appendChild(s)}
+function sizeData(){let out=[];five.forEach(one=>{const rem=five.filter(x=>x!==one);comb(rem,2).forEach(a=>{const b=rem.filter(x=>!a.includes(x));out.push([one,a.join(""),b.join("")])})});return out}function key5(row){return`${row[0]}|${[row[1],row[2]].sort().join("|")}`}const D5=sizeData(),K5=[...new Set(D5.map(key5))],I5=Object.fromEntries(K5.map((x,i)=>[x,i]));
+function drawFive(grouped){const h=document.getElementById("sizeTree"),row=31,top=43,H=top+D5.length*row+24,W=820,X=[55,300,710],s=el("svg",{class:"tree",viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"5人を2人・2人・1人に分ける全30本の辞書式樹形図"}),Y=D5.map((_,i)=>top+i*row+14);["START","1人組","2人組①｜②"].forEach((z,i)=>{const t=el("text",{x:X[i],y:20,class:"level"});t.textContent=z;s.appendChild(t)});const root=Y.reduce((a,b)=>a+b,0)/Y.length;s.appendChild(el("circle",{cx:X[0],cy:root,r:18,class:"root"}));let rt=el("text",{x:X[0],y:root+1,class:"roottext"});rt.textContent="START";s.appendChild(rt);five.forEach(one=>{const ids=D5.map((x,i)=>x[0]===one?i:-1).filter(i=>i>=0),mid=ids.map(i=>Y[i]).reduce((x,y)=>x+y,0)/ids.length;s.appendChild(el("line",{x1:X[0]+18,y1:root,x2:X[1]-19,y2:mid,class:"line"}));s.appendChild(el("circle",{cx:X[1],cy:mid,r:18,class:"node"}));let mt=el("text",{x:X[1],y:mid+1,class:"text"});mt.textContent=one;s.appendChild(mt);ids.forEach(i=>{const d=D5[i],k=key5(d),g=I5[k],y=Y[i],ln=el("line",{x1:X[1]+19,y1:mid,x2:X[2]-65,y2:y,class:"line"});if(grouped){ln.style.stroke=hue(g,K5.length);ln.style.strokeWidth="4"}s.appendChild(ln);const box=el("rect",{x:X[2]-64,y:y-12,width:128,height:24,rx:7,class:"leaf"});if(grouped){box.style.stroke=hue(g,K5.length);box.style.fill=pale(g,K5.length)}s.appendChild(box);let t=el("text",{x:X[2],y:y+1,class:"text"});t.textContent=`${i+1} ${d[0]}｜${d[1]}｜${d[2]}`;if(grouped)t.style.fill=hue(g,K5.length);s.appendChild(t)})});h.innerHTML="";h.appendChild(s)}
+drawSix("namedTree",false);let g6=false,g5=false;function mode6(v){g6=v;drawSix("unnamedTree",v);document.getElementById("plain6").classList.toggle("active",!v);document.getElementById("plain6").classList.toggle("secondary",v);document.getElementById("group6").classList.toggle("active",v);document.getElementById("group6").classList.toggle("secondary",!v);document.getElementById("message6").innerHTML=v?"90本が<strong>6本ずつ15色</strong>にまとまる。":"今は名前ありの90本。"}function mode5(v){g5=v;drawFive(v);document.getElementById("plain5").classList.toggle("active",!v);document.getElementById("plain5").classList.toggle("secondary",v);document.getElementById("group5").classList.toggle("active",v);document.getElementById("group5").classList.toggle("secondary",!v);document.getElementById("message5").innerHTML=v?"30本が<strong>2本ずつ15色</strong>にまとまる。":"今は2人組①・②を区別した30本。"}document.getElementById("plain6").onclick=()=>mode6(false);document.getElementById("group6").onclick=()=>mode6(true);document.getElementById("plain5").onclick=()=>mode5(false);document.getElementById("group5").onclick=()=>mode5(true);mode6(false);mode5(false);
+function progress(){const d=document.documentElement,m=d.scrollHeight-d.clientHeight,p=m?Math.min(100,Math.round(d.scrollTop/m*100)):100;document.getElementById("bar").style.width=p+"%";document.getElementById("pct").textContent=p+"%"}addEventListener("scroll",progress,{passive:true});addEventListener("resize",progress);progress();
+</script>
+</body></html>
