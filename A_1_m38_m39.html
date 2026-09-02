@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102e5a">
+  <title>確率のことば｜まとめアニメーション版</title>
+  <style>
+    :root{
+      --navy:#102e5a;--blue:#123d79;--ink:#10203f;--muted:#52647d;
+      --line:#cbd7e6;--paper:#fff;--bg:#eef3f9;--yellow:#f0b51c;
+      --yellow-soft:#fff6cf;--red:#e54858;--red-soft:#fff0f2;
+    }
+    *{box-sizing:border-box}
+    html,body{min-height:100%;margin:0}
+    body{
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%,rgba(240,181,28,.13),transparent 23rem),
+        linear-gradient(135deg,#f8fafc,#edf3f9);
+      font-family:"Yu Gothic","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+      font-size:18px;
+    }
+    button{font:inherit}
+    .shell{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto}
+    .topbar{
+      position:sticky;z-index:10;top:0;
+      display:grid;grid-template-columns:auto minmax(0,1fr) minmax(150px,220px);
+      gap:1rem;align-items:center;padding:.75rem clamp(.9rem,3vw,2.4rem);
+      color:#fff;background:var(--navy);box-shadow:0 6px 22px #102e5a30
+    }
+    .unit{
+      padding:.38rem .68rem;border-radius:999px;background:var(--yellow);
+      color:#312b12;font-size:.86rem;font-weight:900;white-space:nowrap
+    }
+    .problem{margin:0;font-size:clamp(1rem,1.5vw,1.16rem);line-height:1.55}
+    .problem strong{margin-right:.5rem;color:#ffe17a}
+    .progress-wrap{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;font-size:.86rem;font-weight:800}
+    .progress{height:8px;overflow:hidden;border-radius:999px;background:#ffffff33}
+    .progress>span{display:block;width:10%;height:100%;background:var(--yellow);transition:width .25s}
+    .stage{
+      width:min(1180px,calc(100% - 2rem));min-height:590px;margin:auto;padding:clamp(1.25rem,3vw,2.5rem) 0;
+      display:grid;grid-template-columns:minmax(280px,.82fr) minmax(440px,1.35fr);
+      gap:clamp(1.3rem,3vw,3.4rem);align-items:center
+    }
+    .step-label{display:flex;align-items:center;gap:.65rem;color:#365374;font-size:1.06rem;font-weight:900}
+    .step-label span{padding:.3rem .52rem;border-radius:.45rem;background:#dce7f5;color:var(--blue);font-size:.82rem;letter-spacing:.06em}
+    h1{margin:.8rem 0 1rem;font-size:clamp(2rem,4vw,3.25rem);line-height:1.22;letter-spacing:-.035em;text-wrap:balance}
+    .lead{margin:0;color:#40516d;font-size:clamp(1.1rem,1.65vw,1.28rem);line-height:1.9}
+    .term{color:var(--ink);font-weight:900;background:linear-gradient(transparent 66%,#ffe27b 66%)}
+    .copy.step-enter{animation:copyIn .42s ease both}
+    .visual.step-enter{animation:visualIn .46s ease both}
+    .point{margin-top:1.4rem;padding:1rem 1.1rem;border-left:5px solid var(--yellow);border-radius:.2rem .85rem .85rem .2rem;background:var(--yellow-soft)}
+    .point b{display:block;margin-bottom:.3rem;color:#765900;font-size:.86rem;letter-spacing:.05em}
+    .point p{margin:0;color:#413a24;font-weight:800;line-height:1.65}
+    .visual{
+      min-height:510px;display:grid;place-items:center;padding:clamp(1rem,3vw,2.1rem);
+      border:1px solid #a9bbd280;border-radius:1.8rem;overflow:hidden;
+      background:
+        linear-gradient(#123d7909 1px,transparent 1px),
+        linear-gradient(90deg,#123d7909 1px,transparent 1px),#fffffff2;
+      background-size:24px 24px;box-shadow:0 22px 60px #1a406c1f
+    }
+    .question,.trial{width:100%;display:flex;justify-content:center;align-items:center;gap:clamp(1rem,4vw,2.5rem)}
+    .question .words{color:#3f506a;font-size:clamp(1.1rem,2vw,1.34rem);line-height:1.45}
+    .question p{margin:.1rem 0}.question strong{color:var(--red);font-size:clamp(2.4rem,7vw,5rem);letter-spacing:.04em}
+    .die{
+      width:44px;height:44px;padding:7px;display:grid;grid-template-columns:repeat(3,1fr);
+      grid-template-rows:repeat(3,1fr);gap:3px;flex:none;border:2px solid #8da2bc;border-radius:10px;background:#fff
+    }
+    .die.big{width:clamp(105px,16vw,150px);height:clamp(105px,16vw,150px);padding:clamp(19px,3vw,30px);border:3px solid #153a6c;border-radius:1.6rem;box-shadow:0 15px 0 #d4dfed,0 25px 38px #102e5a28}
+    .dot{width:100%;aspect-ratio:1;border-radius:50%;background:#14396b}.blank{opacity:0}
+    .trial{flex-wrap:wrap}.arrow{color:var(--yellow);font-size:2.5rem;font-weight:900}
+    .cue{min-width:110px;padding:1rem;border-radius:1rem;background:#e7eef8;color:var(--blue);text-align:center;font-weight:900}
+    .cue strong{font-size:1.6rem}
+    .goal-card{width:min(100%,620px);padding:clamp(1.4rem,4vw,2.6rem);border:3px solid var(--blue);border-radius:1.5rem;background:#fff;box-shadow:11px 11px 0 #d9e4f2}
+    .goal-card>span{display:inline-block;padding:.36rem .7rem;border-radius:999px;background:var(--yellow);color:#40350d;font-size:.9rem;font-weight:900}
+    .goal-card>p{margin:1.2rem 0 1.5rem;font-size:clamp(1.35rem,2.8vw,2rem);line-height:1.65;font-weight:900}
+    .goal-list{display:grid;gap:.7rem}.goal-list div{padding:.8rem 1rem;display:grid;grid-template-columns:34px 1fr;gap:.7rem;align-items:center;border-radius:.8rem;background:#edf3fa;color:#294769;font-weight:800}
+    .goal-list b{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--blue);color:#fff}
+    .dice-panel{width:min(100%,640px)}
+    .dice-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem}
+    .dice-head strong{color:var(--blue);font-size:1rem}
+    .count{padding:.38rem .65rem;border-radius:999px;background:#e6eef8;color:var(--blue);font-size:.92rem;font-weight:900;white-space:nowrap}
+    .dice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.7rem,2vw,1rem)}
+    .die-card{min-height:145px;padding:1rem .55rem .75rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;border:2px solid var(--line);border-radius:1rem;background:#fff;box-shadow:0 7px 16px #102e5a12;transition:opacity .2s,transform .2s;animation:diceIn .42s calc(var(--delay,0)*65ms) both}
+    .die-card .die{width:62px;height:62px;padding:10px;border-color:#6e87a5}
+    .number{color:#153a6c;font-size:1.2rem;font-weight:900}
+    .tag{padding:.33rem .6rem;border-radius:999px;background:#e8eef6;color:#405a7b;font-size:.88rem;font-weight:900;white-space:nowrap}
+    .die-card.selected{border-color:var(--red);background:var(--red-soft);transform:translateY(-4px)}
+    .die-card.muted{opacity:.25}
+    .tag.red{background:var(--red);color:#fff}.tag.gold{min-width:48px;text-align:center;background:#fff0b7;color:#6a5100}
+    .set{margin-top:.8rem;padding:.65rem .9rem;border-radius:.75rem;background:#e8eef6;color:var(--blue);text-align:center;font:800 1.03rem Georgia,"Yu Gothic",serif}
+    .set.red{background:var(--red-soft);color:#b22f3d}.set.gold{background:#fff5c9;color:#6a5100;font-family:inherit}
+    .notation{margin-top:1.1rem;display:flex;align-items:center;gap:.85rem;font-weight:900}
+    .notation b{padding:.48rem .8rem;border-radius:.7rem;background:var(--red);color:#fff;font:800 1.5rem Georgia,serif}
+    .stack-frac{display:inline-grid;grid-template-rows:auto auto;min-width:1.35em;vertical-align:middle;transform:translateY(-.03em);color:inherit;text-align:center;font-family:Georgia,"Yu Mincho",serif;font-weight:900;line-height:1}
+    .stack-frac>span:first-child{padding:0 .18em .1em;border-bottom:1.8px solid currentColor}
+    .stack-frac>span:last-child{padding:.1em .18em 0}
+    .stack-frac.small{font-size:.92em;vertical-align:middle}
+    .formula{width:min(100%,620px);display:grid;gap:1.8rem;padding:clamp(1.2rem,3.5vw,2.4rem);border:3px solid var(--blue);border-radius:1.4rem;background:#fff;box-shadow:10px 10px 0 #d9e4f2}
+    .formula-line{display:flex;justify-content:center;align-items:center;gap:clamp(.4rem,2vw,.9rem);color:#153a6c;font:800 clamp(1.2rem,2.6vw,1.9rem) Georgia,serif}
+    .frac{display:inline-grid;text-align:center}.frac span:first-child{padding:0 .5rem .24rem;border-bottom:2px solid}.frac span:last-child{padding:.24rem .5rem 0}
+    .frac.words{font:800 clamp(.68rem,1.4vw,.93rem) "Yu Gothic",sans-serif}.formula-line.answer{color:var(--red);font-size:clamp(1.8rem,4vw,2.9rem)}
+    .formula .condition{margin:0;padding-top:1rem;border-top:1px dashed #aebed1;color:#5c4a07;text-align:center;font-weight:900}
+    .review{width:min(100%,660px);display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+    .review-item{min-height:108px;padding:.88rem;display:grid;grid-template-columns:32px 1fr;gap:.65rem;border:1px solid var(--line);border-radius:1rem;background:#fff;box-shadow:0 6px 15px #102e5a0f}
+    .badge{width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:var(--yellow);color:#3f340e;font-size:.8rem;font-weight:900}
+    .review-item strong{color:var(--blue);font-size:1.05rem}.review-item p{margin:.32rem 0 0;color:#51627b;font-size:.98rem;line-height:1.55}
+    .recap{width:min(100%,720px);display:grid;gap:.8rem}
+    .recap-intent{padding:.9rem 1rem;border-left:5px solid var(--yellow);border-radius:.3rem .9rem .9rem .3rem;background:var(--yellow-soft);color:#4c411b;line-height:1.55}
+    .recap-intent strong{display:block;color:#725600;font-size:.88rem;letter-spacing:.04em}
+    .recap-intent span{font-weight:900}
+    .recap-head{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+    .recap-title{display:grid;gap:.15rem;color:var(--blue);font-size:1.05rem;font-weight:900}
+    .recap-title small{color:#61728a;font-size:.84rem}
+    .replay{min-height:42px;padding:.5rem .8rem;border:2px solid var(--blue);border-radius:.7rem;background:#fff;color:var(--blue);font-weight:900;cursor:pointer}
+    .replay:disabled{opacity:.45;cursor:default}
+    .recap-board{min-height:430px;padding:1rem;display:grid;grid-template-rows:auto auto 1fr;gap:.8rem;border:2px solid #c8d6e7;border-radius:1.25rem;background:#f8fbff}
+    .recap-caption{margin:0;padding:.55rem .8rem;border-radius:.7rem;background:var(--navy);color:#fff;text-align:center;font-size:1.04rem;font-weight:900}
+    .recap-phases{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem}
+    .recap-phase{padding:.42rem .25rem;border-radius:.55rem;background:#e7edf5;color:#607089;text-align:center;font-size:.78rem;font-weight:900;transition:.35s}
+    .recap-phase.active{background:var(--yellow);color:#40340a;transform:translateY(-2px)}
+    .recap-phase.done{background:#cbdcf0;color:var(--blue)}
+    .recap-scene{min-height:300px;display:grid;place-items:center}
+    .recap-purpose,.recap-die-slot,.recap-results-layer{grid-area:1/1;transition:opacity .55s,transform .55s}
+    .recap-purpose{width:min(100%,560px);display:grid;gap:.9rem;text-align:center}
+    .recap-purpose>strong{color:var(--blue);font-size:1.15rem}
+    .recap-route{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;align-items:center}
+    .recap-route span{padding:.7rem .35rem;border:2px solid #c8d6e7;border-radius:.75rem;background:#fff;color:var(--blue);font-size:.86rem;font-weight:900}
+    .recap-purpose.hide{opacity:0;transform:translateY(-12px);pointer-events:none}
+    .recap-die-slot{display:grid;place-items:center;opacity:0;transform:scale(.75)}
+    .recap-die-slot.show{opacity:1;transform:none}.recap-die-slot.hide{opacity:0;transform:scale(.7)}
+    .recap-results-layer{width:100%;display:grid;gap:.75rem;opacity:0;transform:translateY(12px);pointer-events:none}
+    .recap-results-layer.show{opacity:1;transform:none}
+    .recap-results{display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem}
+    .mini-result{min-width:0;padding:.55rem .2rem;display:grid;place-items:center;gap:.25rem;border:2px solid #cbd7e6;border-radius:.8rem;background:#fff;opacity:0;transform:translateY(14px);transition:opacity .45s,transform .45s,border-color .45s,background .45s}
+    .recap-results.reveal .mini-result{opacity:1;transform:none;transition-delay:calc(var(--order)*.32s)}
+    .mini-result .die{width:46px;height:46px;padding:7px}.mini-result b{color:var(--blue)}
+    .mini-result em{padding:.18rem .38rem;border-radius:999px;background:#fff0b7;color:#6a5100;font-size:.72rem;font-style:normal;font-weight:900;opacity:0;transition:.4s}
+    .mini-result em .stack-frac{font-size:1.2em;vertical-align:middle}
+    .recap-results.equal .mini-result em{opacity:1}
+    .recap-results.highlight .mini-result.odd{opacity:.22;transform:scale(.9)}
+    .recap-results.highlight .mini-result.even{border-color:var(--red);background:var(--red-soft);transform:translateY(-5px)}
+    .recap-explain{min-height:44px;margin:0;padding:.55rem .75rem;border-radius:.7rem;background:#e8eef6;color:var(--blue);text-align:center;font-weight:900;line-height:2;opacity:0;transition:.4s}
+    .recap-explain .stack-frac{margin:0 .12em;font-size:1.08em;vertical-align:middle}
+    .recap-explain.show{opacity:1}
+    .recap-formula{padding:.65rem 1rem;display:grid;place-items:center;border-radius:.8rem;background:#fff4c7;color:#634c00;text-align:center;opacity:0;transform:scale(.86);transition:.38s}
+    .recap-equation{display:flex;align-items:center;justify-content:center;gap:.28em;font:900 clamp(1.8rem,4.8vw,2.8rem) Georgia,"Yu Mincho",serif}
+    .recap-equation .eq-text,.recap-equation .eq-sign{height:2.12em;display:grid;place-items:center;line-height:1}
+    .recap-equation .eq-frac{width:1.5em;height:2.12em;display:grid;grid-template-rows:1fr 2px 1fr;text-align:center;line-height:1}
+    .recap-equation .eq-num{align-self:end;padding-bottom:.08em}
+    .recap-equation .eq-bar{width:100%;height:2px;align-self:center;background:currentColor}
+    .recap-equation .eq-den{align-self:start;padding-top:.08em}
+    .recap-formula.show{opacity:1;transform:none}
+    .controls{
+      position:sticky;z-index:10;bottom:0;min-height:76px;padding:.75rem clamp(.9rem,3vw,2.4rem);
+      display:grid;grid-template-columns:minmax(115px,auto) 1fr minmax(115px,auto);gap:1rem;align-items:center;
+      border-top:1px solid #d2dce8;background:#fffffff0;backdrop-filter:blur(12px)
+    }
+    .navbtn{min-height:48px;padding:.65rem 1.2rem;border:1px solid var(--line);border-radius:.8rem;background:#fff;color:var(--blue);font-size:1.04rem;font-weight:900;cursor:pointer}
+    .navbtn.next{border-color:var(--blue);background:var(--blue);color:#fff}.navbtn:disabled{opacity:.35;cursor:default}
+    .dots{display:flex;justify-content:center;gap:.42rem}.dots button{width:10px;height:10px;padding:0;border:0;border-radius:999px;background:#cad5e3;cursor:pointer;transition:.2s}
+    .dots button.done{background:#7f9fc4}.dots button.active{width:30px;background:var(--yellow)}
+    button:focus-visible{outline:3px solid #f0b51c88;outline-offset:3px}
+    @keyframes copyIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+    @keyframes visualIn{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:none}}
+    @keyframes diceIn{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}
+    @media(max-width:850px){
+      .topbar{grid-template-columns:auto 1fr}.progress-wrap{grid-column:1/-1}
+      .stage{grid-template-columns:1fr;min-height:auto;align-items:start}.visual{min-height:460px}
+      h1{margin-bottom:.65rem}.point{margin-top:1rem}
+    }
+    @media(max-width:560px){
+      body{font-size:17px}.topbar{gap:.55rem .7rem;padding:.65rem .8rem}.unit{font-size:.74rem}.problem{font-size:.9rem}
+      .stage{width:calc(100% - 1.1rem);padding:1rem 0;gap:1rem}h1{font-size:1.85rem}.lead{font-size:1.06rem;line-height:1.78}
+      .visual{min-height:420px;padding:.8rem;border-radius:1.2rem}.question{flex-direction:column;text-align:center}
+      .dice-head{align-items:flex-start}.count{font-size:.86rem}.dice-grid{gap:.55rem}.die-card{min-height:125px;padding:.7rem .3rem}.die-card .die{width:52px;height:52px;padding:8px}
+      .die{width:40px;height:40px}.tag{font-size:.82rem}.review{grid-template-columns:1fr}.review-item{min-height:auto}
+      .recap-results{grid-template-columns:repeat(3,1fr)}.recap-board{min-height:540px}.recap-head{align-items:flex-start}.replay{font-size:.86rem}
+      .recap-route{grid-template-columns:repeat(2,1fr)}.recap-phases{grid-template-columns:repeat(2,1fr)}
+      .controls{grid-template-columns:1fr 1fr;padding:.6rem .8rem}.dots{display:none}.navbtn{width:100%;padding-inline:.7rem}
+      .trial{gap:.65rem}.arrow{font-size:1.6rem}.cue{min-width:90px;padding:.75rem}
+    }
+    @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body data-version="fraction-alignment-v7">
+  <main class="shell">
+    <header class="topbar">
+      <div class="unit">確率｜用語の確認</div>
+      <p class="problem"><strong>問題</strong>公正なサイコロを1回投げる。偶数の目が出る確率を求めよう。</p>
+      <div class="progress-wrap">
+        <div class="progress" role="progressbar" aria-label="学習の進み具合"><span id="progress"></span></div>
+        <span id="progressText">1 / 11</span>
+      </div>
+    </header>
+
+    <section class="stage" aria-live="polite">
+      <div class="copy">
+        <div class="step-label"><span id="stepNo">STEP 1</span><b id="stepLabel">めあて</b></div>
+        <h1 id="title">今日のめあて</h1>
+        <p class="lead" id="lead"></p>
+        <div class="point"><b>ここが大事</b><p id="point"></p></div>
+        <div id="extra"></div>
+      </div>
+      <div class="visual" id="visual"></div>
+    </section>
+
+    <footer class="controls">
+      <button class="navbtn" id="prev">← もどる</button>
+      <div class="dots" id="dots" aria-label="学習ステップ"></div>
+      <button class="navbtn next" id="next">つぎへ →</button>
+    </footer>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+      function fraction(top,bottom,small){
+        return '<span class="stack-frac'+(small?' small':'')+'" role="img" aria-label="'+bottom+'分の'+top+'"><span aria-hidden="true">'+top+'</span><span aria-hidden="true">'+bottom+'</span></span>';
+      }
+      var steps=[
+        {label:"めあて",title:"今日のめあて",lead:"サイコロの例を使って、<strong class='term'>確率のことば</strong>と<strong class='term'>求め方</strong>を説明できるようになろう。",point:"ことばを覚えるだけでなく、具体的な結果と結びつけよう。",mode:"goal"},
+        {label:"今日の問い",title:"偶数の目が出る確率は？",lead:"すぐに式へ進まず、まず「何が起こりうるか」を整理します。",point:"同じ6個の結果を見ながら、確率のことばを順につなげよう。",mode:"question"},
+        {label:"試行",title:"サイコロを1回投げる",lead:"同じ条件で繰り返すことができ、結果が偶然に決まる実験や観察を<strong class='term'>試行</strong>といいます。",point:"この問題の試行は「公正なサイコロを1回投げる」こと。",mode:"trial"},
+        {label:"根元事象",title:"結果を1つずつに分ける",lead:"「1が出る」「2が出る」のような、これ以上分けられない一つ一つの事象を<strong class='term'>根元事象</strong>といいます。",point:"1・2・3・4・5・6のそれぞれが、根元事象1個を表す。",mode:"elementary"},
+        {label:"全事象",title:"起こりうる結果を全部集める",lead:"すべての根元事象を集めたものを<strong class='term'>全事象</strong>といいます。ここでは6個です。",point:"もれなく・重複なく・順序よく並べると、全部で6個。",mode:"whole"},
+        {label:"事象 A",title:"条件に合う結果を選ぶ",lead:"「偶数の目が出る」という<strong class='term'>事象 A</strong>を考えます。条件に合うのは2・4・6です。",point:"事象 A は、条件に合う根元事象の集まり。",mode:"event"},
+        {label:"同様に確からしい",title:"6個の結果は同じ出やすさか",lead:"公正なサイコロでは、どの目も出やすさが同じです。このとき、根元事象は<strong class='term'>同様に確からしい</strong>といいます。",point:"「結果が6個ある」だけでは不十分。出やすさが同じことを確かめる。",mode:"equal"},
+        {label:"P(A)",title:"事象 A の確率を表す",lead:"事象 A が起こる確率を<strong class='term'>P(A)</strong>と表します。「ピー・エー」と読みます。",point:"この問題では、P(A) は「偶数の目が出る確率」。",mode:"notation"},
+        {label:"確率の公式",title:"結果の個数を比べる",lead:"根元事象が同様に確からしいとき、全体の個数と、事象 A に入る個数を比べます。",point:"全体6個のうち、事象 A は3個。だから P(A) = "+fraction(3,6,true)+" = "+fraction(1,2,true)+"。",mode:"formula"},
+        {label:"用語の確認",title:"1本の流れで言い直す",lead:"ことばを、サイコロの例と結びつけて確認します。",point:"公式を使う前に「同様に確からしいか」を忘れない。",mode:"review"},
+        {label:"MetaMoJiへ",title:"本問でも同じ順番で考える",lead:"場面が変わっても、最初に起こりうる結果を整理すれば大丈夫です。",point:"全体 → 条件に合うもの → 同様に確からしいか → 確率",mode:"finish"}
+      ];
+      var dotMap={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+      var index=0;
+      var summaryTimers=[];
+      function die(value,big){
+        var cells="";
+        for(var i=0;i<9;i++) cells+='<i class="'+(dotMap[value].indexOf(i)>-1?"dot":"blank")+'"></i>';
+        return '<span class="die'+(big?" big":"")+'" aria-label="'+value+'の目">'+cells+'</span>';
+      }
+      function diceBoard(mode){
+        var eventMode=mode==="event"||mode==="notation",cards="";
+        for(var n=1;n<=6;n++){
+          var selected=eventMode&&n%2===0;
+          cards+='<div class="die-card '+(selected?"selected ":"")+(eventMode&&!selected?"muted":"")+'" style="--delay:'+(n-1)+'">';
+          cards+=die(n,false)+'<b class="number">'+n+'</b>';
+          if(mode==="elementary") cards+='<span class="tag">根元事象</span>';
+          if(mode==="whole") cards+='<span class="tag">U に入る</span>';
+          if(selected) cards+='<span class="tag red">A に入る</span>';
+          if(mode==="equal") cards+='<span class="tag gold">'+fraction(1,6,true)+'</span>';
+          cards+='</div>';
+        }
+        var foot="";
+        if(mode==="whole") foot='<div class="set">U = { 1, 2, 3, 4, 5, 6 }</div>';
+        if(eventMode) foot='<div class="set red">A = { 2, 4, 6 }</div>';
+        if(mode==="equal") foot='<div class="set gold">6個すべて、出やすさが同じ</div>';
+        return '<div class="dice-panel"><div class="dice-head"><strong>1から6まで順序よく</strong><span class="count">'+(eventMode?"Aに入る結果：3個":"起こりうる結果：6個")+'</span></div><div class="dice-grid">'+cards+'</div>'+foot+'</div>';
+      }
+      function visual(mode){
+        if(mode==="goal") return '<div class="goal-card"><span>今日できるようになること</span><p>サイコロの例を使って、確率のことばと求め方を説明しよう。</p><div class="goal-list"><div><b>1</b><span>ことばを具体的な結果と結びつける</span></div><div><b>2</b><span>公式が使える条件を確かめる</span></div><div><b>3</b><span>確率を求める</span></div></div></div>';
+        if(mode==="question") return '<div class="question"><div>'+die(6,true)+'</div><div class="words"><p>公正なサイコロを1回</p><strong>偶数の目</strong><p>が出る確率</p></div></div>';
+        if(mode==="trial") return '<div class="trial"><div class="cue">投げる</div><div class="arrow">→</div>'+die(4,true)+'<div class="arrow">→</div><div class="cue">結果は<br><strong>1つ</strong></div></div>';
+        if(mode==="formula") return '<div class="formula"><div class="formula-line"><span>P(A)</span><span>=</span><span class="frac words"><span>A に含まれる根元事象の個数</span><span>全事象に含まれる根元事象の個数</span></span></div><div class="formula-line answer"><span>P(A)</span><span>=</span><span class="frac"><span>3</span><span>6</span></span><span>=</span><span class="frac"><span>1</span><span>2</span></span></div><p class="condition">根元事象が同様に確からしいときに使える</p></div>';
+        if(mode==="review"){
+          var items=[["試行","サイコロを1回投げる"],["根元事象","1・2・3・4・5・6の各結果"],["全事象 U","起こりうる6個を全部集めたもの"],["事象 A","偶数である2・4・6の集まり"],["同様に確からしい","6個の結果の出やすさが同じ"],["P(A)","事象 A が起こる確率"]];
+          var html='<div class="review">';
+          items.forEach(function(item,i){html+='<div class="review-item"><span class="badge">'+(i+1)+'</span><div><strong>'+item[0]+'</strong><p>'+item[1]+'</p></div></div>';});
+          return html+'</div>';
+        }
+        if(mode==="finish"){
+          var results="";
+          for(var value=1;value<=6;value++){
+            results+='<div class="mini-result '+(value%2===0?"even":"odd")+'" style="--order:'+(value-1)+'">'+die(value,false)+'<b>'+value+'</b><em>'+fraction(1,6,true)+'</em></div>';
+          }
+          return '<div class="recap">'
+            +'<div class="recap-intent"><strong>このアニメーションで確かめること</strong><span>全事象から事象 A を選び、確率の式をつくるまでの順番</span></div>'
+            +'<div class="recap-head"><div class="recap-title"><span>約35秒のまとめ</span><small id="summaryStatus">下の目的を読んでから始めよう</small></div><button class="replay" id="playSummary" type="button">▶ はじめる</button></div>'
+            +'<div class="recap-board"><p class="recap-caption" id="recapCaption">4つの順番を意識して見よう</p>'
+            +'<div class="recap-phases" id="recapPhases"><span class="recap-phase">① 全事象</span><span class="recap-phase">② 同じ出やすさ</span><span class="recap-phase">③ 事象 A</span><span class="recap-phase">④ 確率</span></div>'
+            +'<div class="recap-scene">'
+            +'<div class="recap-purpose" id="recapPurpose"><strong>何を、どの順に考える？</strong><div class="recap-route"><span>全体を集める</span><span>出やすさを確認</span><span>条件に合うもの</span><span>個数を比べる</span></div></div>'
+            +'<div class="recap-die-slot" id="recapDie">'+die(1,true)+'</div>'
+            +'<div class="recap-results-layer" id="recapLayer"><div class="recap-results" id="recapResults">'+results+'</div><p class="recap-explain" id="recapExplain"></p><div class="recap-formula" id="recapFormula"><div class="recap-equation" role="img" aria-label="P A イコール 6分の3 イコール 2分の1"><span class="eq-text">P(A)</span><span class="eq-sign">=</span><span class="eq-frac"><span class="eq-num">3</span><span class="eq-bar"></span><span class="eq-den">6</span></span><span class="eq-sign">=</span><span class="eq-frac"><span class="eq-num">1</span><span class="eq-bar"></span><span class="eq-den">2</span></span></div></div></div>'
+            +'</div></div></div>';
+        }
+        return diceBoard(mode);
+      }
+      function clearSummaryTimers(){
+        summaryTimers.forEach(function(timer){window.clearTimeout(timer);});
+        summaryTimers=[];
+      }
+      function later(action,delay){
+        summaryTimers.push(window.setTimeout(action,delay));
+      }
+      function playSummary(){
+        clearSummaryTimers();
+        var purpose=document.getElementById("recapPurpose");
+        var dieSlot=document.getElementById("recapDie");
+        var layer=document.getElementById("recapLayer");
+        var results=document.getElementById("recapResults");
+        var explain=document.getElementById("recapExplain");
+        var formula=document.getElementById("recapFormula");
+        var caption=document.getElementById("recapCaption");
+        var status=document.getElementById("summaryStatus");
+        var button=document.getElementById("playSummary");
+        var phases=Array.prototype.slice.call(document.querySelectorAll(".recap-phase"));
+        if(!purpose||!dieSlot||!layer||!results||!explain||!formula||!caption||!status||!button) return;
+        purpose.classList.remove("hide");
+        dieSlot.classList.remove("show","hide");
+        layer.classList.remove("show");
+        results.classList.remove("reveal","equal","highlight");
+        explain.classList.remove("show");
+        explain.innerHTML="";
+        formula.classList.remove("show");
+        phases.forEach(function(phase){phase.classList.remove("active","done");});
+        caption.textContent="4つの順番を意識して見よう";
+        status.textContent="まず、考える順番を確認中";
+        button.disabled=true;
+        button.textContent="再生中…";
+        later(function(){
+          purpose.classList.add("hide");
+          dieSlot.classList.add("show");
+          caption.textContent="準備：公正なサイコロを1回投げる";
+          status.textContent="試行から結果が1つ決まる場面";
+        },3800);
+        for(var turn=0;turn<16;turn++){
+          (function(face,delay){
+            later(function(){dieSlot.innerHTML=die(face,true);},delay);
+          })((turn%6)+1,4100+turn*150);
+        }
+        later(function(){
+          dieSlot.classList.add("hide");
+          layer.classList.add("show");
+          results.classList.add("reveal");
+          phases[0].classList.add("active");
+          caption.textContent="① 起こりうる結果を、もれなく全部集める";
+          explain.textContent="全事象 U = { 1, 2, 3, 4, 5, 6 }　全部で6個";
+          explain.classList.add("show");
+          status.textContent="全事象を確認中";
+        },7000);
+        later(function(){
+          phases[0].classList.remove("active");
+          phases[0].classList.add("done");
+          phases[1].classList.add("active");
+          results.classList.add("equal");
+          caption.textContent="② 6個の結果の出やすさを確かめる";
+          explain.innerHTML="公正なサイコロだから、どの目も同じ "+fraction(1,6,true)+"。根元事象は同様に確からしい。";
+          status.textContent="公式を使える条件を確認中";
+        },14000);
+        later(function(){
+          phases[1].classList.remove("active");
+          phases[1].classList.add("done");
+          phases[2].classList.add("active");
+          results.classList.add("highlight");
+          caption.textContent="③ 条件に合う結果だけを選ぶ";
+          explain.textContent="事象 A は「偶数の目」。A = { 2, 4, 6 }　全部で3個";
+          status.textContent="事象 A を確認中";
+        },21000);
+        later(function(){
+          phases[2].classList.remove("active");
+          phases[2].classList.add("done");
+          phases[3].classList.add("active");
+          formula.classList.add("show");
+          caption.textContent="④ 条件に合う個数を、全体の個数で割る";
+          explain.textContent="全体6個のうち、事象 A は3個。下の式で表すと、確率は2分の1。";
+          status.textContent="確率の式を確認中";
+        },28000);
+        later(function(){
+          phases[3].classList.remove("active");
+          phases[3].classList.add("done");
+          caption.textContent="全事象 → 同じ出やすさ → 事象 A → 確率";
+          status.textContent="まとめが終わりました";
+          button.disabled=false;
+          button.textContent="↻ もう一度見る";
+        },34500);
+      }
+      function setupSummary(){
+        var button=document.getElementById("playSummary");
+        if(!button) return;
+        button.addEventListener("click",playSummary);
+      }
+      function playStepAnimation(){
+        var copy=document.querySelector(".copy");
+        var visualBox=document.getElementById("visual");
+        copy.classList.remove("step-enter");
+        visualBox.classList.remove("step-enter");
+        void copy.offsetWidth;
+        copy.classList.add("step-enter");
+        visualBox.classList.add("step-enter");
+      }
+      function render(){
+        clearSummaryTimers();
+        var s=steps[index];
+        document.getElementById("stepNo").textContent="STEP "+(index+1);
+        document.getElementById("stepLabel").textContent=s.label;
+        document.getElementById("title").textContent=s.title;
+        document.getElementById("lead").innerHTML=s.lead;
+        document.getElementById("point").innerHTML=s.point;
+        document.getElementById("visual").innerHTML=visual(s.mode);
+        if(s.mode==="finish") setupSummary();
+        document.getElementById("extra").innerHTML=s.mode==="notation"?'<div class="notation"><b>P(A)</b><span>事象 A が起こる確率</span></div>':"";
+        document.getElementById("progress").style.width=((index+1)/steps.length*100)+"%";
+        document.getElementById("progressText").textContent=(index+1)+" / "+steps.length;
+        document.getElementById("prev").disabled=index===0;
+        document.getElementById("next").disabled=index===steps.length-1;
+        document.getElementById("next").textContent=index===steps.length-2?"MetaMoJiへ →":"つぎへ →";
+        Array.prototype.forEach.call(document.querySelectorAll(".dots button"),function(btn,i){
+          btn.className=i===index?"active":(i<index?"done":"");
+          btn.setAttribute("aria-current",i===index?"step":"false");
+        });
+        playStepAnimation();
+      }
+      var dots=document.getElementById("dots");
+      steps.forEach(function(step,i){
+        var b=document.createElement("button");
+        b.setAttribute("aria-label",(i+1)+". "+step.label);
+        b.addEventListener("click",function(){index=i;render();});
+        dots.appendChild(b);
+      });
+      document.getElementById("prev").addEventListener("click",function(){if(index>0){index--;render();}});
+      document.getElementById("next").addEventListener("click",function(){if(index<steps.length-1){index++;render();}});
+      window.addEventListener("keydown",function(e){
+        if(e.key==="ArrowRight"&&index<steps.length-1){index++;render();}
+        if(e.key==="ArrowLeft"&&index>0){index--;render();}
+      });
+      render();
+    })();
+  </script>
+</body>
+</html>
