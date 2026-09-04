@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="指数法則から0乗・負の指数・分数指数・累乗根・指数関数までをやさしく学ぶ横スライド教材">
+  <title>指数をゼロから理解する｜横スライド教材</title>
+  <style>
+    :root{
+      --bg:#eaf1f8;--ink:#162238;--paper:#fff;--blue:#1957d2;--orange:#e66a2c;
+      --green:#16805e;--purple:#7546b7;--line:#cbd8e8;--navy:#15243d;
+      font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif
+    }
+    *{box-sizing:border-box}
+    html,body{min-height:100%;margin:0}
+    body{
+      color:var(--ink);
+      background:
+        linear-gradient(rgba(25,87,210,.045) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(25,87,210,.045) 1px,transparent 1px),var(--bg);
+      background-size:30px 30px
+    }
+    button{font:inherit}
+    .deck{min-height:100svh;display:grid;grid-template-rows:auto 1fr auto auto;gap:.7rem;padding:1rem 2rem .65rem}
+    .top,.controls{width:min(96vw,calc(76svh * 1.7778));max-width:1440px;margin:auto}
+    .top{display:flex;align-items:center;justify-content:space-between;color:#33425a;font-size:.8rem}
+    .brand{display:flex;align-items:baseline;gap:.75rem}.brand b:first-child{color:var(--blue);font-size:.67rem;letter-spacing:.18em}
+    .progress{display:grid;grid-template-columns:2ch 9rem 2ch;align-items:center;gap:.65rem;font-weight:800;font-variant-numeric:tabular-nums}
+    .progress i{height:5px;border-radius:99px;background:#c8d5e5;overflow:hidden}.progress i b{display:block;height:100%;background:var(--blue);transition:width .2s}
+    .stage{display:grid;place-items:center;min-height:0}
+    .viewport{width:min(96vw,calc(76svh * 1.7778));max-width:1440px;aspect-ratio:16/9;min-height:0}
+    .slide{
+      --tone:var(--blue);--soft:#eaf2ff;position:relative;height:100%;overflow:hidden;
+      padding:clamp(1.5rem,3vw,3rem) clamp(1.7rem,4vw,4.4rem) clamp(1.35rem,2.6vw,2.7rem);
+      border:1px solid rgba(39,65,105,.12);border-radius:1.4rem;background:var(--paper);
+      box-shadow:0 24px 60px rgba(25,55,95,.16);animation:enter .25s ease
+    }
+    .slide[hidden]{display:none}.slide:before{content:"";position:absolute;inset:0 auto 0 0;width:.55rem;background:var(--tone)}
+    .slide:after{content:"";position:absolute;width:18rem;height:18rem;border-radius:50%;right:-9rem;bottom:-12rem;background:var(--soft)}
+    .orange{--tone:var(--orange);--soft:#fff0e7}.green{--tone:var(--green);--soft:#e3f6ef}.purple{--tone:var(--purple);--soft:#f0eafd}
+    @keyframes enter{from{opacity:0;transform:translateX(12px)}}
+    .heading{display:flex;justify-content:space-between;position:relative;z-index:1}.heading p{margin:0 0 .3rem;color:var(--tone);font-size:clamp(.65rem,1vw,.85rem);font-weight:900;letter-spacing:.14em}
+    h1{margin:0;max-width:58rem;font-size:clamp(1.55rem,3.1vw,2.8rem);line-height:1.22;letter-spacing:-.035em}
+    .num{color:var(--tone);opacity:.18;font-size:clamp(2.2rem,5.4vw,5.4rem);font-weight:950;line-height:.85}
+    .body{position:relative;z-index:1;height:calc(100% - clamp(4.3rem,8vw,7.5rem));padding-top:clamp(.8rem,2vw,2rem);display:flex;flex-direction:column;justify-content:center;gap:clamp(.55rem,1.25vw,1.15rem)}
+    .lead{font-size:clamp(1rem,1.65vw,1.45rem);line-height:1.7;margin:0 0 1rem;font-weight:700}
+    .cols,.rule-layout,.negative,.mn,.graph{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,2.2vw,2rem);align-items:stretch}
+    .cover{display:grid;grid-template-columns:1.12fr .88fr;gap:3rem;align-items:center}
+    .goal{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center;padding:1rem 1.2rem;border-left:5px solid var(--tone);background:var(--soft);border-radius:0 1rem 1rem 0}
+    .goal span{background:var(--tone);color:#fff;padding:.35rem .55rem;border-radius:.45rem;font-size:.78rem;font-weight:900}.goal strong{font-size:clamp(1rem,1.55vw,1.35rem);line-height:1.5}
+    .checks{display:grid;gap:.45rem;margin:1rem 0 0;padding:0;list-style:none;font-size:clamp(.86rem,1.2vw,1.08rem);font-weight:700}.checks li:before{content:"✓";color:var(--tone);margin-right:.55rem}
+    .hero{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:.4em;padding:2rem 1rem;background:var(--navy);color:#fff;border-radius:1.25rem;font-size:clamp(1.5rem,3vw,3rem);font-weight:850;box-shadow:.7rem .7rem 0 var(--tone)}
+    math{font-family:"Cambria Math","STIX Two Math",serif}.mi{display:inline-block;vertical-align:-.1em;font-size:1.12em;font-weight:700}
+    .title-math,.text-math{display:inline-block;vertical-align:-.25em;font-size:1em}.title-math{margin:0 .06em;vertical-align:-.42em;font-size:1.22em}.spoken-power-title,.spoken-power-label{display:inline-flex;align-items:center;gap:.08em;white-space:nowrap}.spoken-power-title .title-math{flex:none;margin:0 .04em;vertical-align:middle}.spoken-power-label .text-math{flex:none;margin:0 .04em;vertical-align:middle;font-size:1.15em}
+    .mathline{display:flex;align-items:center;justify-content:center;gap:.25em;min-height:1.5em;font-family:"Cambria Math",serif;font-size:clamp(1.3rem,2.7vw,2.55rem);font-weight:700;white-space:nowrap}
+    math.mathline{display:block;text-align:center}.mathblock{display:block;width:100%;text-align:center;font-size:clamp(1.2rem,2.35vw,2.3rem);font-weight:700}
+    .frac{display:inline-grid;grid-template-rows:1fr 1fr;vertical-align:middle;line-height:1;text-align:center;margin:0 .1em;font-family:"Cambria Math",serif}.frac span:first-child{border-bottom:.08em solid;padding:0 .16em .08em}.frac span:last-child{padding-top:.08em}
+    .hint{display:flex;align-items:center;gap:.65rem;border-radius:.8rem;padding:.62rem .9rem;background:var(--soft);font-size:clamp(.78rem,1.15vw,1rem);font-weight:750;line-height:1.55}.hint:before{content:"💡";flex:none}
+    .box,.practice,.rule,.unfold,.cancel,.logic,.steps,.worked{border-radius:1rem;padding:clamp(.85rem,1.6vw,1.4rem)}
+    .box,.rule,.steps{background:var(--navy);color:#fff}.practice,.unfold,.cancel,.logic,.worked{border:2px solid #dfe8f3;background:#f8fbfe}
+    .practice{display:grid;place-items:center;gap:.25rem;text-align:center}.practice p{margin:0;color:var(--tone);font-weight:900}.practice strong{font-size:clamp(2.1rem,4vw,4rem)}.practice .read{font-size:clamp(1.15rem,1.8vw,1.6rem);font-weight:900}.practice .answer{color:var(--tone);font-size:clamp(1.1rem,1.65vw,1.45rem);font-weight:850}
+    .slide[data-label="正の指数"] .box{display:grid;place-items:center;text-align:center}.slide[data-label="正の指数"] .box .mathline{width:100%}
+    .rule{position:relative;display:grid;place-items:center;min-height:8rem}.tag{position:absolute;top:.7rem;left:.8rem;padding:.25rem .52rem;border-radius:.4rem;background:var(--tone);font-size:.72rem;font-weight:900}
+    .power-of-power{display:flex;align-items:baseline;justify-content:center;gap:.3em;width:100%;font-family:"Cambria Math","Times New Roman",serif;font-size:clamp(1.3rem,2.55vw,2.35rem);line-height:1;white-space:nowrap}
+    .power-of-power .html-power{display:inline-block;white-space:nowrap}.power-of-power sup{display:inline-block;margin-left:.02em;font-size:.6em;line-height:1;vertical-align:.72em}
+    .unfold,.cancel{display:grid;place-items:center;gap:.55rem;text-align:center;font-size:clamp(.92rem,1.35vw,1.18rem)}.unfold p,.cancel p,.logic p,.steps p{margin:0;color:var(--tone);font-size:clamp(.75rem,1vw,.9rem);font-weight:900}
+    .dots{display:flex;align-items:center;gap:.6rem;color:var(--tone);font-weight:900}
+    .formula{display:flex;align-items:center;justify-content:center;gap:1rem;min-height:3.6rem;padding:.55rem 1rem;border:2px solid var(--tone);border-radius:.85rem;color:var(--tone);font-size:clamp(1.3rem,2.3vw,2.2rem);font-weight:900}.formula small{color:#647187;font-size:.72rem}
+    .cancel-frac{display:grid;text-align:center;line-height:1.55;font-size:clamp(.85rem,1.25vw,1.1rem)}.cancel-frac span:first-child{border-bottom:2px solid var(--ink);padding:0 .35rem .18rem}.cancel-frac s{text-decoration-color:var(--orange);text-decoration-thickness:3px}
+    .three{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.three article{display:grid;place-items:center;gap:.3rem;padding:1rem .65rem;border:2px solid #dfe8f3;border-radius:1rem;background:#fbfdff;text-align:center}.three article>span{color:var(--tone);font-weight:900}.three b{color:var(--tone)}
+    .memory{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;border-radius:.8rem;background:var(--navy);color:#fff;text-align:center;font-size:clamp(.82rem,1.15vw,1rem)}.memory span{padding:.7rem;border-right:1px solid #ffffff33}.memory b{color:#82d9ff}
+    .axis-note{margin:0;text-align:center;font-size:clamp(.85rem,1.25vw,1.1rem);font-weight:800}
+    .base-picker{display:flex;align-items:center;justify-content:center;gap:.45rem;margin-bottom:.1rem}
+    .base-picker>span{margin-right:.2rem;color:#526278;font-size:clamp(.78rem,1vw,.9rem);font-weight:900}
+    .base-picker small{margin-left:.15rem;color:#78869a;font-size:.72rem;font-weight:700}
+    .base-button{display:grid;place-items:center;width:2.35rem;height:2.35rem;border:2px solid #b7c7da;border-radius:.65rem;background:#fff;color:#526278;font:900 1.05rem "Cambria Math",serif;cursor:pointer;transition:.2s ease}
+    .base-button:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
+    .base-button.active{border-color:var(--orange);background:var(--orange);color:#fff;box-shadow:0 .3rem .7rem #e66a2c33}
+    .power-axis{position:relative;display:grid;grid-template-columns:repeat(7,1fr);padding:0 1rem}
+    .power-axis:before{content:"";position:absolute;top:3.18rem;left:3%;right:3%;height:5px;border-radius:99px;background:linear-gradient(90deg,var(--orange),#aebdce 50%,var(--blue))}
+    .power-axis:after{content:"›";position:absolute;top:1.93rem;right:1.2%;color:var(--blue);font-size:2.7rem;font-weight:900}
+    .point{position:relative;z-index:1;display:grid;grid-template-rows:2.2rem 1.9rem 2.8rem;place-items:center}
+    .point b{display:grid;place-items:center;min-width:2.25rem;height:2.25rem;border-radius:.6rem;background:#eaf1f8;color:#526278;transition:.35s ease}
+    .point i{width:.62rem;height:.62rem;border:2px solid #fff;border-radius:50%;background:#91a2b8;box-shadow:0 0 0 2px #91a2b8}
+    .point .axis-value{font:800 clamp(1rem,1.6vw,1.45rem) "Cambria Math",serif;transition:.35s ease}
+    .point .axis-value math{display:inline-block;font-size:1em;vertical-align:middle}
+    .point.active b{background:var(--blue);color:#fff;transform:translateY(-.18rem);box-shadow:0 .35rem .8rem #1957d233}
+    .point.active .axis-value{color:var(--blue);transform:scale(1.13)}
+    .axis-cursor{position:absolute;z-index:3;top:3.18rem;left:50%;width:1.35rem;height:1.35rem;border:4px solid #fff;border-radius:50%;background:var(--orange);box-shadow:0 0 0 3px var(--orange),0 .25rem .7rem #16223844;transform:translate(-50%,-50%);transition:left .55s cubic-bezier(.2,.8,.25,1)}
+    .axis-cursor:after{content:"";position:absolute;inset:-.55rem;border:2px solid var(--orange);border-radius:50%;opacity:.4;animation:cursor-pulse 1.6s ease-out infinite}
+    @keyframes cursor-pulse{0%{transform:scale(.55);opacity:.6}80%,100%{transform:scale(1.25);opacity:0}}
+    .axis-interaction{display:grid;grid-template-columns:auto minmax(11rem,1fr) auto;align-items:center;gap:1rem;width:min(100%,38rem);margin-inline:auto}
+    .axis-step{display:grid;place-items:center;width:3.2rem;height:3.2rem;border:0;border-radius:50%;background:var(--blue);color:#fff;font-size:1.45rem;font-weight:900;cursor:pointer;box-shadow:0 .35rem .8rem #1957d238;transition:.2s ease}
+    .axis-step:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08)}.axis-step:active:not(:disabled){transform:scale(.95)}.axis-step:disabled{opacity:.28;cursor:not-allowed;box-shadow:none}
+    .axis-readout{position:relative;display:grid;place-items:center;min-height:3.25rem;padding:.4rem 4.5rem;border:2px solid var(--blue);border-radius:.85rem;background:#f7faff;color:var(--blue);font:900 clamp(1.2rem,2vw,1.75rem) "Cambria Math",serif}
+    #axis-equation{display:inline-grid;grid-template-columns:max-content max-content max-content;align-items:center;justify-content:center;column-gap:.48em;line-height:1;white-space:nowrap}#axis-equation math{display:block;font-size:1.08em}#axis-equation .axis-equals{display:grid;place-items:center;align-self:center;line-height:1;transform:translateY(-.02em)}
+    .axis-operation{position:absolute;right:.65rem;top:50%;padding:.28rem .7rem;border-radius:.55rem;background:var(--orange);color:#fff;font:900 clamp(1rem,1.6vw,1.35rem) "Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;opacity:0;transform:translateY(-50%) scale(.7);pointer-events:none}
+    .axis-operation.pop{animation:operation-pop .7s ease both}
+    @keyframes operation-pop{0%{opacity:0;transform:translateY(-50%) scale(.6)}25%{opacity:1;transform:translateY(-50%) scale(1.12)}70%{opacity:1;transform:translateY(-50%) scale(1)}100%{opacity:0;transform:translateY(-50%) scale(.85)}}
+    .axis-help{margin:0;text-align:center;color:#607087;font-size:clamp(.72rem,1vw,.88rem);font-weight:700}
+    .zero .box,.zero .logic{display:grid;place-items:center;gap:.25rem}.therefore{width:100%;padding:.45rem;border-radius:.6rem;background:var(--tone);text-align:center;font-weight:900}.logic .mathline{font-size:clamp(.95rem,1.7vw,1.4rem)}
+    .negative{align-items:center}.steps{display:grid;grid-template-columns:repeat(2,1fr);gap:.35rem}.steps p{grid-column:1/-1;text-align:center;color:#82d9ff}.steps .mathline{font-size:clamp(1.05rem,1.9vw,1.65rem)}.fraction-equation{display:inline-grid;grid-template-columns:max-content max-content max-content;align-items:center;justify-content:center;column-gap:.42em;width:100%;line-height:1}.fraction-equation math{display:block}.fraction-equation .fraction-equals{display:grid;place-items:center;align-self:center;line-height:1;transform:translateY(-.02em)}.tall{min-height:8rem;font-size:clamp(1.6rem,3.4vw,3.3rem)}
+    .root-concept{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem}.root-concept article{min-height:8rem;display:grid;place-items:center;gap:.45rem;padding:1rem;border-radius:1rem;background:var(--soft);text-align:center}.root-concept article>span{color:var(--tone);font-weight:900}.root-concept strong{font:800 clamp(1.25rem,2.25vw,2.1rem) "Cambria Math",serif}.root-concept b{color:var(--tone);font-size:clamp(1rem,1.5vw,1.3rem)}.root-turn{color:var(--tone);font-weight:900;text-align:center}.root-general{display:flex;align-items:center;justify-content:center;gap:.65rem;padding:.65rem 1rem;border:2px solid var(--tone);border-radius:.85rem;background:#fff;font-size:clamp(.9rem,1.3vw,1.15rem);font-weight:800}.root-general math{font-size:clamp(1.35rem,2.4vw,2.2rem)}.root-general strong{color:var(--tone);font-size:clamp(1.05rem,1.55vw,1.35rem)}.root-family{display:flex;align-items:center;justify-content:center;gap:1rem;padding:.55rem .8rem;border-radius:.7rem;background:var(--navy);color:#fff;font-weight:850}.root-family b{color:#82d9ff}
+    .root-example-picker{display:flex;align-items:center;justify-content:center;gap:.55rem}.root-example{padding:.5rem .8rem;border:2px solid #b7c7da;border-radius:.65rem;background:#fff;color:#526278;font-weight:900;cursor:pointer;transition:.2s ease}.root-example:hover{border-color:var(--tone);color:var(--tone);transform:translateY(-2px)}.root-example.active{border-color:var(--tone);background:var(--tone);color:#fff;box-shadow:0 .3rem .7rem #1957d233}.root-demo{display:grid;grid-template-columns:1.2fr .8fr;overflow:hidden;border:2px solid #dfe8f3;border-radius:1rem;background:#f8fbfe}.root-demo-left,.root-demo-right{min-height:10rem;display:grid;place-items:center;align-content:center;gap:.75rem;padding:1.1rem;text-align:center}.root-demo-right{background:var(--navy);color:#fff}.root-demo-question{margin:0;color:var(--tone);font-size:clamp(.95rem,1.35vw,1.16rem);font-weight:900}.root-demo-product{font:800 clamp(1.35rem,2.7vw,2.55rem) "Cambria Math",serif}.root-demo-answer{display:flex;align-items:center;justify-content:center;gap:.45em;font:800 clamp(1.65rem,3.1vw,3rem) "Cambria Math",serif}.root-demo-answer math{display:block}.root-demo-sentence{margin:0;color:#82d9ff;font-size:clamp(.82rem,1.1vw,1rem);font-weight:850}.root-demo.change .root-demo-product,.root-demo.change .root-demo-answer{animation:root-demo-in .42s ease}@keyframes root-demo-in{from{opacity:.15;transform:translateY(.45rem)}to{opacity:1;transform:none}}
+    .proof{display:grid;grid-template-columns:1fr auto 1.25fr;gap:1rem;align-items:center}.root-side,.power-side{min-height:8rem;display:grid;place-items:center;gap:.55rem;padding:1rem;border-radius:1rem;background:var(--soft);text-align:center}.root-side span,.power-side>span{color:var(--tone);font-weight:900}.root-side strong{font:700 clamp(1.15rem,1.9vw,1.65rem) "Cambria Math",serif}.iff{color:var(--tone);font-size:clamp(1.5rem,3vw,2.7rem);font-weight:900}
+    .segmented-math{display:flex;align-items:center;justify-content:center;gap:.34em;width:100%;font:700 clamp(1.12rem,2.15vw,2.05rem) "Cambria Math",serif;line-height:1;white-space:nowrap}.segmented-math>math{display:block;flex:none}.segmented-math>.math-op{display:grid;place-items:center;align-self:center;flex:none;line-height:1;transform:translateY(-.02em)}
+    .root-controls{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem}.root-picker,.root-view-picker{display:flex;align-items:center;justify-content:center;gap:.5rem}.root-picker>span,.root-view-picker>span{margin-right:.25rem;color:#526278;font-size:clamp(.8rem,1.05vw,.95rem);font-weight:900}.root-degree,.root-view{min-width:4.8rem;padding:.45rem .7rem;border:2px solid #b7c7da;border-radius:.65rem;background:#fff;color:#526278;font-weight:900;cursor:pointer;transition:.2s ease}.root-view{min-width:6.4rem}.root-degree:hover,.root-view:hover{border-color:var(--tone);color:var(--tone);transform:translateY(-2px)}.root-degree.active,.root-view.active{border-color:var(--tone);background:var(--tone);color:#fff;box-shadow:0 .3rem .7rem #1957d233}
+    .fourth{display:grid;place-items:center;gap:.35rem;padding:1rem;border-radius:1rem;background:var(--navy);color:#fff}.repeat{display:flex;align-items:center;justify-content:center;gap:clamp(.25rem,.7vw,.65rem);min-height:3.6rem;font:700 clamp(1.2rem,2.35vw,2.25rem) "Cambria Math",serif}.repeat>math{display:block;flex:none}.repeat .root-factor{animation:root-factor-in .38s ease backwards}@keyframes root-factor-in{from{opacity:0;transform:translateY(.45rem) scale(.85)}to{opacity:1;transform:none}}.arrow{color:#82d9ff;font-weight:900}
+    .mn{align-items:center}.anatomy{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:1.2rem;padding:1.2rem;border-radius:1rem;background:var(--navy);color:#fff;font-size:clamp(2.2rem,4vw,4rem)}.notes{display:grid;gap:.65rem;font-size:clamp(.8rem,1.2vw,1.05rem)}.notes span{padding:.4rem .65rem;border-radius:.5rem;background:#ffffff1a}.notes b{color:#82d9ff}.worked{display:grid;gap:.35rem}.worked p{margin:0;color:var(--tone);font-size:clamp(1rem,1.7vw,1.4rem);font-weight:900}.worked strong{justify-self:end;color:#fff;background:var(--tone);padding:.35rem .8rem;border-radius:.5rem}
+    .graph{grid-template-columns:1.2fr .8fr;align-items:center}.function{margin-bottom:.7rem;color:var(--tone);font:900 clamp(1.5rem,3vw,2.8rem) "Cambria Math",serif;text-align:center}.values{width:100%;border-spacing:2px;font:clamp(.72rem,1.12vw,1rem) "Cambria Math",serif;text-align:center}.values th,.values td{padding:.42rem .3rem;background:#edf3f8}.values th:first-child{background:var(--tone);color:#fff}.graph-note{color:var(--tone);font-weight:900;text-align:center}.mini-graph{width:100%;max-height:15rem}.axisline{stroke:#55667d;stroke-width:3}.curve{fill:none;stroke:var(--tone);stroke-width:5;stroke-linecap:round}.gdot{fill:var(--orange);stroke:#fff;stroke-width:2}.guide{stroke:#9aaabc;stroke-width:1.5;stroke-dasharray:5 5}
+    .exercise-grid{display:grid;gap:.7rem}.exercise-grid.five{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-areas:"one one two two three three" "four four four five five five"}.exercise-grid.five .exercise-card:nth-child(1){grid-area:one}.exercise-grid.five .exercise-card:nth-child(2){grid-area:two}.exercise-grid.five .exercise-card:nth-child(3){grid-area:three}.exercise-grid.five .exercise-card:nth-child(4){grid-area:four}.exercise-grid.five .exercise-card:nth-child(5){grid-area:five}.exercise-grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}.exercise-card{position:relative;min-height:6.7rem;display:grid;grid-template-rows:1fr 2.25rem;place-items:center;gap:.25rem;padding:.75rem .7rem .55rem;border:2px solid #dfe8f3;border-radius:.85rem;background:#fbfdff;text-align:center}.exercise-index{position:absolute;left:.5rem;top:.45rem;display:grid;place-items:center;width:1.55rem;height:1.55rem;border-radius:50%;background:var(--tone);color:#fff;font-size:.78rem;font-weight:900}.exercise-question{display:grid;place-items:center;min-width:0;font:800 clamp(1.15rem,2.05vw,1.9rem) "Cambria Math",serif}.exercise-question math{display:block}.exercise-grid.five .exercise-card:nth-child(n+4) .exercise-question{width:100%;font-size:clamp(1.08rem,1.7vw,1.55rem);white-space:nowrap}.exercise-inline{display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:.28em;width:100%;white-space:nowrap;line-height:1}.exercise-inline>span,.exercise-inline>math{display:block;flex:0 0 auto;width:auto;min-width:0}.exercise-inline .inline-number,.exercise-inline .inline-op{font-family:"Cambria Math",serif;font-weight:800}.exercise-solution{display:flex;align-items:center;justify-content:center;gap:.35em;min-height:2.1rem;padding:.2rem .55rem;border-radius:.55rem;background:var(--soft);color:var(--tone);font:900 clamp(1rem,1.65vw,1.45rem) "Cambria Math",serif;opacity:0;transform:translateY(.2rem);transition:.25s ease}.exercise-solution math{display:block}.exercise-solution>span:first-child{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;font-size:.68em}.practice-set.show-answers .exercise-solution{opacity:1;transform:none}.solution-chain{display:flex;align-items:center;justify-content:center;gap:.32em;white-space:nowrap}.solution-chain math{display:block}.practice-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.2rem .25rem}.practice-footer p{margin:0;color:#617187;font-size:clamp(.78rem,1.05vw,.92rem);font-weight:750}
+    .root-laws{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-areas:"law1 law1 law2 law2 law3 law3" ". law4 law4 law5 law5 .";gap:.55rem}.root-law{min-height:6.45rem;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"number title" "formula formula" "note note";align-items:center;gap:.25rem .5rem;padding:.55rem .7rem;border:2px solid #dfe8f3;border-radius:.85rem;background:#fbfdff;text-align:left}.root-law:nth-child(1){grid-area:law1}.root-law:nth-child(2){grid-area:law2}.root-law:nth-child(3){grid-area:law3}.root-law:nth-child(4){grid-area:law4}.root-law:nth-child(5){grid-area:law5}.root-law b{grid-area:number;display:grid;place-items:center;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--tone);color:#fff;font-size:.78rem}.root-law strong{grid-area:title;color:var(--tone);font-size:clamp(.78rem,1.05vw,.95rem)}.root-law>span{grid-area:note;color:#627087;font-size:clamp(.66rem,.8vw,.76rem);font-weight:800;line-height:1.35;text-align:center}.law-formula{grid-area:formula;display:flex;align-items:center;justify-content:center;gap:.2em;width:100%;white-space:nowrap;font:700 clamp(.82rem,1.2vw,1.08rem) "Cambria Math",serif}.law-formula>math,.law-formula>.math-op{display:block;flex:0 0 auto}.law-formula>.math-op{line-height:1}
+    .property-layout{display:grid;grid-template-columns:.92fr 1.08fr;gap:1rem;align-items:stretch}.property-rule,.property-example{min-height:14rem;display:grid;place-items:center;align-content:center;gap:1rem;padding:1.15rem;border-radius:1rem}.property-rule{border:2px solid #dfe8f3;background:#fbfdff}.property-rule>span,.property-example>span{font-size:clamp(.78rem,1vw,.92rem);font-weight:900;letter-spacing:.06em}.property-rule>span{color:var(--tone)}.property-example{background:var(--navy);color:#fff}.property-example>span{color:#82d9ff}.property-example p{margin:0;color:#d9e8f7;font-size:clamp(.8rem,1.1vw,.98rem);font-weight:750;text-align:center}.conditions{margin:0;text-align:center;color:#68778c;font-size:clamp(.72rem,.95vw,.86rem);font-weight:750}.property-math{font-size:clamp(1.18rem,2.15vw,2rem)}.slide[data-label="累乗根の性質5"] .property-math{font-size:clamp(1.02rem,1.75vw,1.62rem)}
+    .conversion-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}.conversion-card{min-height:9.2rem;display:grid;place-items:center;align-content:center;gap:.75rem;padding:1rem;border:2px solid #dfe8f3;border-radius:.9rem;background:#fbfdff;text-align:center}.conversion-card>span{color:var(--tone);font-size:clamp(.78rem,1vw,.9rem);font-weight:900}.conversion-card p{margin:0;color:#647389;font-size:clamp(.76rem,1vw,.9rem);font-weight:750}.conversion-card .segmented-math{font-size:clamp(1.15rem,2.05vw,1.9rem)}.calculation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}.calculation-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.calculation-card{min-height:11.5rem;display:grid;place-items:center;align-content:center;gap:.8rem;padding:1rem;border:2px solid #dfe8f3;border-radius:.95rem;background:#fbfdff;text-align:center}.calculation-card>span{display:grid;place-items:center;min-width:2rem;height:2rem;padding:0 .5rem;border-radius:1rem;background:var(--tone);color:#fff;font-weight:900}.calculation-card p{margin:0;color:#647389;font-size:clamp(.75rem,1vw,.9rem);font-weight:800}.calculation-card .segmented-math{font-size:clamp(1.05rem,1.85vw,1.72rem)}.final-rule{display:flex;align-items:center;justify-content:center;gap:.7rem;padding:.7rem 1rem;border-radius:.8rem;background:var(--navy);color:#fff;font-size:clamp(.86rem,1.25vw,1.05rem);font-weight:850}.final-rule b{color:#82d9ff}
+    .summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}.summary-card{min-height:5.2rem;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"mark title" "math math";align-items:center;gap:.3rem .55rem;padding:.55rem .8rem;border:2px solid #dfe8f3;border-radius:.8rem;background:#fbfdff}.summary-card>span{grid-area:mark;display:grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--tone);color:#fff;font-size:.78rem;font-weight:900}.summary-card>strong{grid-area:title;color:var(--tone);font-size:clamp(.82rem,1.1vw,.98rem)}.summary-math{grid-area:math;font-size:clamp(.88rem,1.35vw,1.22rem)}.summary-card.double .summary-math{justify-content:center;gap:.24rem}.summary-divider{display:block;flex:0 0 auto;margin:0 1.05rem;color:#9aaabd;font-family:"Cambria Math",serif;font-weight:500;line-height:1}.metamoji-callout{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1.2rem;padding:.85rem 1.15rem;border-radius:1rem;background:linear-gradient(125deg,var(--navy),#164c86);color:#fff;box-shadow:0 .65rem 1.4rem #0d2d5230}.metamoji-callout>div{display:grid;gap:.16rem}.metamoji-callout span{color:#82d9ff;font-size:.75rem;font-weight:900;letter-spacing:.12em}.metamoji-callout strong{font-size:clamp(1.3rem,2.25vw,2.05rem)}.metamoji-callout p{margin:0;color:#dceaf8;font-size:clamp(.78rem,1vw,.92rem);font-weight:750}.metamoji-steps{display:flex;align-items:center;gap:.45rem;margin:0;padding:0;list-style:none}.metamoji-steps li{padding:.42rem .65rem;border:1px solid #ffffff52;border-radius:.65rem;background:#ffffff12;font-size:clamp(.7rem,.9vw,.82rem);font-weight:850;white-space:nowrap}
+    .title-slide{background:linear-gradient(145deg,#ffffff 0%,#f5f9ff 56%,#e8f2ff 100%)}.title-slide::after{content:"";position:absolute;right:-7rem;bottom:-8rem;width:22rem;height:22rem;border:4rem solid #1957d20c;border-radius:50%}.title-slide>.num{position:absolute;z-index:2;right:2rem;top:1.45rem}.title-cover-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.16fr .84fr;align-items:center;gap:2rem;height:100%}.title-copy{display:grid;align-content:center;gap:.85rem;padding-left:.6rem}.title-kicker{margin:0;color:var(--tone);font-size:clamp(.82rem,1.1vw,.98rem);font-weight:900;letter-spacing:.14em}.title-main{margin:0;color:var(--navy);font-size:clamp(2.55rem,5.25vw,5rem);line-height:1.08;letter-spacing:-.045em}.title-sub{margin:0;color:#526278;font-size:clamp(1.15rem,2.15vw,1.9rem);font-weight:850}.title-path{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}.title-path span{padding:.42rem .68rem;border:1px solid #c6d5e6;border-radius:2rem;background:#fff;color:#53647a;font-size:clamp(.7rem,.9vw,.82rem);font-weight:850}.title-path i{color:#8aa0b8;font-style:normal;font-weight:900}.title-math-panel{display:grid;gap:.62rem;padding:1.25rem;border-radius:1.25rem;background:var(--navy);box-shadow:0 1.2rem 2.4rem #0d2d5230}.title-math-step{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;padding:.62rem .8rem;border-radius:.75rem;background:#ffffff0d;color:#fff}.title-math-step small{color:#9fdcff;font-size:clamp(.7rem,.9vw,.82rem);font-weight:900}.title-math-step math{display:block;font-size:clamp(1.15rem,2vw,1.8rem)}.title-math-step.final{background:#1957d2}.title-math-step.final small{color:#fff}
+    .quiz{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}.quiz article{position:relative;min-height:5.3rem;display:grid;place-items:center;padding:.7rem;border:2px solid #dfe8f3;border-radius:.8rem;background:#fbfdff}.quiz article>span{position:absolute;left:.55rem;top:.45rem;display:grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--tone);color:#fff;font-weight:900}.qa{position:absolute;inset:0;display:grid;place-items:center;margin:0;border-radius:.7rem;background:var(--soft);color:var(--tone);font-size:clamp(1.1rem,2vw,1.8rem);font-weight:900;opacity:0;pointer-events:none;transition:.2s}.show-answers .qa{opacity:1}.quiz .action{border-style:dashed;background:var(--soft)}
+    .finish{padding:.55rem .8rem;border-radius:.7rem;background:var(--navy);color:#fff;text-align:center}.finish b{color:#82d9ff}
+    .controls{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem}.navbtn,.answerbtn{border:0;border-radius:.65rem;padding:.65rem 1rem;background:var(--blue);color:#fff;font-weight:800;cursor:pointer}.navbtn[disabled]{opacity:.35;cursor:not-allowed}.navbtn.prev{background:#fff;color:var(--ink);border:1px solid var(--line)}
+    .dots-nav{display:flex;justify-content:center;gap:clamp(.2rem,.45vw,.45rem)}.dots-nav button{width:.48rem;height:.48rem;padding:0;border:0;border-radius:99px;background:#aebdce;cursor:pointer}.dots-nav button.active{width:1.7rem;background:var(--blue)}
+    .keynote{margin:-.25rem 0 0;color:#738197;font-size:.67rem;text-align:center}
+    @media(max-width:820px),(max-height:640px){.deck{padding:.55rem;gap:.4rem}.top,.controls,.viewport{width:98vw}.slide{padding:1rem 1.3rem .9rem 1.6rem;border-radius:.9rem}.body{padding-top:.5rem;gap:.45rem;height:calc(100% - 3.7rem)}.num{display:none}.hint{padding:.35rem .55rem}.keynote{display:none}}
+    @media(max-aspect-ratio:4/3){.deck{display:flex;flex-direction:column}.stage{flex:1}.viewport{width:96vw;height:74svh;aspect-ratio:auto}.slide{overflow-y:auto}.body{height:auto;min-height:calc(100% - 4.5rem)}.cover,.cols,.rule-layout,.negative,.mn,.graph{grid-template-columns:1fr}.proof{grid-template-columns:1fr}.iff{transform:rotate(90deg);text-align:center}.dots-nav{display:none}}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+<main class="deck">
+  <header class="top">
+    <div class="brand"><b>BASIC MATH</b><b>指数の基本</b></div>
+    <div class="progress" aria-label="スライド進捗"><span id="now">01</span><i><b id="bar" style="width:3.57%"></b></i><span id="total">28</span></div>
+  </header>
+  <div class="stage"><div class="viewport" id="viewport">
+
+    <section class="slide title-slide" data-label="タイトル">
+      <span class="num">01</span>
+      <div class="title-cover-grid">
+        <div class="title-copy">
+          <p class="title-kicker">数学Ⅱ｜指数の基本</p>
+          <h1 class="title-main">指数の拡張と<br>累乗根</h1>
+          <p class="title-sub">「何回かける？」から始めよう</p>
+          <div class="title-path"><span>指数法則</span><i>→</i><span>0乗・負の指数</span><i>→</i><span>分数指数</span><i>→</i><span>累乗根</span></div>
+        </div>
+        <div class="title-math-panel" aria-label="指数の広がり">
+          <div class="title-math-step"><small>正の指数</small><math><msup><mn>2</mn><mn>3</mn></msup></math></div>
+          <div class="title-math-step"><small>0乗</small><math><msup><mn>2</mn><mn>0</mn></msup></math></div>
+          <div class="title-math-step"><small>負の指数</small><math><msup><mn>2</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math></div>
+          <div class="title-math-step final"><small>分数指数と累乗根</small><div class="segmented-math"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mroot><mn>2</mn><mn>3</mn></mroot></math></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-label="はじめに" hidden>
+      <div class="heading"><div><p>指数をゼロから</p><h1>「何回かける？」から始めよう</h1></div><span class="num">02</span></div>
+      <div class="body"><div class="cover">
+        <div><p class="lead">今日のゴールは、公式を暗記することではありません。</p>
+          <div class="goal"><span>ゴール</span><strong>指数が変わっても、同じルールで考えられる</strong></div>
+          <ul class="checks"><li>指数法則の「足す・引く・かける」</li><li>0乗とマイナスの指数</li><li>分数の指数と累乗根</li></ul>
+        </div>
+        <div class="hero"><math><msup><mn>2</mn><mn>3</mn></msup></math><span>=</span><span>2 × 2 × 2</span><span>= 8</span></div>
+      </div></div>
+    </section>
+
+    <section class="slide orange" data-label="正の指数" hidden>
+      <div class="heading"><div><p>STEP 1</p><h1>指数は「同じ数をかける回数」</h1></div><span class="num">03</span></div>
+      <div class="body">
+        <div class="cols">
+          <div class="box"><div class="mathline"><math><msup><mn>3</mn><mn>4</mn></msup></math><span>= 3 × 3 × 3 × 3 = 81</span></div></div>
+          <div class="practice"><p>声に出して読もう</p><strong><math><msup><mn>5</mn><mn>3</mn></msup></math></strong><span class="read">「5の3乗」</span><span class="answer">5 × 5 × 5 = 125</span></div>
+        </div>
+        <div class="hint">右肩の小さい数は、答えではなく「かける個数」です。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-label="掛け算" hidden>
+      <div class="heading"><div><p>指数法則 ①</p><h1>掛け算では、指数を足す</h1></div><span class="num">04</span></div>
+      <div class="body">
+        <div class="rule-layout">
+          <div class="rule"><span class="tag">足す</span><div class="mathline"><math><msup><mn>2</mn><mn>3</mn></msup><mo>×</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><msup><mn>2</mn><mrow><mn>3</mn><mo>+</mo><mn>2</mn></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>5</mn></msup></math></div></div>
+          <div class="unfold"><p>いったん開いてみると…</p><div>（2 × 2 × 2）×（2 × 2）</div><div class="dots"><span>● ● ●</span><span>＋</span><span>● ●</span><span>＝ 5個</span></div></div>
+        </div>
+        <div class="formula"><math><msup><mi>a</mi><mi>m</mi></msup><mo>×</mo><msup><mi>a</mi><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow></msup></math><small>同じ底のとき</small></div>
+        <div class="hint">底の 2 はそのまま。右肩どうしだけを足します。</div>
+      </div>
+    </section>
+
+    <section class="slide green" data-label="割り算" hidden>
+      <div class="heading"><div><p>指数法則 ②</p><h1>割り算では、指数を引く</h1></div><span class="num">05</span></div>
+      <div class="body">
+        <div class="rule-layout">
+          <div class="rule"><span class="tag">引く</span><div class="mathline"><math><msup><mn>2</mn><mn>5</mn></msup><mo>÷</mo><msup><mn>2</mn><mn>2</mn></msup><mo>=</mo><msup><mn>2</mn><mrow><mn>5</mn><mo>−</mo><mn>2</mn></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></math></div></div>
+          <div class="cancel"><p>上下に同じ 2 があれば消せる</p><div class="cancel-frac"><span>2 × 2 × 2 × <s>2 × 2</s></span><span><s>2 × 2</s></span></div><strong>= 2 × 2 × 2</strong></div>
+        </div>
+        <div class="formula"><math><msup><mi>a</mi><mi>m</mi></msup><mo>÷</mo><msup><mi>a</mi><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mo>−</mo><mi>n</mi></mrow></msup></math><small>a ≠ 0</small></div>
+        <div class="hint">「上にある個数 − 下にある個数」と考えると自然です。</div>
+      </div>
+    </section>
+
+    <section class="slide purple" data-label="累乗の累乗" hidden>
+      <div class="heading"><div><p>指数法則 ③</p><h1>累乗をさらに累乗すると、指数をかける</h1></div><span class="num">06</span></div>
+      <div class="body">
+        <div class="rule-layout">
+          <div class="rule"><span class="tag">かける</span><div class="mathline power-of-power" aria-label="2の3乗の2乗は、2の3かける2乗、2の6乗"><span class="html-power">(2<sup>3</sup>)<sup>2</sup></span><span>=</span><span class="html-power">2<sup>3×2</sup></span><span>=</span><span class="html-power">2<sup>6</sup></span></div></div>
+          <div class="unfold"><p>2³ を2個かける</p><div>（2 × 2 × 2）×（2 × 2 × 2）</div><div class="dots"><span>3個</span><span>×</span><span>2組</span><span>＝ 6個</span></div></div>
+        </div>
+        <div class="formula"><math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>)</mo></mrow><mi>n</mi></msup><mo>=</mo><msup><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></msup></math></div>
+        <div class="hint">外側の指数は「何組あるか」。だから指数どうしをかけます。</div>
+      </div>
+    </section>
+
+    <section class="slide orange" data-label="3つの法則" hidden>
+      <div class="heading"><div><p>ここで確認</p><h1>3つの指数法則を見分けよう</h1></div><span class="num">07</span></div>
+      <div class="body">
+        <div class="three">
+          <article><span>掛け算</span><div class="mathline">3² × 3⁴</div><strong>指数を 2 ＋ 4</strong><b>= 3⁶</b></article>
+          <article><span>割り算</span><div class="mathline">5⁷ ÷ 5³</div><strong>指数を 7 − 3</strong><b>= 5⁴</b></article>
+          <article><span>累乗の累乗</span><div class="mathline">（7²）³</div><strong>指数を 2 × 3</strong><b>= 7⁶</b></article>
+        </div>
+        <div class="memory"><span>× なら <b>足す</b></span><span>÷ なら <b>引く</b></span><span>（　）の外なら <b>かける</b></span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-label="指数の数直線" hidden>
+      <div class="heading"><div><p>STEP 2</p><h1>指数を左へ下げると、毎回「底」で割る</h1></div><span class="num">08</span></div>
+      <div class="body">
+        <div class="base-picker" role="group" aria-label="底を選ぶ">
+          <span>底を選ぶ</span>
+          <button class="base-button active" type="button" data-base="2" aria-pressed="true">2</button>
+          <button class="base-button" type="button" data-base="3" aria-pressed="false">3</button>
+          <button class="base-button" type="button" data-base="4" aria-pressed="false">4</button>
+          <button class="base-button" type="button" data-base="5" aria-pressed="false">5</button>
+          <button class="base-button" type="button" data-base="a" aria-pressed="false">a</button>
+          <small>a &gt; 1</small>
+        </div>
+        <p class="axis-note">指数は、左が小さく・右が大きい。数直線と同じ向きです。</p>
+        <div class="power-axis" id="power-axis">
+          <div class="axis-cursor" id="axis-cursor" aria-hidden="true"></div>
+          <div class="point" data-exp="−3" data-plain="1/8"><b>−3</b><i></i><span class="axis-value"><span class="frac"><span>1</span><span>8</span></span></span></div>
+          <div class="point" data-exp="−2" data-plain="1/4"><b>−2</b><i></i><span class="axis-value"><span class="frac"><span>1</span><span>4</span></span></span></div>
+          <div class="point" data-exp="−1" data-plain="1/2"><b>−1</b><i></i><span class="axis-value"><span class="frac"><span>1</span><span>2</span></span></span></div>
+          <div class="point active" data-exp="0" data-plain="1"><b>0</b><i></i><span class="axis-value">1</span></div>
+          <div class="point" data-exp="1" data-plain="2"><b>1</b><i></i><span class="axis-value">2</span></div>
+          <div class="point" data-exp="2" data-plain="4"><b>2</b><i></i><span class="axis-value">4</span></div>
+          <div class="point" data-exp="3" data-plain="8"><b>3</b><i></i><span class="axis-value">8</span></div>
+        </div>
+        <div class="axis-interaction">
+          <button class="axis-step" id="axis-left" type="button" aria-label="左へ1つ移動">←</button>
+          <div class="axis-readout" aria-live="polite">
+            <span id="axis-equation">2⁰ = 1</span>
+            <span class="axis-operation" id="axis-operation">×2</span>
+          </div>
+          <button class="axis-step" id="axis-right" type="button" aria-label="右へ1つ移動">→</button>
+        </div>
+        <p class="axis-help">左へ進むと <span id="axis-left-rule">÷2</span>　／　右へ進むと <span id="axis-right-rule">×2</span></p>
+      </div>
+    </section>
+
+    <section class="slide green" data-label="0乗" hidden>
+      <div class="heading"><div><p>0乗</p><h1>0乗は、いつでも 1</h1></div><span class="num">09</span></div>
+      <div class="body zero">
+        <div class="cols">
+          <div class="box"><p>指数を1段下げる</p><div class="mathline">a¹ ÷ a = a⁰</div><div class="mathline">a ÷ a = 1</div><div class="therefore">だから　a⁰ = 1</div></div>
+          <div class="logic"><p>指数法則でも確認</p><div class="mathline">aᵐ ÷ aᵐ</div><div class="mathline">= aᵐ⁻ᵐ = a⁰</div><div class="mathline">一方で、同じ数 ÷ 同じ数 = 1</div></div>
+        </div>
+        <div class="formula">a⁰ = 1 <small>ただし a ≠ 0</small></div>
+        <div class="hint">2だけの特別ルールではありません。0でない数なら、文字 a でも成り立ちます。</div>
+      </div>
+    </section>
+
+    <section class="slide orange" data-label="負の指数" hidden>
+      <div class="heading"><div><p>負の指数</p><h1>マイナスは「逆数にする」合図</h1></div><span class="num">10</span></div>
+      <div class="body">
+        <div class="negative">
+          <div class="steps"><p>左へ進むたび ÷ 3</p><div class="mathline">3¹ = 3</div><div class="mathline">3⁰ = 1</div><div class="mathline fraction-equation" aria-label="3のマイナス1乗は3分の1"><math><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math><span class="fraction-equals">＝</span><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></div><div class="mathline fraction-equation" aria-label="3のマイナス2乗は9分の1"><math><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math><span class="fraction-equals">＝</span><math><mfrac><mn>1</mn><mn>9</mn></mfrac></math></div></div>
+          <div class="formula tall"><math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mo>=</mo><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math><small>a ≠ 0</small></div>
+        </div>
+        <div class="hint">答えがマイナスになるのではありません。指数のマイナスは「ひっくり返す」です。</div>
+      </div>
+    </section>
+
+    <section class="slide green practice-set" data-label="教科書 練習1" hidden>
+      <div class="heading"><div><p>ここで練習</p><h1>練習1　指数の意味を使おう</h1></div><span class="num">11</span></div>
+      <div class="body">
+        <div class="exercise-grid five">
+          <article class="exercise-card"><span class="exercise-index">1</span><div class="exercise-question"><math><msup><mn>7</mn><mn>0</mn></msup></math></div><div class="exercise-solution"><span>答え</span><math><mn>1</mn></math></div></article>
+          <article class="exercise-card"><span class="exercise-index">2</span><div class="exercise-question"><math><msup><mn>5</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></div><div class="exercise-solution"><span>答え</span><math><mfrac><mn>1</mn><mn>25</mn></mfrac></math></div></article>
+          <article class="exercise-card"><span class="exercise-index">3</span><div class="exercise-question"><math><msup><mrow><mo>(</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><mo>)</mo></mrow><mn>4</mn></msup></math></div><div class="exercise-solution"><span>答え</span><math><mfrac><mn>1</mn><mn>81</mn></mfrac></math></div></article>
+          <article class="exercise-card"><span class="exercise-index">4</span><div class="exercise-question exercise-inline" aria-label="4.26かける10のマイナス2乗"><span class="inline-number">4.26</span><span class="inline-op">×</span><math><msup><mn>10</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></div><div class="exercise-solution"><span>答え</span><math><mn>0.0426</mn></math></div></article>
+          <article class="exercise-card"><span class="exercise-index">5</span><div class="exercise-question exercise-inline" aria-label="0.000056イコール5.6かける10の何乗"><span class="inline-number">0.000056</span><span class="inline-op">＝</span><span class="inline-number">5.6</span><span class="inline-op">×</span><math><msup><mn>10</mn><mo>?</mo></msup></math></div><div class="exercise-solution"><span>答え</span><math><mrow><mo>−</mo><mn>5</mn></mrow></math></div></article>
+        </div>
+        <div class="practice-footer"><p>0乗・負の指数・小数点の移動を思い出そう。</p><button class="answerbtn practice-toggle" type="button">答えを見る</button></div>
+      </div>
+    </section>
+
+    <section class="slide orange practice-set" data-label="教科書 練習2" hidden>
+      <div class="heading"><div><p>ここで練習</p><h1>練習2　指数法則を使おう</h1></div><span class="num">12</span></div>
+      <div class="body">
+        <div class="exercise-grid four">
+          <article class="exercise-card"><span class="exercise-index">1</span><div class="exercise-question exercise-inline" aria-label="aの6乗かけるaのマイナス4乗"><math><msup><mi>a</mi><mn>6</mn></msup></math><span class="inline-op">×</span><math><msup><mi>a</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup></math></div><div class="exercise-solution"><span>答え</span><math><msup><mi>a</mi><mn>2</mn></msup></math></div></article>
+          <article class="exercise-card"><span class="exercise-index">2</span><div class="exercise-question"><math><mfrac><msup><mi>a</mi><mrow><mo>−</mo><mn>2</mn></mrow></msup><msup><mi>a</mi><mn>3</mn></msup></mfrac></math></div><div class="exercise-solution"><span>答え</span><span class="solution-chain"><math><msup><mi>a</mi><mrow><mo>−</mo><mn>5</mn></mrow></msup></math><span>＝</span><math><mfrac><mn>1</mn><msup><mi>a</mi><mn>5</mn></msup></mfrac></math></span></div></article>
+          <article class="exercise-card"><span class="exercise-index">3</span><div class="exercise-question"><math><msup><mrow><mo>(</mo><msup><mi>a</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup><mo>)</mo></mrow><mrow><mo>−</mo><mn>2</mn></mrow></msup></math></div><div class="exercise-solution"><span>答え</span><math><msup><mi>a</mi><mn>6</mn></msup></math></div></article>
+          <article class="exercise-card"><span class="exercise-index">4</span><div class="exercise-question"><math><msup><mrow><mo>(</mo><msup><mi>a</mi><mrow><mo>−</mo><mn>3</mn></mrow></msup><msup><mi>b</mi><mn>2</mn></msup><mo>)</mo></mrow><mn>2</mn></msup></math></div><div class="exercise-solution"><span>答え</span><math><mfrac><msup><mi>b</mi><mn>4</mn></msup><msup><mi>a</mi><mn>6</mn></msup></mfrac></math></div></article>
+        </div>
+        <div class="practice-footer"><p>×は指数を足す、÷は引く、外側の指数はかける。（a ≠ 0）</p><button class="answerbtn practice-toggle" type="button">答えを見る</button></div>
+      </div>
+    </section>
+
+    <section class="slide purple" data-label="累乗根の意味" hidden>
+      <div class="heading"><div><p>STEP 3</p><h1>累乗根は、かけ算を逆向きに考える</h1></div><span class="num">13</span></div>
+      <div class="body">
+        <div class="root-concept"><article><span>いつもの計算</span><strong>2 × 2 × 2 = 8</strong><b>2を3回かける</b></article><div class="root-turn">問いを逆向きに<br>→</div><article><span>累乗根の問い</span><strong>3回かけて8になる数は？</strong><b>答えは 2</b></article></div>
+        <div class="root-general"><math><msup><mi>x</mi><mi>n</mi></msup><mo>=</mo><mi>a</mi></math><span>を満たす正の数 x を</span><strong>「a の n乗根」</strong><span>という</span></div>
+        <div class="root-family"><b>2乗根・3乗根・4乗根・…</b><span>これらをまとめて「累乗根」</span></div>
+        <div class="hint">この教材では、まず正の累乗根に注目します。「同じ数を何回かけるか」で考えれば大丈夫です。</div>
+      </div>
+    </section>
+
+    <section class="slide green" data-label="n乗根を確かめる" hidden>
+      <div class="heading"><div><p>累乗根を体験</p><h1>数字を変えて、n乗根を確かめよう</h1></div><span class="num">14</span></div>
+      <div class="body">
+        <div class="root-example-picker" role="group" aria-label="累乗根の例を選ぶ"><button class="root-example" type="button" data-degree="2" data-radicand="9" data-root="3" aria-pressed="false">9の2乗根</button><button class="root-example active" type="button" data-degree="3" data-radicand="27" data-root="3" aria-pressed="true">27の3乗根</button><button class="root-example" type="button" data-degree="4" data-radicand="16" data-root="2" aria-pressed="false">16の4乗根</button><button class="root-example" type="button" data-degree="5" data-radicand="32" data-root="2" aria-pressed="false">32の5乗根</button></div>
+        <div class="root-demo" id="root-demo"><div class="root-demo-left"><p class="root-demo-question" id="root-demo-question">同じ数を3回かけて27になる数は？</p><div class="root-demo-product" id="root-demo-product">3 × 3 × 3 = 27</div></div><div class="root-demo-right"><div class="root-demo-answer"><math id="root-demo-radical"><mroot><mn>27</mn><mn>3</mn></mroot></math><span>＝</span><strong id="root-demo-value">3</strong></div><p class="root-demo-sentence" id="root-demo-sentence">3は27の3乗根</p></div></div>
+        <div class="hint">nが変わっても、「n回かけると元の数になる」という意味は同じです。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-label="3乗根と分数指数" hidden>
+      <div class="heading"><div><p>分数指数 ①</p><h1><span class="spoken-power-title">3乗根と<math class="title-math"><mfrac><mn>1</mn><mn>3</mn></mfrac></math>乗は、同じもの</span></h1></div><span class="num">15</span></div>
+      <div class="body"><div class="proof"><div class="root-side"><span>3乗根の2</span><strong>∛2 × ∛2 × ∛2 = 2</strong></div><div class="iff">⇔</div><div class="power-side"><span class="spoken-power-label">2の<math class="text-math"><mfrac><mn>1</mn><mn>3</mn></mfrac></math>乗</span><div class="segmented-math" aria-label="2の3分の1乗を3回かけると2の1乗、つまり2"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">×</span><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">×</span><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><msup><mn>2</mn><mn>1</mn></msup></math><span class="math-op">＝</span><math><mn>2</mn></math></div></div></div><div class="formula"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mo>=</mo><mroot><mn>2</mn><mn>3</mn></mroot></math></div><div class="hint">どちらも「3回かけると2になる数」。だから1対1に対応します。</div></div>
+    </section>
+
+    <section class="slide green" data-label="何乗根でも分数指数" hidden>
+      <div class="heading"><div><p>分数指数 ②</p><h1>何乗根でも、同じ対応がある</h1></div><span class="num">16</span></div>
+      <div class="body"><div class="root-controls"><div class="root-picker" role="group" aria-label="何乗根かを選ぶ"><span>何回かける？</span><button class="root-degree" type="button" data-degree="2" aria-pressed="false">2乗根</button><button class="root-degree" type="button" data-degree="3" aria-pressed="false">3乗根</button><button class="root-degree active" type="button" data-degree="4" aria-pressed="true">4乗根</button><button class="root-degree" type="button" data-degree="5" aria-pressed="false">5乗根</button></div><div class="root-view-picker" role="group" aria-label="式の表し方を選ぶ"><span>表し方</span><button class="root-view active" type="button" data-view="fraction" aria-pressed="true">分数指数</button><button class="root-view" type="button" data-view="radical" aria-pressed="false">累乗根</button></div></div><div class="fourth"><div class="repeat" id="root-repeat" aria-live="polite"></div><div class="arrow" id="root-arrow">指数を4個足す ↓</div><div class="segmented-math" id="root-result" aria-live="polite"></div></div><div class="hint" id="root-hint">分母の4は「同じ数を4回かける」の合図です。</div></div>
+    </section>
+
+    <section class="slide orange" data-label="分数指数の一般化" hidden>
+      <div class="heading"><div><p>分数指数 ③</p><h1>分母は「根」、分子は「累乗」</h1></div><span class="num">17</span></div>
+      <div class="body">
+        <div class="mn">
+          <div class="anatomy"><math><msup><mi>a</mi><mfrac><mi>m</mi><mi>n</mi></mfrac></msup></math><div class="notes"><span><b>m</b>：m乗する</span><span><b>n</b>：n乗根をとる</span></div></div>
+          <div class="worked"><p>例：<math class="text-math"><msup><mn>8</mn><mfrac><mn>2</mn><mn>3</mn></mfrac></msup></math></p><div>まず 3乗根：∛8 = 2</div><div>次に 2乗：2² = 4</div><strong>答え 4</strong></div>
+        </div>
+        <div class="formula"><math><msup><mi>a</mi><mfrac><mi>m</mi><mi>n</mi></mfrac></msup><mo>=</mo><msup><mroot><mi>a</mi><mi>n</mi></mroot><mi>m</mi></msup><mo>=</mo><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math></div>
+        <div class="hint">迷ったら「分母を先に」。数字が小さくなり、計算しやすいことが多いです。</div>
+      </div>
+    </section>
+
+    <section class="slide purple" data-label="累乗根の5つの性質" hidden>
+      <div class="heading"><div><p>STEP 4</p><h1>累乗根の性質は、5つに整理できる</h1></div><span class="num">18</span></div>
+      <div class="body">
+        <div class="root-laws">
+          <article class="root-law"><b>1</b><strong>積をまとめる</strong><div class="law-formula"><math><mroot><mi>a</mi><mi>n</mi></mroot></math><span class="math-op">×</span><math><mroot><mi>b</mi><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><mrow><mi>a</mi><mi>b</mi></mrow><mi>n</mi></mroot></math></div><span>同じ n乗根どうしを1つの根にする</span></article>
+          <article class="root-law"><b>2</b><strong>商をまとめる</strong><div class="law-formula"><math><mfrac><mroot><mi>a</mi><mi>n</mi></mroot><mroot><mi>b</mi><mi>n</mi></mroot></mfrac></math><span class="math-op">＝</span><math><mroot><mfrac><mi>a</mi><mi>b</mi></mfrac><mi>n</mi></mroot></math></div><span>割り算も根の中でまとめる</span></article>
+          <article class="root-law"><b>3</b><strong>累乗を中へ</strong><div class="law-formula"><math><msup><mrow><mo>(</mo><mroot><mi>a</mi><mi>n</mi></mroot><mo>)</mo></mrow><mi>m</mi></msup></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math></div><span>外側の累乗を根の中へ移す</span></article>
+          <article class="root-law"><b>4</b><strong>二重の根</strong><div class="law-formula"><math><mroot><mroot><mi>a</mi><mi>n</mi></mroot><mi>m</mi></mroot></math><span class="math-op">＝</span><math><mroot><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></mroot></math></div><span>根の回数どうしをかける</span></article>
+          <article class="root-law"><b>5</b><strong>同じ数倍</strong><div class="law-formula"><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mrow><mi>m</mi><mi>p</mi></mrow></msup><mrow><mi>n</mi><mi>p</mi></mrow></mroot></math></div><span>指数と根の回数を同じ数倍する</span></article>
+        </div>
+        <div class="hint">全部を一度に暗記しません。次から、1つの性質に1つの例題を対応させます。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-label="累乗根の性質1" hidden>
+      <div class="heading"><div><p>累乗根の性質 ①</p><h1>掛け算は、根の中でまとめる</h1></div><span class="num">19</span></div>
+      <div class="body">
+        <div class="property-layout">
+          <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mroot><mi>a</mi><mi>n</mi></mroot></math><span class="math-op">×</span><math><mroot><mi>b</mi><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><mrow><mi>a</mi><mi>b</mi></mrow><mi>n</mi></mroot></math></div><p class="conditions">a &gt; 0，b &gt; 0</p></div>
+          <div class="property-example"><span>例題</span><div class="segmented-math property-math"><math><mroot><mn>2</mn><mn>3</mn></mroot></math><span class="math-op">×</span><math><mroot><mn>4</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mroot><mn>8</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mn>2</mn></math></div><p>根の回数が同じ「3」だから、中の 2 と 4 を掛けます。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide green" data-label="累乗根の性質2" hidden>
+      <div class="heading"><div><p>累乗根の性質 ②</p><h1>割り算も、根の中でまとめる</h1></div><span class="num">20</span></div>
+      <div class="body">
+        <div class="property-layout">
+          <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mfrac><mroot><mi>a</mi><mi>n</mi></mroot><mroot><mi>b</mi><mi>n</mi></mroot></mfrac></math><span class="math-op">＝</span><math><mroot><mfrac><mi>a</mi><mi>b</mi></mfrac><mi>n</mi></mroot></math></div><p class="conditions">a &gt; 0，b &gt; 0</p></div>
+          <div class="property-example"><span>例題</span><div class="segmented-math property-math"><math><mfrac><mroot><mn>48</mn><mn>4</mn></mroot><mroot><mn>3</mn><mn>4</mn></mroot></mfrac></math><span class="math-op">＝</span><math><mroot><mn>16</mn><mn>4</mn></mroot></math><span class="math-op">＝</span><math><mn>2</mn></math></div><p>根の回数が同じ「4」だから、中の 48 を 3 で割ります。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide orange" data-label="累乗根の性質3" hidden>
+      <div class="heading"><div><p>累乗根の性質 ③</p><h1>外側の累乗は、根の中へ移せる</h1></div><span class="num">21</span></div>
+      <div class="body">
+        <div class="property-layout">
+          <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><msup><mrow><mo>(</mo><mroot><mi>a</mi><mi>n</mi></mroot><mo>)</mo></mrow><mi>m</mi></msup></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math></div><p class="conditions">a &gt; 0</p></div>
+          <div class="property-example"><span>例題</span><div class="segmented-math property-math"><math><msup><mrow><mo>(</mo><mroot><mn>2</mn><mn>3</mn></mroot><mo>)</mo></mrow><mn>3</mn></msup></math><span class="math-op">＝</span><math><mroot><msup><mn>2</mn><mn>3</mn></msup><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mroot><mn>8</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mn>2</mn></math></div><p>外側の「3乗」を、根の中の 2 に付けます。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide purple" data-label="累乗根の性質4" hidden>
+      <div class="heading"><div><p>累乗根の性質 ④</p><h1>根の中に根があるときは、回数をかける</h1></div><span class="num">22</span></div>
+      <div class="body">
+        <div class="property-layout">
+          <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mroot><mroot><mi>a</mi><mi>n</mi></mroot><mi>m</mi></mroot></math><span class="math-op">＝</span><math><mroot><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></mroot></math></div><p class="conditions">a &gt; 0</p></div>
+          <div class="property-example"><span>例題</span><div class="segmented-math property-math"><math><msqrt><mroot><mn>64</mn><mn>3</mn></mroot></msqrt></math><span class="math-op">＝</span><math><mroot><mn>64</mn><mn>6</mn></mroot></math><span class="math-op">＝</span><math><mn>2</mn></math></div><p>2乗根の「2」と3乗根の「3」を掛けて、6乗根にします。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide green" data-label="累乗根の性質5" hidden>
+      <div class="heading"><div><p>累乗根の性質 ⑤</p><h1>指数と根の回数を、同じ数倍してもよい</h1></div><span class="num">23</span></div>
+      <div class="body">
+        <div class="property-layout">
+          <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mrow><mi>m</mi><mi>p</mi></mrow></msup><mrow><mi>n</mi><mi>p</mi></mrow></mroot></math></div><p class="conditions">a &gt; 0，m・n・p は正の整数</p></div>
+          <div class="property-example"><span>例題</span><div class="segmented-math property-math"><math><mroot><mn>4</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mroot><mn>16</mn><mn>6</mn></mroot></math></div><p>4＝2²、16＝2⁴。指数の2と根の3を、どちらも2倍しています。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-label="分数指数から累乗根" hidden>
+      <div class="heading"><div><p>計算への橋渡し ①</p><h1>分数指数を、累乗根に直す</h1></div><span class="num">24</span></div>
+      <div class="body">
+        <div class="conversion-grid">
+          <article class="conversion-card"><span>分子が 1</span><div class="segmented-math"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mroot><mn>2</mn><mn>3</mn></mroot></math></div><p>分母の3が「3乗根」になります。</p></article>
+          <article class="conversion-card"><span>分子が 2</span><div class="segmented-math"><math><msup><mn>5</mn><mfrac><mn>2</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mroot><msup><mn>5</mn><mn>2</mn></msup><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mroot><mn>25</mn><mn>3</mn></mroot></math></div><p>分子の2は「中を2乗」です。</p></article>
+        </div>
+        <div class="formula segmented-math"><math><msup><mi>a</mi><mfrac><mi>m</mi><mi>n</mi></mfrac></msup></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math></div>
+      </div>
+    </section>
+
+    <section class="slide orange" data-label="普通の数まで計算" hidden>
+      <div class="heading"><div><p>計算への橋渡し ②</p><h1>累乗根に直して、普通の数まで計算する</h1></div><span class="num">25</span></div>
+      <div class="body">
+        <div class="calculation-grid">
+          <article class="calculation-card"><span>1</span><div class="segmented-math"><math><msup><mn>27</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mroot><mn>27</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mn>3</mn></math></div><p>3回かけて27になる数</p></article>
+          <article class="calculation-card"><span>2</span><div class="segmented-math"><math><msup><mn>16</mn><mfrac><mn>3</mn><mn>4</mn></mfrac></msup></math><span class="math-op">＝</span><math><msup><mrow><mo>(</mo><mroot><mn>16</mn><mn>4</mn></mroot><mo>)</mo></mrow><mn>3</mn></msup></math><span class="math-op">＝</span><math><msup><mn>2</mn><mn>3</mn></msup></math><span class="math-op">＝</span><math><mn>8</mn></math></div><p>先に4乗根、あとで3乗</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide purple" data-label="分数指数の掛け算割り算" hidden>
+      <div class="heading"><div><p>計算練習 ①</p><h1>分数指数でも、足し算・引き算は同じ</h1></div><span class="num">26</span></div>
+      <div class="body">
+        <div class="calculation-grid">
+          <article class="calculation-card"><span>掛け算</span><div class="segmented-math"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">×</span><math><msup><mn>2</mn><mfrac><mn>2</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><msup><mn>2</mn><mfrac><mn>3</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mn>2</mn></math></div><p>同じ底なので、指数を足す</p></article>
+          <article class="calculation-card"><span>割り算</span><div class="segmented-math"><math><msup><mn>3</mn><mfrac><mn>5</mn><mn>4</mn></mfrac></msup></math><span class="math-op">÷</span><math><msup><mn>3</mn><mfrac><mn>1</mn><mn>4</mn></mfrac></msup></math><span class="math-op">＝</span><math><msup><mn>3</mn><mfrac><mn>4</mn><mn>4</mn></mfrac></msup></math><span class="math-op">＝</span><math><mn>3</mn></math></div><p>同じ底なので、指数を引く</p></article>
+        </div>
+        <div class="final-rule"><b>分数になっても同じ</b><span>掛け算は指数を足す／割り算は指数を引く</span></div>
+      </div>
+    </section>
+
+    <section class="slide green" data-label="累乗根の掛け算割り算" hidden>
+      <div class="heading"><div><p>計算練習 ②</p><h1>累乗根で表された数を、掛ける・割る</h1></div><span class="num">27</span></div>
+      <div class="body">
+        <div class="calculation-grid">
+          <article class="calculation-card"><span>掛け算</span><div class="segmented-math"><math><mroot><mn>4</mn><mn>3</mn></mroot></math><span class="math-op">×</span><math><mroot><mn>16</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mroot><mn>64</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mn>4</mn></math></div><p>同じ3乗根なので、中を掛ける</p></article>
+          <article class="calculation-card"><span>割り算</span><div class="segmented-math"><math><mfrac><mroot><mn>96</mn><mn>5</mn></mroot><mroot><mn>3</mn><mn>5</mn></mroot></mfrac></math><span class="math-op">＝</span><math><mroot><mn>32</mn><mn>5</mn></mroot></math><span class="math-op">＝</span><math><mn>2</mn></math></div><p>同じ5乗根なので、中を割る</p></article>
+        </div>
+        <div class="final-rule"><b>最後のポイント</b><span>根の回数が同じなら、根の中で1つにまとめられる</span></div>
+      </div>
+    </section>
+
+    <section class="slide purple" data-label="今日のまとめ" hidden>
+      <div class="heading"><div><p>FINAL</p><h1>今日のまとめ ― 次は自分で解いてみよう</h1></div><span class="num">28</span></div>
+      <div class="body">
+        <div class="summary-grid">
+          <article class="summary-card"><span>1</span><strong>指数法則：×は足す、÷は引く</strong><div class="segmented-math summary-math"><math><msup><mi>a</mi><mi>m</mi></msup></math><span class="math-op">×</span><math><msup><mi>a</mi><mi>n</mi></msup></math><span class="math-op">＝</span><math><msup><mi>a</mi><mrow><mi>m</mi><mo>＋</mo><mi>n</mi></mrow></msup></math></div></article>
+          <article class="summary-card double"><span>2</span><strong>0乗と負の指数</strong><div class="segmented-math summary-math"><math><msup><mi>a</mi><mn>0</mn></msup></math><span class="math-op">＝</span><math><mn>1</mn></math><span class="summary-divider" aria-hidden="true">｜</span><math><msup><mi>a</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup></math><span class="math-op">＝</span><math><mfrac><mn>1</mn><msup><mi>a</mi><mi>n</mi></msup></mfrac></math></div></article>
+          <article class="summary-card"><span>3</span><strong>分数指数は累乗根に直せる</strong><div class="segmented-math summary-math"><math><msup><mi>a</mi><mfrac><mi>m</mi><mi>n</mi></mfrac></msup></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math></div></article>
+          <article class="summary-card"><span>4</span><strong>同じn乗根は中でまとめる</strong><div class="segmented-math summary-math"><math><mroot><mi>a</mi><mi>n</mi></mroot></math><span class="math-op">×</span><math><mroot><mi>b</mi><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><mrow><mi>a</mi><mi>b</mi></mrow><mi>n</mi></mroot></math></div></article>
+        </div>
+        <div class="metamoji-callout">
+          <div><span>NEXT STEP</span><strong>MetaMoJiの問題に取り組もう</strong><p>全部を一度にやらなくて大丈夫。まず1問、使う法則を決めて式を書こう。</p></div>
+          <ul class="metamoji-steps"><li>① 解ける問題から</li><li>② 途中式を書く</li><li>③ 迷ったら印をつける</li></ul>
+        </div>
+      </div>
+    </section>
+
+  </div></div>
+  <nav class="controls" aria-label="スライド操作">
+    <button class="navbtn prev" id="prev" type="button">← 前へ</button>
+    <div class="dots-nav" id="dots" aria-label="スライド一覧"></div>
+    <button class="navbtn" id="next" type="button">次へ →</button>
+  </nav>
+  <p class="keynote">← → キーでも移動できます</p>
+</main>
+<script>
+  (() => {
+    const slides = [...document.querySelectorAll(".slide")];
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    const dots = document.getElementById("dots");
+    const now = document.getElementById("now");
+    const total = document.getElementById("total");
+    const bar = document.getElementById("bar");
+    const practiceSets = [...document.querySelectorAll(".practice-set")];
+    const practiceToggles = [...document.querySelectorAll(".practice-toggle")];
+    const axisPoints = [...document.querySelectorAll("#power-axis .point")];
+    const axisCursor = document.getElementById("axis-cursor");
+    const axisLeft = document.getElementById("axis-left");
+    const axisRight = document.getElementById("axis-right");
+    const axisEquation = document.getElementById("axis-equation");
+    const axisOperation = document.getElementById("axis-operation");
+    const axisLeftRule = document.getElementById("axis-left-rule");
+    const axisRightRule = document.getElementById("axis-right-rule");
+    const baseButtons = [...document.querySelectorAll(".base-button")];
+    const rootExampleButtons = [...document.querySelectorAll(".root-example")];
+    const rootDemo = document.getElementById("root-demo");
+    const rootDemoQuestion = document.getElementById("root-demo-question");
+    const rootDemoProduct = document.getElementById("root-demo-product");
+    const rootDemoRadical = document.getElementById("root-demo-radical");
+    const rootDemoValue = document.getElementById("root-demo-value");
+    const rootDemoSentence = document.getElementById("root-demo-sentence");
+    const rootDegreeButtons = [...document.querySelectorAll(".root-degree")];
+    const rootViewButtons = [...document.querySelectorAll(".root-view")];
+    const rootRepeat = document.getElementById("root-repeat");
+    const rootArrow = document.getElementById("root-arrow");
+    const rootResult = document.getElementById("root-result");
+    const rootHint = document.getElementById("root-hint");
+    let current = 0;
+    let axisIndex = 3;
+    let axisBase = "2";
+    let rootDegree = 4;
+    let rootView = "fraction";
+
+    total.textContent = String(slides.length).padStart(2, "0");
+
+    slides.forEach((slide, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("aria-label", `${index + 1}枚目：${slide.dataset.label}`);
+      dot.addEventListener("click", () => show(index));
+      dots.appendChild(dot);
+    });
+
+    function show(index) {
+      current = Math.max(0, Math.min(slides.length - 1, index));
+      slides.forEach((slide, i) => slide.hidden = i !== current);
+      [...dots.children].forEach((dot, i) => {
+        dot.classList.toggle("active", i === current);
+        if (i === current) dot.setAttribute("aria-current", "page");
+        else dot.removeAttribute("aria-current");
+      });
+      now.textContent = String(current + 1).padStart(2, "0");
+      bar.style.width = `${((current + 1) / slides.length) * 100}%`;
+      prev.disabled = current === 0;
+      next.disabled = current === slides.length - 1;
+      practiceSets.forEach(set => set.classList.remove("show-answers"));
+      practiceToggles.forEach(button => button.textContent = "答えを見る");
+    }
+
+    prev.addEventListener("click", () => show(current - 1));
+    next.addEventListener("click", () => show(current + 1));
+    practiceToggles.forEach(button => button.addEventListener("click", () => {
+      const practiceSet = button.closest(".practice-set");
+      const visible = practiceSet.classList.toggle("show-answers");
+      button.textContent = visible ? "答えを隠す" : "答えを見る";
+    }));
+
+    function flashAxisOperation(message) {
+      axisOperation.textContent = message;
+      axisOperation.classList.remove("pop");
+      void axisOperation.offsetWidth;
+      axisOperation.classList.add("pop");
+    }
+
+    const mathNamespace = "http://www.w3.org/1998/Math/MathML";
+
+    function makeMathElement(tag, text) {
+      const element = document.createElementNS(mathNamespace, tag);
+      if (text !== undefined) element.textContent = text;
+      return element;
+    }
+
+    function makeExponent(exponent) {
+      if (exponent >= 0) return makeMathElement("mn", String(exponent));
+      const row = makeMathElement("mrow");
+      row.append(makeMathElement("mo", "−"), makeMathElement("mn", String(Math.abs(exponent))));
+      return row;
+    }
+
+    function makeBase() {
+      return makeMathElement(axisBase === "a" ? "mi" : "mn", axisBase);
+    }
+
+    function makePower(exponent) {
+      const power = makeMathElement("msup");
+      power.append(makeBase(), makeExponent(exponent));
+      return power;
+    }
+
+    function makePositiveAmount(exponent) {
+      if (axisBase !== "a") {
+        return makeMathElement("mn", String(Math.pow(Number(axisBase), exponent)));
+      }
+      if (exponent === 1) return makeMathElement("mi", "a");
+      const power = makeMathElement("msup");
+      power.append(makeMathElement("mi", "a"), makeMathElement("mn", String(exponent)));
+      return power;
+    }
+
+    function makeAxisResult(exponent) {
+      if (exponent === 0) return makeMathElement("mn", "1");
+      if (exponent > 0) return makePositiveAmount(exponent);
+      const fraction = makeMathElement("mfrac");
+      fraction.append(makeMathElement("mn", "1"), makePositiveAmount(Math.abs(exponent)));
+      return fraction;
+    }
+
+    function makeFractionPower(numerator, denominator) {
+      const fraction = makeMathElement("mfrac");
+      const power = makeMathElement("msup");
+      fraction.append(makeMathElement("mn", String(numerator)), makeMathElement("mn", String(denominator)));
+      power.append(makeMathElement("mn", "2"), fraction);
+      return power;
+    }
+
+    function makeRadical(degree, radicand = 2) {
+      const radical = makeMathElement(degree === 2 ? "msqrt" : "mroot");
+      radical.append(makeMathElement("mn", String(radicand)));
+      if (degree !== 2) radical.append(makeMathElement("mn", String(degree)));
+      return radical;
+    }
+
+    function makeInlineMath(content) {
+      const math = makeMathElement("math");
+      math.append(content);
+      return math;
+    }
+
+    function makeMathOperator(text) {
+      const operator = document.createElement("span");
+      operator.className = "math-op";
+      operator.textContent = text;
+      return operator;
+    }
+
+    function renderRootExample(selectedButton) {
+      const degree = Number(selectedButton.dataset.degree);
+      const radicand = Number(selectedButton.dataset.radicand);
+      const root = Number(selectedButton.dataset.root);
+      rootDemoQuestion.textContent = `同じ数を ${degree} 回かけて ${radicand} になる数は？`;
+      rootDemoProduct.textContent = `${Array(degree).fill(root).join(" × ")} = ${radicand}`;
+      rootDemoRadical.replaceChildren(makeRadical(degree, radicand));
+      rootDemoValue.textContent = String(root);
+      rootDemoSentence.textContent = `${root} は ${radicand} の ${degree}乗根`;
+      rootExampleButtons.forEach(button => {
+        const active = button === selectedButton;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+      rootDemo.classList.remove("change");
+      void rootDemo.offsetWidth;
+      rootDemo.classList.add("change");
+    }
+
+    function renderRootDegree() {
+      const repeatParts = [];
+      for (let index = 0; index < rootDegree; index += 1) {
+        if (index > 0) repeatParts.push(makeMathOperator("×"));
+        const factorContent = rootView === "fraction"
+          ? makeFractionPower(1, rootDegree)
+          : makeRadical(rootDegree);
+        const factor = makeInlineMath(factorContent);
+        factor.classList.add("root-factor");
+        factor.style.animationDelay = `${index * .06}s`;
+        repeatParts.push(factor);
+      }
+      rootRepeat.replaceChildren(...repeatParts);
+      if (rootView === "fraction") {
+        rootRepeat.setAttribute("aria-label", `2の${rootDegree}分の1乗を${rootDegree}回かける`);
+        rootArrow.textContent = `指数を ${rootDegree} 個足す ↓`;
+        rootResult.setAttribute("aria-label", `2の${rootDegree}分の${rootDegree}乗は2の1乗、つまり2`);
+        const onePower = makeMathElement("msup");
+        onePower.append(makeMathElement("mn", "2"), makeMathElement("mn", "1"));
+        rootResult.replaceChildren(
+          makeMathOperator("＝"),
+          makeInlineMath(makeFractionPower(rootDegree, rootDegree)),
+          makeMathOperator("＝"),
+          makeInlineMath(onePower),
+          makeMathOperator("＝"),
+          makeInlineMath(makeMathElement("mn", "2"))
+        );
+        rootHint.textContent = `分母の${rootDegree}は「同じ数を${rootDegree}回かける」の合図です。`;
+      } else {
+        rootRepeat.setAttribute("aria-label", `2の${rootDegree}乗根を${rootDegree}回かける`);
+        rootArrow.textContent = `同じ累乗根を ${rootDegree} 個かける ↓`;
+        rootResult.setAttribute("aria-label", `${rootDegree}乗根を${rootDegree}回かけると2`);
+        rootResult.replaceChildren(makeMathOperator("＝"), makeInlineMath(makeMathElement("mn", "2")));
+        rootHint.textContent = `${rootDegree}乗根は、同じ数を${rootDegree}回かけると2になる数です。`;
+      }
+      rootDegreeButtons.forEach(button => {
+        const active = Number(button.dataset.degree) === rootDegree;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+      rootViewButtons.forEach(button => {
+        const active = button.dataset.view === rootView;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+    }
+
+    function plainAxisValue(exponent) {
+      if (exponent === 0) return "1";
+      const absoluteExponent = Math.abs(exponent);
+      const amount = axisBase === "a"
+        ? (absoluteExponent === 1 ? "a" : `a^${absoluteExponent}`)
+        : String(Math.pow(Number(axisBase), absoluteExponent));
+      return exponent < 0 ? `1/${amount}` : amount;
+    }
+
+    function setAxisValue(element, exponent) {
+      const math = makeMathElement("math");
+      math.append(makeAxisResult(exponent));
+      element.replaceChildren(math);
+      return plainAxisValue(exponent);
+    }
+
+    function renderAxisEquation() {
+      const exponent = axisIndex - 3;
+      const left = makeMathElement("math");
+      const equals = document.createElement("span");
+      const right = makeMathElement("math");
+      left.append(makePower(exponent));
+      equals.className = "axis-equals";
+      equals.textContent = "＝";
+      right.append(makeAxisResult(exponent));
+      axisEquation.setAttribute("aria-label", `${axisBase}の${exponent}乗は${plainAxisValue(exponent)}`);
+      axisEquation.replaceChildren(left, equals, right);
+    }
+
+    function renderAxis() {
+      const exponents = [-3, -2, -1, 0, 1, 2, 3];
+      axisPoints.forEach((point, index) => {
+        const value = setAxisValue(point.querySelector(".axis-value"), exponents[index]);
+        point.dataset.plain = value;
+        point.classList.toggle("active", index === axisIndex);
+      });
+      renderAxisEquation();
+      axisCursor.style.left = `${((axisIndex + .5) / axisPoints.length) * 100}%`;
+      axisLeftRule.textContent = `÷${axisBase}`;
+      axisRightRule.textContent = `×${axisBase}`;
+      axisLeft.disabled = axisIndex === 0;
+      axisRight.disabled = axisIndex === axisPoints.length - 1;
+    }
+
+    function updateAxis(direction) {
+      const nextIndex = Math.max(0, Math.min(axisPoints.length - 1, axisIndex + direction));
+      if (nextIndex === axisIndex) return;
+      axisIndex = nextIndex;
+      axisPoints.forEach((item, index) => item.classList.toggle("active", index === axisIndex));
+      axisCursor.style.left = `${((axisIndex + .5) / axisPoints.length) * 100}%`;
+      renderAxisEquation();
+      flashAxisOperation(direction > 0 ? `×${axisBase}` : `÷${axisBase}`);
+      axisLeft.disabled = axisIndex === 0;
+      axisRight.disabled = axisIndex === axisPoints.length - 1;
+    }
+
+    axisLeft.addEventListener("click", () => updateAxis(-1));
+    axisRight.addEventListener("click", () => updateAxis(1));
+    baseButtons.forEach(button => button.addEventListener("click", () => {
+      axisBase = button.dataset.base;
+      baseButtons.forEach(item => {
+        const active = item === button;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+      renderAxis();
+      flashAxisOperation(`底 = ${axisBase}`);
+    }));
+    rootDegreeButtons.forEach(button => button.addEventListener("click", () => {
+      rootDegree = Number(button.dataset.degree);
+      renderRootDegree();
+    }));
+    rootViewButtons.forEach(button => button.addEventListener("click", () => {
+      rootView = button.dataset.view;
+      renderRootDegree();
+    }));
+    rootExampleButtons.forEach(button => button.addEventListener("click", () => renderRootExample(button)));
+    window.addEventListener("keydown", event => {
+      if (event.key === "ArrowRight" || event.key === "PageDown") { event.preventDefault(); show(current + 1); }
+      if (event.key === "ArrowLeft" || event.key === "PageUp") { event.preventDefault(); show(current - 1); }
+      if (event.key === "Home") show(0);
+      if (event.key === "End") show(slides.length - 1);
+    });
+    renderAxis();
+    renderRootExample(rootExampleButtons.find(button => button.classList.contains("active")) || rootExampleButtons[0]);
+    renderRootDegree();
+    show(0);
+  })();
+</script>
+</body>
+</html>
