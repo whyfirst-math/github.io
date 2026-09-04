@@ -68,7 +68,8 @@
     .formula{display:flex;align-items:center;justify-content:center;gap:1rem;min-height:3.6rem;padding:.55rem 1rem;border:2px solid var(--tone);border-radius:.85rem;color:var(--tone);font-size:clamp(1.3rem,2.3vw,2.2rem);font-weight:900}.formula small{color:#647187;font-size:.72rem}
     .cancel-frac{display:grid;text-align:center;line-height:1.55;font-size:clamp(.85rem,1.25vw,1.1rem)}.cancel-frac span:first-child{border-bottom:2px solid var(--ink);padding:0 .35rem .18rem}.cancel-frac s{text-decoration-color:var(--orange);text-decoration-thickness:3px}
     .three{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.three article{display:grid;place-items:center;gap:.3rem;padding:1rem .65rem;border:2px solid #dfe8f3;border-radius:1rem;background:#fbfdff;text-align:center}.three article>span{color:var(--tone);font-weight:900}.three b{color:var(--tone)}
-    .memory{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;border-radius:.8rem;background:var(--navy);color:#fff;text-align:center;font-size:clamp(.82rem,1.15vw,1rem)}.memory span{padding:.7rem;border-right:1px solid #ffffff33}.memory b{color:#82d9ff}
+    .three.four-laws{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}.three.four-laws article{min-height:5.35rem;padding:.55rem .7rem;grid-template-columns:auto 1fr auto;grid-template-areas:"label formula result" "label action result";column-gap:.7rem}.three.four-laws article>span{grid-area:label}.three.four-laws article>.mathline{grid-area:formula;font-size:clamp(1.05rem,1.8vw,1.6rem)}.three.four-laws article>strong{grid-area:action;font-size:clamp(.76rem,1vw,.9rem)}.three.four-laws article>b{grid-area:result;font-size:clamp(1rem,1.6vw,1.4rem)}
+    .memory{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;border-radius:.8rem;background:var(--navy);color:#fff;text-align:center;font-size:clamp(.82rem,1.15vw,1rem)}.memory span{padding:.7rem;border-right:1px solid #ffffff33}.memory b{color:#82d9ff}.memory.four-memory{grid-template-columns:repeat(2,1fr)}.memory.four-memory span:nth-child(2){border-right:0}.memory.four-memory span:nth-child(-n+2){border-bottom:1px solid #ffffff33}
     .axis-note{margin:0;text-align:center;font-size:clamp(.85rem,1.25vw,1.1rem);font-weight:800}
     .base-picker{display:flex;align-items:center;justify-content:center;gap:.45rem;margin-bottom:.1rem}
     .base-picker>span{margin-right:.2rem;color:#526278;font-size:clamp(.78rem,1vw,.9rem);font-weight:900}
@@ -128,7 +129,7 @@
 <main class="deck">
   <header class="top">
     <div class="brand"><b>BASIC MATH</b><b>指数の基本</b></div>
-    <div class="progress" aria-label="スライド進捗"><span id="now">01</span><i><b id="bar" style="width:3.57%"></b></i><span id="total">28</span></div>
+    <div class="progress" aria-label="スライド進捗"><span id="now">01</span><i><b id="bar" style="width:3.45%"></b></i><span id="total">29</span></div>
   </header>
   <div class="stage"><div class="viewport" id="viewport">
 
@@ -208,20 +209,55 @@
       </div>
     </section>
 
-    <section class="slide orange" data-label="3つの法則" hidden>
-      <div class="heading"><div><p>ここで確認</p><h1>3つの指数法則を見分けよう</h1></div><span class="num">07</span></div>
+    <section class="slide green" data-label="積全体の累乗" hidden>
+      <div class="heading"><div><p>指数法則 ④</p><h1>かっこの外の指数は、中の全部にかける</h1></div><span class="num">07</span></div>
       <div class="body">
-        <div class="three">
+        <div class="rule-layout">
+          <div class="rule">
+            <span class="tag">それぞれにかける</span>
+            <div class="segmented-math" aria-label="aのm乗かけるbのn乗のl乗は、aのml乗かけるbのnl乗">
+              <math><msup><mrow><mo>(</mo><msup><mi>a</mi><mi>m</mi></msup><mo>×</mo><msup><mi>b</mi><mi>n</mi></msup><mo>)</mo></mrow><mi>l</mi></msup></math>
+              <span class="math-op">＝</span>
+              <math><msup><mi>a</mi><mrow><mi>m</mi><mi>l</mi></mrow></msup></math>
+              <span class="math-op">×</span>
+              <math><msup><mi>b</mi><mrow><mi>n</mi><mi>l</mi></mrow></msup></math>
+            </div>
+          </div>
+          <div class="unfold">
+            <p>たとえば、外側が3乗なら</p>
+            <div class="segmented-math"><math><msup><mrow><mo>(</mo><msup><mn>2</mn><mn>2</mn></msup><mo>×</mo><msup><mn>3</mn><mn>1</mn></msup><mo>)</mo></mrow><mn>3</mn></msup></math></div>
+            <div class="dots"><span>2にも ×3</span><span>・</span><span>3にも ×3</span></div>
+            <div class="segmented-math">
+              <span class="math-op">＝</span>
+              <math><msup><mn>2</mn><mrow><mn>2</mn><mo>×</mo><mn>3</mn></mrow></msup></math>
+              <span class="math-op">×</span>
+              <math><msup><mn>3</mn><mrow><mn>1</mn><mo>×</mo><mn>3</mn></mrow></msup></math>
+              <span class="math-op">＝</span>
+              <math><msup><mn>2</mn><mn>6</mn></msup></math>
+              <span class="math-op">×</span>
+              <math><msup><mn>3</mn><mn>3</mn></msup></math>
+            </div>
+          </div>
+        </div>
+        <div class="hint">外側の指数 l を、a の指数にも b の指数にも、忘れずにかけます。</div>
+      </div>
+    </section>
+
+    <section class="slide orange" data-label="4つの法則" hidden>
+      <div class="heading"><div><p>ここで確認</p><h1>4つの指数法則を見分けよう</h1></div><span class="num">08</span></div>
+      <div class="body">
+        <div class="three four-laws">
           <article><span>掛け算</span><div class="mathline">3² × 3⁴</div><strong>指数を 2 ＋ 4</strong><b>= 3⁶</b></article>
           <article><span>割り算</span><div class="mathline">5⁷ ÷ 5³</div><strong>指数を 7 − 3</strong><b>= 5⁴</b></article>
           <article><span>累乗の累乗</span><div class="mathline">（7²）³</div><strong>指数を 2 × 3</strong><b>= 7⁶</b></article>
+          <article><span>積全体の累乗</span><div class="mathline">（2² × 3）³</div><strong>外側の3を両方へ</strong><b>= 2⁶ × 3³</b></article>
         </div>
-        <div class="memory"><span>× なら <b>足す</b></span><span>÷ なら <b>引く</b></span><span>（　）の外なら <b>かける</b></span></div>
+        <div class="memory four-memory"><span>同じ底の × は <b>足す</b></span><span>同じ底の ÷ は <b>引く</b></span><span>累乗の累乗は <b>かける</b></span><span>積全体なら <b>それぞれにかける</b></span></div>
       </div>
     </section>
 
     <section class="slide" data-label="指数の数直線" hidden>
-      <div class="heading"><div><p>STEP 2</p><h1>指数を左へ下げると、毎回「底」で割る</h1></div><span class="num">08</span></div>
+      <div class="heading"><div><p>STEP 2</p><h1>指数を左へ下げると、毎回「底」で割る</h1></div><span class="num">09</span></div>
       <div class="body">
         <div class="base-picker" role="group" aria-label="底を選ぶ">
           <span>底を選ぶ</span>
@@ -256,7 +292,7 @@
     </section>
 
     <section class="slide green" data-label="0乗" hidden>
-      <div class="heading"><div><p>0乗</p><h1>0乗は、いつでも 1</h1></div><span class="num">09</span></div>
+      <div class="heading"><div><p>0乗</p><h1>0乗は、いつでも 1</h1></div><span class="num">10</span></div>
       <div class="body zero">
         <div class="cols">
           <div class="box"><p>指数を1段下げる</p><div class="mathline">a¹ ÷ a = a⁰</div><div class="mathline">a ÷ a = 1</div><div class="therefore">だから　a⁰ = 1</div></div>
@@ -268,7 +304,7 @@
     </section>
 
     <section class="slide orange" data-label="負の指数" hidden>
-      <div class="heading"><div><p>負の指数</p><h1>マイナスは「逆数にする」合図</h1></div><span class="num">10</span></div>
+      <div class="heading"><div><p>負の指数</p><h1>マイナスは「逆数にする」合図</h1></div><span class="num">11</span></div>
       <div class="body">
         <div class="negative">
           <div class="steps"><p>左へ進むたび ÷ 3</p><div class="mathline">3¹ = 3</div><div class="mathline">3⁰ = 1</div><div class="mathline fraction-equation" aria-label="3のマイナス1乗は3分の1"><math><msup><mn>3</mn><mrow><mo>−</mo><mn>1</mn></mrow></msup></math><span class="fraction-equals">＝</span><math><mfrac><mn>1</mn><mn>3</mn></mfrac></math></div><div class="mathline fraction-equation" aria-label="3のマイナス2乗は9分の1"><math><msup><mn>3</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></math><span class="fraction-equals">＝</span><math><mfrac><mn>1</mn><mn>9</mn></mfrac></math></div></div>
@@ -279,7 +315,7 @@
     </section>
 
     <section class="slide green practice-set" data-label="教科書 練習1" hidden>
-      <div class="heading"><div><p>ここで練習</p><h1>練習1　指数の意味を使おう</h1></div><span class="num">11</span></div>
+      <div class="heading"><div><p>ここで練習</p><h1>練習1　指数の意味を使おう</h1></div><span class="num">12</span></div>
       <div class="body">
         <div class="exercise-grid five">
           <article class="exercise-card"><span class="exercise-index">1</span><div class="exercise-question"><math><msup><mn>7</mn><mn>0</mn></msup></math></div><div class="exercise-solution"><span>答え</span><math><mn>1</mn></math></div></article>
@@ -293,7 +329,7 @@
     </section>
 
     <section class="slide orange practice-set" data-label="教科書 練習2" hidden>
-      <div class="heading"><div><p>ここで練習</p><h1>練習2　指数法則を使おう</h1></div><span class="num">12</span></div>
+      <div class="heading"><div><p>ここで練習</p><h1>練習2　指数法則を使おう</h1></div><span class="num">13</span></div>
       <div class="body">
         <div class="exercise-grid four">
           <article class="exercise-card"><span class="exercise-index">1</span><div class="exercise-question exercise-inline" aria-label="aの6乗かけるaのマイナス4乗"><math><msup><mi>a</mi><mn>6</mn></msup></math><span class="inline-op">×</span><math><msup><mi>a</mi><mrow><mo>−</mo><mn>4</mn></mrow></msup></math></div><div class="exercise-solution"><span>答え</span><math><msup><mi>a</mi><mn>2</mn></msup></math></div></article>
@@ -306,7 +342,7 @@
     </section>
 
     <section class="slide purple" data-label="累乗根の意味" hidden>
-      <div class="heading"><div><p>STEP 3</p><h1>累乗根は、かけ算を逆向きに考える</h1></div><span class="num">13</span></div>
+      <div class="heading"><div><p>STEP 3</p><h1>累乗根は、かけ算を逆向きに考える</h1></div><span class="num">14</span></div>
       <div class="body">
         <div class="root-concept"><article><span>いつもの計算</span><strong>2 × 2 × 2 = 8</strong><b>2を3回かける</b></article><div class="root-turn">問いを逆向きに<br>→</div><article><span>累乗根の問い</span><strong>3回かけて8になる数は？</strong><b>答えは 2</b></article></div>
         <div class="root-general"><math><msup><mi>x</mi><mi>n</mi></msup><mo>=</mo><mi>a</mi></math><span>を満たす正の数 x を</span><strong>「a の n乗根」</strong><span>という</span></div>
@@ -316,7 +352,7 @@
     </section>
 
     <section class="slide green" data-label="n乗根を確かめる" hidden>
-      <div class="heading"><div><p>累乗根を体験</p><h1>数字を変えて、n乗根を確かめよう</h1></div><span class="num">14</span></div>
+      <div class="heading"><div><p>累乗根を体験</p><h1>数字を変えて、n乗根を確かめよう</h1></div><span class="num">15</span></div>
       <div class="body">
         <div class="root-example-picker" role="group" aria-label="累乗根の例を選ぶ"><button class="root-example" type="button" data-degree="2" data-radicand="9" data-root="3" aria-pressed="false">9の2乗根</button><button class="root-example active" type="button" data-degree="3" data-radicand="27" data-root="3" aria-pressed="true">27の3乗根</button><button class="root-example" type="button" data-degree="4" data-radicand="16" data-root="2" aria-pressed="false">16の4乗根</button><button class="root-example" type="button" data-degree="5" data-radicand="32" data-root="2" aria-pressed="false">32の5乗根</button></div>
         <div class="root-demo" id="root-demo"><div class="root-demo-left"><p class="root-demo-question" id="root-demo-question">同じ数を3回かけて27になる数は？</p><div class="root-demo-product" id="root-demo-product">3 × 3 × 3 = 27</div></div><div class="root-demo-right"><div class="root-demo-answer"><math id="root-demo-radical"><mroot><mn>27</mn><mn>3</mn></mroot></math><span>＝</span><strong id="root-demo-value">3</strong></div><p class="root-demo-sentence" id="root-demo-sentence">3は27の3乗根</p></div></div>
@@ -325,17 +361,17 @@
     </section>
 
     <section class="slide" data-label="3乗根と分数指数" hidden>
-      <div class="heading"><div><p>分数指数 ①</p><h1><span class="spoken-power-title">3乗根と<math class="title-math"><mfrac><mn>1</mn><mn>3</mn></mfrac></math>乗は、同じもの</span></h1></div><span class="num">15</span></div>
+      <div class="heading"><div><p>分数指数 ①</p><h1><span class="spoken-power-title">3乗根と<math class="title-math"><mfrac><mn>1</mn><mn>3</mn></mfrac></math>乗は、同じもの</span></h1></div><span class="num">16</span></div>
       <div class="body"><div class="proof"><div class="root-side"><span>3乗根の2</span><strong>∛2 × ∛2 × ∛2 = 2</strong></div><div class="iff">⇔</div><div class="power-side"><span class="spoken-power-label">2の<math class="text-math"><mfrac><mn>1</mn><mn>3</mn></mfrac></math>乗</span><div class="segmented-math" aria-label="2の3分の1乗を3回かけると2の1乗、つまり2"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">×</span><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">×</span><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><msup><mn>2</mn><mn>1</mn></msup></math><span class="math-op">＝</span><math><mn>2</mn></math></div></div></div><div class="formula"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup><mo>=</mo><mroot><mn>2</mn><mn>3</mn></mroot></math></div><div class="hint">どちらも「3回かけると2になる数」。だから1対1に対応します。</div></div>
     </section>
 
     <section class="slide green" data-label="何乗根でも分数指数" hidden>
-      <div class="heading"><div><p>分数指数 ②</p><h1>何乗根でも、同じ対応がある</h1></div><span class="num">16</span></div>
+      <div class="heading"><div><p>分数指数 ②</p><h1>何乗根でも、同じ対応がある</h1></div><span class="num">17</span></div>
       <div class="body"><div class="root-controls"><div class="root-picker" role="group" aria-label="何乗根かを選ぶ"><span>何回かける？</span><button class="root-degree" type="button" data-degree="2" aria-pressed="false">2乗根</button><button class="root-degree" type="button" data-degree="3" aria-pressed="false">3乗根</button><button class="root-degree active" type="button" data-degree="4" aria-pressed="true">4乗根</button><button class="root-degree" type="button" data-degree="5" aria-pressed="false">5乗根</button></div><div class="root-view-picker" role="group" aria-label="式の表し方を選ぶ"><span>表し方</span><button class="root-view active" type="button" data-view="fraction" aria-pressed="true">分数指数</button><button class="root-view" type="button" data-view="radical" aria-pressed="false">累乗根</button></div></div><div class="fourth"><div class="repeat" id="root-repeat" aria-live="polite"></div><div class="arrow" id="root-arrow">指数を4個足す ↓</div><div class="segmented-math" id="root-result" aria-live="polite"></div></div><div class="hint" id="root-hint">分母の4は「同じ数を4回かける」の合図です。</div></div>
     </section>
 
     <section class="slide orange" data-label="分数指数の一般化" hidden>
-      <div class="heading"><div><p>分数指数 ③</p><h1>分母は「根」、分子は「累乗」</h1></div><span class="num">17</span></div>
+      <div class="heading"><div><p>分数指数 ③</p><h1>分母は「根」、分子は「累乗」</h1></div><span class="num">18</span></div>
       <div class="body">
         <div class="mn">
           <div class="anatomy"><math><msup><mi>a</mi><mfrac><mi>m</mi><mi>n</mi></mfrac></msup></math><div class="notes"><span><b>m</b>：m乗する</span><span><b>n</b>：n乗根をとる</span></div></div>
@@ -347,7 +383,7 @@
     </section>
 
     <section class="slide purple" data-label="累乗根の5つの性質" hidden>
-      <div class="heading"><div><p>STEP 4</p><h1>累乗根の性質は、5つに整理できる</h1></div><span class="num">18</span></div>
+      <div class="heading"><div><p>STEP 4</p><h1>累乗根の性質は、5つに整理できる</h1></div><span class="num">19</span></div>
       <div class="body">
         <div class="root-laws">
           <article class="root-law"><b>1</b><strong>積をまとめる</strong><div class="law-formula"><math><mroot><mi>a</mi><mi>n</mi></mroot></math><span class="math-op">×</span><math><mroot><mi>b</mi><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><mrow><mi>a</mi><mi>b</mi></mrow><mi>n</mi></mroot></math></div><span>同じ n乗根どうしを1つの根にする</span></article>
@@ -361,7 +397,7 @@
     </section>
 
     <section class="slide" data-label="累乗根の性質1" hidden>
-      <div class="heading"><div><p>累乗根の性質 ①</p><h1>掛け算は、根の中でまとめる</h1></div><span class="num">19</span></div>
+      <div class="heading"><div><p>累乗根の性質 ①</p><h1>掛け算は、根の中でまとめる</h1></div><span class="num">20</span></div>
       <div class="body">
         <div class="property-layout">
           <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mroot><mi>a</mi><mi>n</mi></mroot></math><span class="math-op">×</span><math><mroot><mi>b</mi><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><mrow><mi>a</mi><mi>b</mi></mrow><mi>n</mi></mroot></math></div><p class="conditions">a &gt; 0，b &gt; 0</p></div>
@@ -371,7 +407,7 @@
     </section>
 
     <section class="slide green" data-label="累乗根の性質2" hidden>
-      <div class="heading"><div><p>累乗根の性質 ②</p><h1>割り算も、根の中でまとめる</h1></div><span class="num">20</span></div>
+      <div class="heading"><div><p>累乗根の性質 ②</p><h1>割り算も、根の中でまとめる</h1></div><span class="num">21</span></div>
       <div class="body">
         <div class="property-layout">
           <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mfrac><mroot><mi>a</mi><mi>n</mi></mroot><mroot><mi>b</mi><mi>n</mi></mroot></mfrac></math><span class="math-op">＝</span><math><mroot><mfrac><mi>a</mi><mi>b</mi></mfrac><mi>n</mi></mroot></math></div><p class="conditions">a &gt; 0，b &gt; 0</p></div>
@@ -381,7 +417,7 @@
     </section>
 
     <section class="slide orange" data-label="累乗根の性質3" hidden>
-      <div class="heading"><div><p>累乗根の性質 ③</p><h1>外側の累乗は、根の中へ移せる</h1></div><span class="num">21</span></div>
+      <div class="heading"><div><p>累乗根の性質 ③</p><h1>外側の累乗は、根の中へ移せる</h1></div><span class="num">22</span></div>
       <div class="body">
         <div class="property-layout">
           <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><msup><mrow><mo>(</mo><mroot><mi>a</mi><mi>n</mi></mroot><mo>)</mo></mrow><mi>m</mi></msup></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math></div><p class="conditions">a &gt; 0</p></div>
@@ -391,7 +427,7 @@
     </section>
 
     <section class="slide purple" data-label="累乗根の性質4" hidden>
-      <div class="heading"><div><p>累乗根の性質 ④</p><h1>根の中に根があるときは、回数をかける</h1></div><span class="num">22</span></div>
+      <div class="heading"><div><p>累乗根の性質 ④</p><h1>根の中に根があるときは、回数をかける</h1></div><span class="num">23</span></div>
       <div class="body">
         <div class="property-layout">
           <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mroot><mroot><mi>a</mi><mi>n</mi></mroot><mi>m</mi></mroot></math><span class="math-op">＝</span><math><mroot><mi>a</mi><mrow><mi>m</mi><mi>n</mi></mrow></mroot></math></div><p class="conditions">a &gt; 0</p></div>
@@ -401,7 +437,7 @@
     </section>
 
     <section class="slide green" data-label="累乗根の性質5" hidden>
-      <div class="heading"><div><p>累乗根の性質 ⑤</p><h1>指数と根の回数を、同じ数倍してもよい</h1></div><span class="num">23</span></div>
+      <div class="heading"><div><p>累乗根の性質 ⑤</p><h1>指数と根の回数を、同じ数倍してもよい</h1></div><span class="num">24</span></div>
       <div class="body">
         <div class="property-layout">
           <div class="property-rule"><span>性質</span><div class="segmented-math property-math"><math><mroot><msup><mi>a</mi><mi>m</mi></msup><mi>n</mi></mroot></math><span class="math-op">＝</span><math><mroot><msup><mi>a</mi><mrow><mi>m</mi><mi>p</mi></mrow></msup><mrow><mi>n</mi><mi>p</mi></mrow></mroot></math></div><p class="conditions">a &gt; 0，m・n・p は正の整数</p></div>
@@ -411,7 +447,7 @@
     </section>
 
     <section class="slide" data-label="分数指数から累乗根" hidden>
-      <div class="heading"><div><p>計算への橋渡し ①</p><h1>分数指数を、累乗根に直す</h1></div><span class="num">24</span></div>
+      <div class="heading"><div><p>計算への橋渡し ①</p><h1>分数指数を、累乗根に直す</h1></div><span class="num">25</span></div>
       <div class="body">
         <div class="conversion-grid">
           <article class="conversion-card"><span>分子が 1</span><div class="segmented-math"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mroot><mn>2</mn><mn>3</mn></mroot></math></div><p>分母の3が「3乗根」になります。</p></article>
@@ -422,7 +458,7 @@
     </section>
 
     <section class="slide orange" data-label="普通の数まで計算" hidden>
-      <div class="heading"><div><p>計算への橋渡し ②</p><h1>累乗根に直して、普通の数まで計算する</h1></div><span class="num">25</span></div>
+      <div class="heading"><div><p>計算への橋渡し ②</p><h1>累乗根に直して、普通の数まで計算する</h1></div><span class="num">26</span></div>
       <div class="body">
         <div class="calculation-grid">
           <article class="calculation-card"><span>1</span><div class="segmented-math"><math><msup><mn>27</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mroot><mn>27</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mn>3</mn></math></div><p>3回かけて27になる数</p></article>
@@ -432,7 +468,7 @@
     </section>
 
     <section class="slide purple" data-label="分数指数の掛け算割り算" hidden>
-      <div class="heading"><div><p>計算練習 ①</p><h1>分数指数でも、足し算・引き算は同じ</h1></div><span class="num">26</span></div>
+      <div class="heading"><div><p>計算練習 ①</p><h1>分数指数でも、足し算・引き算は同じ</h1></div><span class="num">27</span></div>
       <div class="body">
         <div class="calculation-grid">
           <article class="calculation-card"><span>掛け算</span><div class="segmented-math"><math><msup><mn>2</mn><mfrac><mn>1</mn><mn>3</mn></mfrac></msup></math><span class="math-op">×</span><math><msup><mn>2</mn><mfrac><mn>2</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><msup><mn>2</mn><mfrac><mn>3</mn><mn>3</mn></mfrac></msup></math><span class="math-op">＝</span><math><mn>2</mn></math></div><p>同じ底なので、指数を足す</p></article>
@@ -443,7 +479,7 @@
     </section>
 
     <section class="slide green" data-label="累乗根の掛け算割り算" hidden>
-      <div class="heading"><div><p>計算練習 ②</p><h1>累乗根で表された数を、掛ける・割る</h1></div><span class="num">27</span></div>
+      <div class="heading"><div><p>計算練習 ②</p><h1>累乗根で表された数を、掛ける・割る</h1></div><span class="num">28</span></div>
       <div class="body">
         <div class="calculation-grid">
           <article class="calculation-card"><span>掛け算</span><div class="segmented-math"><math><mroot><mn>4</mn><mn>3</mn></mroot></math><span class="math-op">×</span><math><mroot><mn>16</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mroot><mn>64</mn><mn>3</mn></mroot></math><span class="math-op">＝</span><math><mn>4</mn></math></div><p>同じ3乗根なので、中を掛ける</p></article>
@@ -454,7 +490,7 @@
     </section>
 
     <section class="slide purple" data-label="今日のまとめ" hidden>
-      <div class="heading"><div><p>FINAL</p><h1>今日のまとめ ― 次は自分で解いてみよう</h1></div><span class="num">28</span></div>
+      <div class="heading"><div><p>FINAL</p><h1>今日のまとめ ― 次は自分で解いてみよう</h1></div><span class="num">29</span></div>
       <div class="body">
         <div class="summary-grid">
           <article class="summary-card"><span>1</span><strong>指数法則：×は足す、÷は引く</strong><div class="segmented-math summary-math"><math><msup><mi>a</mi><mi>m</mi></msup></math><span class="math-op">×</span><math><msup><mi>a</mi><mi>n</mi></msup></math><span class="math-op">＝</span><math><msup><mi>a</mi><mrow><mi>m</mi><mo>＋</mo><mi>n</mi></mrow></msup></math></div></article>
@@ -540,6 +576,9 @@
       next.disabled = current === slides.length - 1;
       practiceSets.forEach(set => set.classList.remove("show-answers"));
       practiceToggles.forEach(button => button.textContent = "答えを見る");
+      if (slides[current].dataset.label === "指数の数直線") {
+        requestAnimationFrame(positionAxisCursor);
+      }
     }
 
     prev.addEventListener("click", () => show(current - 1));
@@ -723,6 +762,12 @@
       axisEquation.replaceChildren(left, equals, right);
     }
 
+    function positionAxisCursor() {
+      const activePoint = axisPoints[axisIndex];
+      if (!activePoint || activePoint.offsetWidth === 0) return;
+      axisCursor.style.left = `${activePoint.offsetLeft + activePoint.offsetWidth / 2}px`;
+    }
+
     function renderAxis() {
       const exponents = [-3, -2, -1, 0, 1, 2, 3];
       axisPoints.forEach((point, index) => {
@@ -731,7 +776,7 @@
         point.classList.toggle("active", index === axisIndex);
       });
       renderAxisEquation();
-      axisCursor.style.left = `${((axisIndex + .5) / axisPoints.length) * 100}%`;
+      positionAxisCursor();
       axisLeftRule.textContent = `÷${axisBase}`;
       axisRightRule.textContent = `×${axisBase}`;
       axisLeft.disabled = axisIndex === 0;
@@ -743,7 +788,7 @@
       if (nextIndex === axisIndex) return;
       axisIndex = nextIndex;
       axisPoints.forEach((item, index) => item.classList.toggle("active", index === axisIndex));
-      axisCursor.style.left = `${((axisIndex + .5) / axisPoints.length) * 100}%`;
+      positionAxisCursor();
       renderAxisEquation();
       flashAxisOperation(direction > 0 ? `×${axisBase}` : `÷${axisBase}`);
       axisLeft.disabled = axisIndex === 0;
@@ -771,6 +816,7 @@
       renderRootDegree();
     }));
     rootExampleButtons.forEach(button => button.addEventListener("click", () => renderRootExample(button)));
+    window.addEventListener("resize", () => requestAnimationFrame(positionAxisCursor));
     window.addEventListener("keydown", event => {
       if (event.key === "ArrowRight" || event.key === "PageDown") { event.preventDefault(); show(current + 1); }
       if (event.key === "ArrowLeft" || event.key === "PageUp") { event.preventDefault(); show(current - 1); }
