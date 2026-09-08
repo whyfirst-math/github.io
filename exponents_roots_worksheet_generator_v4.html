@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="指数法則と累乗根の計算プリントを、適切な数に調整してランダム生成し、LaTeX PDFとして出力する教材ツール">
+  <title>指数・累乗根 プリントメーカー</title>
+  <style>
+    :root{
+      --ink:#17233a;--muted:#627089;--blue:#1859d1;--blue2:#0f3f9b;--orange:#e96b2d;
+      --green:#128064;--line:#d5e0ed;--paper:#fff;--soft:#f3f7fc;--navy:#142540;
+      font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif
+    }
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--ink);background:linear-gradient(135deg,#eaf2fb,#f7faff 48%,#e7f5f0);min-height:100vh}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .app{width:min(1380px,96vw);margin:auto;padding:1.1rem 0 2rem}
+    header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+    .brand small{display:block;color:var(--blue);font-size:.75rem;font-weight:900;letter-spacing:.14em}
+    .brand h1{margin:.16rem 0 0;font-size:clamp(1.55rem,3vw,2.55rem);letter-spacing:-.04em}
+    .status{display:flex;align-items:center;gap:.45rem;padding:.45rem .7rem;border:1px solid #b9d8cb;border-radius:99px;background:#effaf6;color:var(--green);font-size:.78rem;font-weight:900;white-space:nowrap}
+    .status:before{content:"";width:.55rem;height:.55rem;border-radius:50%;background:var(--green)}
+    .workspace{display:grid;grid-template-columns:minmax(17rem,.72fr) minmax(0,1.6fr);gap:1rem;align-items:start}
+    .panel,.preview-shell{border:1px solid #ffffffaa;border-radius:1.2rem;background:#ffffffeb;box-shadow:0 1.1rem 2.8rem #25496d1a}
+    .panel{position:sticky;top:1rem;padding:1rem}
+    .panel h2,.preview-head h2{margin:0;font-size:1rem}
+    .form-grid{display:grid;gap:.82rem;margin-top:.9rem}
+    label{display:grid;gap:.3rem;color:#4e5e75;font-size:.78rem;font-weight:850}
+    input,select{width:100%;min-height:2.65rem;border:1.5px solid #c7d5e5;border-radius:.65rem;background:#fff;color:var(--ink);padding:.5rem .65rem;outline:none}
+    input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1859d11c}
+    .twocol{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+    .check{display:flex;align-items:center;gap:.55rem;padding:.62rem .7rem;border-radius:.65rem;background:var(--soft);color:var(--ink)}
+    .check input{width:1.1rem;min-height:0;height:1.1rem;accent-color:var(--blue)}
+    .actions{display:grid;gap:.5rem;margin-top:.9rem}
+    .primary,.secondary,.ghost{min-height:2.8rem;border:0;border-radius:.72rem;padding:.6rem .8rem;font-weight:900}
+    .primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 .5rem 1rem #1859d12d}
+    .secondary{background:var(--navy);color:#fff}.ghost{border:1.5px solid #c7d5e5;background:#fff;color:#42536b}
+    .primary:hover,.secondary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .ghost:hover{border-color:var(--blue);color:var(--blue)}
+    .note{margin:.8rem 0 0;color:var(--muted);font-size:.7rem;line-height:1.55}.note a{color:var(--blue)}
+    .preview-shell{overflow:hidden}
+    .preview-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1rem;border-bottom:1px solid var(--line)}
+    .seed-pill{padding:.33rem .55rem;border-radius:99px;background:#eaf2ff;color:var(--blue);font:800 .72rem ui-monospace,monospace}
+    .paper-wrap{padding:1rem;background:#dfe8f2;overflow:auto}
+    .paper-stack{display:grid;gap:1rem}
+    .paper{width:min(100%,850px);min-height:1120px;margin:auto;padding:2.6rem 3rem;background:#fff;box-shadow:0 .5rem 1.5rem #17304d24;color:#111}
+    .paper-title{text-align:center}.paper-title h2{margin:0;font-family:serif;font-size:1.55rem}.paper-title p{margin:.35rem 0 1.2rem;font-size:.83rem}
+    .student-row{display:grid;grid-template-columns:1fr 1.25fr;gap:2rem;margin-bottom:1.2rem;font-size:.84rem}.line{display:inline-block;width:72%;border-bottom:1px solid #111;transform:translateY(-.15rem)}
+    .section-title{display:flex;align-items:center;gap:.5rem;margin:1.2rem 0 .5rem;padding-bottom:.3rem;border-bottom:2px solid #111;font-size:1rem}.section-title b{display:grid;place-items:center;width:1.55rem;height:1.55rem;border-radius:50%;background:#111;color:#fff}
+    .instructions{margin:0 0 .8rem;color:#333;font-size:.78rem}
+    .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:.25rem 2.4rem;counter-reset:item}
+    .problem{counter-increment:item;display:grid;grid-template-columns:2.1rem 1fr;grid-template-rows:auto 1fr;align-items:start;min-height:var(--problem-height,4.15rem);padding:.35rem 0;font-family:"Cambria Math","STIX Two Math",serif;font-size:1.16rem}
+    .problem:before{content:"(" counter(item) ")";grid-row:1/3;font-family:serif;font-size:.86rem}.question-math{grid-column:2;min-height:1.75rem}.question-math math{font-size:1.1em}.write-answer{grid-column:2;align-self:end;display:grid;grid-template-columns:auto 1fr;align-items:end;gap:.45rem;margin:.4rem 0 .45rem;color:#555;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;font-size:.66rem;font-weight:700}.write-answer i{display:block;height:.95rem;border-bottom:1px solid #777}
+    .answer-page h2{margin:0 0 1rem;text-align:center;font-family:serif;font-size:1.4rem}.answer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.52rem 2rem;counter-reset:ans}.answer{counter-increment:ans;display:grid;grid-template-columns:2rem 1fr;align-items:center;min-height:2rem;font-family:"Cambria Math","STIX Two Math",serif;font-size:.95rem}.answer:before{content:"(" counter(ans) ")";font-family:serif;font-size:.76rem}
+    math{font-family:"Cambria Math","STIX Two Math",serif}
+    .toast{position:fixed;right:1rem;bottom:1rem;max-width:min(25rem,90vw);padding:.75rem 1rem;border-radius:.75rem;background:var(--navy);color:#fff;font-size:.82rem;font-weight:800;box-shadow:0 .8rem 2rem #14254044;opacity:0;transform:translateY(.6rem);pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:none}
+    @media(max-width:900px){.workspace{grid-template-columns:1fr}.panel{position:static}.paper{min-width:720px}.status{display:none}}
+    @page{size:A4 portrait;margin:0}
+    @media print{body{background:#fff}.app>header,.panel,.preview-head{display:none}.app,.workspace,.preview-shell,.paper-wrap,.paper-stack{width:auto;margin:0;padding:0;border:0;background:#fff;box-shadow:none}.workspace,.paper-stack{display:block}.paper{width:210mm;min-width:0;height:297mm;min-height:297mm;margin:0;padding:17mm 18mm;box-shadow:none;break-after:page;page-break-after:always;overflow:hidden}.paper:last-child{break-after:auto;page-break-after:auto}.toast{display:none}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <header>
+    <div class="brand"><small>BASIC MATH WORKSHEET</small><h1>指数・累乗根 プリントメーカー</h1></div>
+    <div class="status">答えが整う数だけを使用</div>
+  </header>
+
+  <div class="workspace">
+    <aside class="panel" aria-label="プリント設定">
+      <h2>プリントの設定</h2>
+      <div class="form-grid">
+        <label>タイトル<input id="title" value="指数法則と累乗根　計算練習"></label>
+        <div class="twocol">
+          <label>指数法則<select id="exp-count"><option>6</option><option selected>8</option><option>10</option><option>12</option></select></label>
+          <label>累乗根<select id="root-count"><option>6</option><option selected>8</option><option>10</option><option>12</option></select></label>
+        </div>
+        <label>難易度<select id="difficulty"><option value="basic">基礎（正の指数中心）</option><option value="standard" selected>標準（0・負・分数指数を含む）</option></select></label>
+        <label>乱数シード<input id="seed" inputmode="numeric" maxlength="12" aria-describedby="seed-help"></label>
+        <small id="seed-help" style="color:#718096;font-size:.67rem">同じシードなら、同じ問題を再現できます。</small>
+        <label class="check"><input id="answers" type="checkbox" checked>PDFに解答ページを付ける</label>
+      </div>
+      <div class="actions">
+        <button class="primary" id="new-set" type="button">新しい問題を生成</button>
+        <button class="secondary" id="pdf" type="button">PDFとして保存</button>
+        <button class="ghost" id="tex" type="button">LaTeX（.tex）を保存</button>
+      </div>
+      <p class="note">「PDFとして保存」を押すと印刷画面が開きます。送信先で「PDFに保存」を選んでください。数式用のLaTeXソースも同時に生成され、.texとして保存できます。</p>
+    </aside>
+
+    <section class="preview-shell" aria-label="プリントプレビュー">
+      <div class="preview-head"><h2>生成プレビュー</h2><span class="seed-pill" id="seed-pill"></span></div>
+      <div class="paper-wrap"><div class="paper-stack" id="paper"></div></div>
+    </section>
+  </div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  const letters = ["a","b","x","y"];
+  const expBasicProduct = [[2,3],[3,4],[1,5],[4,2],[2,5]];
+  const expStandardProduct = [[5,-2],[-3,7],[2,4],[-4,-1],[6,-3],[3,-5]];
+  const expBasicQuotient = [[6,2],[7,3],[5,1],[8,5],[4,2]];
+  const expStandardQuotient = [[5,2],[2,5],[-2,3],[4,-1],[-3,-5],[1,6]];
+  const powerBasic = [[2,3],[3,2],[4,2],[2,4]];
+  const powerStandard = [[-2,3],[3,-2],[-3,-2],[4,2],[2,-3]];
+  const distributeBasic = [[2,1,3],[1,3,2],[2,2,2],[3,1,2]];
+  const distributeStandard = [[-2,1,3],[2,-1,2],[-1,-2,-2],[3,2,-1],[2,-3,2]];
+  const mixedTriples = [[5,-2,1],[2,4,3],[-1,5,2],[6,-3,4],[3,2,7]];
+  const rootValues = [[2,4,2],[2,9,3],[2,16,4],[2,25,5],[3,8,2],[3,27,3],[3,64,4],[4,16,2],[4,81,3],[5,32,2]];
+  const fractionalValues = [[8,2,3,4],[27,2,3,9],[16,3,4,8],[32,2,5,4],[81,3,4,27],[64,2,3,16]];
+  const rootProducts = [[2,2,8,4],[2,3,12,6],[2,5,20,10],[3,2,4,2],[3,3,9,3],[4,2,8,2],[4,3,27,3],[5,2,16,2]];
+  const rootQuotients = [[2,72,2,6],[2,75,3,5],[2,80,5,4],[3,54,2,3],[3,128,2,4],[4,80,5,2],[5,96,3,2]];
+  const fracProducts = [
+    ["2",1,3,"mul",2,3,"2"],["3",1,4,"mul",3,4,"3"],["5",2,3,"mul",1,3,"5"],
+    ["3",5,4,"div",1,4,"3"],["2",7,3,"div",1,3,"4"],["5",4,3,"div",1,3,"5"]
+  ];
+
+  const esc = value => String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+  const mi = x => `<mi>${esc(x)}</mi>`;
+  const mn = x => `<mn>${esc(x)}</mn>`;
+  const mo = x => `<mo>${esc(x)}</mo>`;
+  const mt = x => `<mtext>${esc(x)}</mtext>`;
+  const row = (...x) => `<mrow>${x.join("")}</mrow>`;
+  const expM = n => n < 0 ? row(mo("−"),mn(Math.abs(n))) : mn(n);
+  const powM = (base,n) => `<msup>${base}${expM(n)}</msup>`;
+  const fracM = (top,bottom) => `<mfrac>${top}${bottom}</mfrac>`;
+  const rootM = (inside,n) => n === 2 ? `<msqrt>${inside}</msqrt>` : `<mroot>${inside}${mn(n)}</mroot>`;
+  const parM = inside => row(mo("("),inside,mo(")"));
+  const math = body => `<math xmlns="http://www.w3.org/1998/Math/MathML">${body}</math>`;
+  const fracExpM = (m,n) => `<mfrac>${mn(m)}${mn(n)}</mfrac>`;
+  const fracPowM = (base,m,n) => `<msup>${base}${fracExpM(m,n)}</msup>`;
+  const eTex = n => n < 0 ? `-${Math.abs(n)}` : String(n);
+  const powT = (base,n) => `${base}^{${eTex(n)}}`;
+  const rootT = (inside,n) => n === 2 ? `\\sqrt{${inside}}` : `\\sqrt[${n}]{${inside}}`;
+  const fracPowT = (base,m,n) => `${base}^{\\frac{${m}}{${n}}}`;
+
+  function xmur3(str){
+    let h=1779033703^str.length;
+    for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}
+    return () => {h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return (h^h>>>16)>>>0};
+  }
+  function mulberry32(a){return () => {let t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296}}
+  function rngFrom(seed){return mulberry32(xmur3(String(seed))())}
+  const pick = (r,array) => array[Math.floor(r()*array.length)];
+  function shuffle(r,array){const out=[...array];for(let i=out.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
+  function gcd(a,b){while(b!==0){[a,b]=[b,a%b]}return Math.abs(a)}
+  function problem(qTex,aTex,qMml,aMml){return {qTex,aTex,qMml:math(qMml),aMml:math(aMml)}}
+
+  function gProduct(r,d){
+    const v=pick(r,letters),[p,q]=pick(r,d==="basic"?expBasicProduct:expStandardProduct),ans=p+q;
+    return problem(`${powT(v,p)}\\cdot ${powT(v,q)}`,powT(v,ans),row(powM(mi(v),p),mo("×"),powM(mi(v),q)),powM(mi(v),ans));
+  }
+  function gQuotient(r,d){
+    const v=pick(r,letters),[p,q]=pick(r,d==="basic"?expBasicQuotient:expStandardQuotient),ans=p-q;
+    return problem(`\\dfrac{${powT(v,p)}}{${powT(v,q)}}`,powT(v,ans),fracM(powM(mi(v),p),powM(mi(v),q)),powM(mi(v),ans));
+  }
+  function gPower(r,d){
+    const v=pick(r,letters),[p,q]=pick(r,d==="basic"?powerBasic:powerStandard),ans=p*q;
+    return problem(`\\left(${powT(v,p)}\\right)^{${eTex(q)}}`,powT(v,ans),powM(parM(powM(mi(v),p)),q),powM(mi(v),ans));
+  }
+  function gDistribute(r,d){
+    let a=pick(r,letters),b=pick(r,letters.filter(x=>x!==a));const [m,n,l]=pick(r,d==="basic"?distributeBasic:distributeStandard);
+    const insideT=`${powT(a,m)}${powT(b,n)}`;
+    const insideM=row(powM(mi(a),m),powM(mi(b),n));
+    return problem(`\\left(${insideT}\\right)^{${eTex(l)}}`,`${powT(a,m*l)}${powT(b,n*l)}`,powM(parM(insideM),l),row(powM(mi(a),m*l),powM(mi(b),n*l)));
+  }
+  function gMixed(r){
+    const v=pick(r,letters),[p,q,s]=pick(r,mixedTriples),ans=p+q-s;
+    return problem(`\\dfrac{${powT(v,p)}\\cdot ${powT(v,q)}}{${powT(v,s)}}`,powT(v,ans),fracM(row(powM(mi(v),p),mo("×"),powM(mi(v),q)),powM(mi(v),s)),powM(mi(v),ans));
+  }
+  function gNegativeNumber(r){
+    const base=pick(r,[2,3,4,5]),n=pick(r,[1,2]),den=base**n;
+    return problem(powT(String(base),-n),`\\dfrac{1}{${den}}`,powM(mn(base),-n),fracM(mn(1),mn(den)));
+  }
+  function gZero(r){
+    const base=pick(r,[2,3,5,7,10]);
+    return problem(powT(String(base),0),"1",powM(mn(base),0),mn(1));
+  }
+  function gRootValue(r){
+    const [n,rad,value]=pick(r,rootValues);
+    return problem(rootT(String(rad),n),String(value),rootM(mn(rad),n),mn(value));
+  }
+  function gFractionValue(r){
+    const [base,m,n,value]=pick(r,fractionalValues);
+    return problem(fracPowT(String(base),m,n),String(value),fracPowM(mn(base),m,n),mn(value));
+  }
+  function gConvert(r){
+    const v=pick(r,letters),n=pick(r,[2,3,4,5]),m=pick(r,[1,2,3].filter(x=>x<n&&gcd(x,n)===1));
+    const insideTex=m===1?v:powT(v,m),insideM=m===1?mi(v):powM(mi(v),m);
+    return problem(`${fracPowT(v,m,n)}\\text{ を累乗根で表せ}`,rootT(insideTex,n),row(fracPowM(mi(v),m,n),mt(" を累乗根で表せ")),rootM(insideM,n));
+  }
+  function gRootProduct(r){
+    const [n,a,b,value]=pick(r,rootProducts);
+    return problem(`${rootT(String(a),n)}\\cdot ${rootT(String(b),n)}`,String(value),row(rootM(mn(a),n),mo("×"),rootM(mn(b),n)),mn(value));
+  }
+  function gRootQuotient(r){
+    const [n,a,b,value]=pick(r,rootQuotients);
+    return problem(`\\dfrac{${rootT(String(a),n)}}{${rootT(String(b),n)}}`,String(value),fracM(rootM(mn(a),n),rootM(mn(b),n)),mn(value));
+  }
+  function gFractionRule(r){
+    const [base,p,q,op,s,t,value]=pick(r,fracProducts);const texOp=op==="mul"?"\\cdot":"\\div",mOp=op==="mul"?"×":"÷";
+    return problem(`${fracPowT(base,p,q)}${texOp}${fracPowT(base,s,t)}`,value,row(fracPowM(mn(base),p,q),mo(mOp),fracPowM(mn(base),s,t)),mn(value));
+  }
+
+  function uniqueProblems(r,generators,count,difficulty){
+    const result=[],seen=new Set();let rounds=0;
+    while(result.length<count&&rounds<200){
+      const generator=generators[result.length%generators.length];
+      const item=generator(r,difficulty);rounds++;
+      if(seen.has(item.qTex)) continue;
+      seen.add(item.qTex);result.push(item);
+    }
+    return shuffle(r,result);
+  }
+  function makeSet(options){
+    const r=rngFrom(options.seed);
+    const expGens=options.difficulty==="basic"?[gProduct,gQuotient,gPower,gDistribute,gZero,gNegativeNumber]:[gProduct,gQuotient,gPower,gDistribute,gMixed,gNegativeNumber,gZero];
+    const rootGens=options.difficulty==="basic"?[gRootValue,gRootProduct,gRootQuotient,gFractionValue]:[gRootValue,gFractionValue,gConvert,gRootProduct,gRootQuotient,gFractionRule];
+    return {
+      exponent:uniqueProblems(r,shuffle(r,expGens),options.expCount,options.difficulty),
+      roots:uniqueProblems(r,shuffle(r,rootGens),options.rootCount,options.difficulty)
+    };
+  }
+
+  function latexEscape(value){
+    const replacements={"\\":"\\textbackslash{}","&":"\\&","%":"\\%","$":"\\$","#":"\\#","_":"\\_","{":"\\{","}":"\\}","~":"\\textasciitilde{}","^":"\\textasciicircum{}"};
+    return [...String(value)].map(char=>replacements[char]||char).join("");
+  }
+  function texItems(items,answers=false,answerSpaceMm=6){
+    return items.map(item=>answers
+      ? `\\item $\\displaystyle ${item.aTex}$`
+      : `\\item $\\displaystyle ${item.qTex}$\\par\\vspace{${answerSpaceMm}mm}\\hfill {\\scriptsize 答え}\\;\\underline{\\hspace{38mm}}\\vspace{2mm}`
+    ).join("\n");
+  }
+  function buildTex(options,set){
+    const rowCount=Math.ceil(set.exponent.length/2)+Math.ceil(set.roots.length/2);
+    const answerSpaceMm=Math.max(6,Math.min(16,Math.round(30-rowCount*2)));
+    const answerPages=options.answers?`\n\\newpage\n\\begin{center}{\\Large\\bfseries 解答}\\end{center}\n\\section*{1. 指数法則を使った計算}\n\\begin{multicols}{2}\n\\begin{enumerate}[label=(\\arabic*),itemsep=3mm]\n${texItems(set.exponent,true)}\n\\end{enumerate}\n\\end{multicols}\n\\section*{2. 累乗根・分数指数の計算}\n\\begin{multicols}{2}\n\\begin{enumerate}[label=(\\arabic*),itemsep=3mm]\n${texItems(set.roots,true)}\n\\end{enumerate}\n\\end{multicols}`:"";
+    return `\\documentclass[a4paper,11pt]{ltjsarticle}\n\\usepackage{amsmath,amssymb}\n\\usepackage[margin=18mm]{geometry}\n\\usepackage{multicol}\n\\usepackage{enumitem}\n\\pagestyle{empty}\n\\setlength{\\parindent}{0pt}\n\\begin{document}\n\\begin{center}\n{\\LARGE\\bfseries ${latexEscape(options.title)}}\\\\[2mm]\n{\\small 文字は0でないものとし、累乗根の中の文字は正とする。}\n\\end{center}\n\\vspace{2mm}\n組\\hfill 番号\\hspace{18mm}氏名\\underline{\\hspace{48mm}}\n\\section*{1. 指数法則を使った計算}\n\\begin{multicols}{2}\n\\begin{enumerate}[label=(\\arabic*),itemsep=2mm]\n${texItems(set.exponent,false,answerSpaceMm)}\n\\end{enumerate}\n\\end{multicols}\n\\section*{2. 累乗根・分数指数の計算}\n\\begin{multicols}{2}\n\\begin{enumerate}[label=(\\arabic*),itemsep=2mm]\n${texItems(set.roots,false,answerSpaceMm)}\n\\end{enumerate}\n\\end{multicols}\n${answerPages}\n\\vfill\n{\\scriptsize 問題ID：${latexEscape(options.seed)}}\n\\end{document}\n`;
+  }
+
+  function readOptions(doc){
+    return {
+      title:doc.getElementById("title").value.trim()||"指数法則と累乗根　計算練習",
+      expCount:Number(doc.getElementById("exp-count").value),rootCount:Number(doc.getElementById("root-count").value),
+      difficulty:doc.getElementById("difficulty").value,seed:doc.getElementById("seed").value.trim()||"1",
+      answers:doc.getElementById("answers").checked
+    };
+  }
+  function sectionHtml(number,title,items,answers=false){
+    return `<h3 class="section-title"><b>${number}</b>${esc(title)}</h3><div class="${answers?"answer-grid":"problem-grid"}">${items.map(item=>answers
+      ? `<div class="answer">${item.aMml}</div>`
+      : `<div class="problem"><div class="question-math">${item.qMml}</div><div class="write-answer"><span>答え</span><i></i></div></div>`
+    ).join("")}</div>`;
+  }
+  function render(doc,options,set){
+    doc.getElementById("seed-pill").textContent=`問題ID ${options.seed}`;
+    const rowCount=Math.ceil(set.exponent.length/2)+Math.ceil(set.roots.length/2);
+    const problemHeightMm=Math.max(17,Math.min(28,41-rowCount*2));
+    const problemPage=`<article class="paper problem-page" style="--problem-height:${problemHeightMm}mm"><div class="paper-title"><h2>${esc(options.title)}</h2><p>文字は0でないものとし、累乗根の中の文字は正とする。</p></div><div class="student-row"><span>組・番号 <i class="line"></i></span><span>氏名 <i class="line"></i></span></div>${sectionHtml(1,"指数法則を使った計算",set.exponent)}${sectionHtml(2,"累乗根・分数指数の計算",set.roots)}</article>`;
+    const answerPage=options.answers?`<article class="paper answer-page"><h2>解答</h2>${sectionHtml(1,"指数法則",set.exponent,true)}${sectionHtml(2,"累乗根・分数指数",set.roots,true)}<p style="margin-top:2rem;color:#555;font-size:.72rem">問題ID：${esc(options.seed)}</p></article>`:"";
+    doc.getElementById("paper").innerHTML=problemPage+answerPage;
+  }
+  function safeName(title){return title.replace(/[\\/:*?"<>|]/g,"_").replace(/\s+/g,"_").slice(0,45)||"worksheet"}
+  function downloadText(doc,text,name){
+    const blob=new Blob([text],{type:"application/x-tex;charset=utf-8"});const url=URL.createObjectURL(blob);const a=doc.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  function init(doc){
+    const seedInput=doc.getElementById("seed"),toast=doc.getElementById("toast");let currentOptions,currentSet;
+    const randomSeed=()=>String(Math.floor(100000+Math.random()*900000));
+    const notify=message=>{toast.textContent=message;toast.classList.add("show");clearTimeout(notify.timer);notify.timer=setTimeout(()=>toast.classList.remove("show"),2400)};
+    function generate(changeSeed=false){if(changeSeed||!seedInput.value) seedInput.value=randomSeed();currentOptions=readOptions(doc);currentSet=makeSet(currentOptions);render(doc,currentOptions,currentSet)}
+    seedInput.value=randomSeed();generate();
+    doc.getElementById("new-set").addEventListener("click",()=>{generate(true);notify("新しい問題を作りました")});
+    ["title","exp-count","root-count","difficulty","answers","seed"].forEach(id=>doc.getElementById(id).addEventListener("change",()=>generate(false)));
+    doc.getElementById("tex").addEventListener("click",()=>{generate(false);downloadText(doc,buildTex(currentOptions,currentSet),`${safeName(currentOptions.title)}_${currentOptions.seed}.tex`);notify("LaTeXファイルを保存しました")});
+    doc.getElementById("pdf").addEventListener("click",()=>{
+      generate(false);notify("印刷画面で「PDFに保存」を選んでください");requestAnimationFrame(()=>window.print());
+    });
+  }
+
+  const api={makeSet,buildTex,rngFrom};
+  if(typeof module!=="undefined"&&module.exports) module.exports=api;
+  if(typeof document!=="undefined") init(document);
+})();
+</script>
+</body>
+</html>
